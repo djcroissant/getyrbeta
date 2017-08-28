@@ -1,0 +1,16 @@
+{% if user %}
+  <h1>User profile</h1>
+  <h2>{{ user }}</h2>
+  <p>{{ user.email }}</p>
+  {% if vehicle_list %}
+    <ul>
+    {% for vehicle in vehicle_list %}
+      <li><a href="{% url 'trips:vehicle_detail' vehicle.id %}">{{ vehicle }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No vehicle information available.</p>
+  {% endif %}
+{% else %}
+  <p>No user information available.</p>
+{% endif %}
