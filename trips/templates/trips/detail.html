@@ -1,0 +1,18 @@
+{% if trip %}
+  <h1>{{ trip.title }}</h1>
+  {% if trip.th_lat and trip.th_lon %}
+    <h3>Trailhead coordinates: {{ trip.th_lat }}, {{ trip.th_lon }}</h3>
+  {% endif %}
+  <h2>Confirmed Attendees:</h2>
+  {% if user_list %}
+    <ul>
+    {% for user in user_list %}
+      <li><a href="{% url 'trips:user_profile' user.id %}">{{ user }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>Nobody is registered for {{ trip }}</p>
+  {% endif %}
+{% else %}
+  <p>No trip information available.</p>
+{% endif %}
