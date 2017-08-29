@@ -4,8 +4,14 @@ from . import views
 
 app_name = 'trips'
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^profile/(?P<user_id>[0-9]+)/$', views.user_profile, name='user_profile'),
-    url(r'^vehicle/(?P<vehicle_id>[0-9]+)/$', views.vehicle_detail, name='vehicle_detail'),
-    url(r'^trip/(?P<trip_id>[0-9]+)/$', views.trip_detail, name='trip_detail'),
+    url(r'^$',
+    views.TripList.as_view(), name='trip_list'),
+    url(r'^profile/(?P<pk>[0-9]+)/$',
+    views.UserView.as_view(), name='user_detail'),
+    url(r'^vehicle/(?P<pk>[0-9]+)/$',
+    views.VehicleView.as_view(), name='vehicle_detail'),
+    url(r'^trip/(?P<pk>[0-9]+)/$',
+    views.TripView.as_view(), name='trip_detail'),
+    url(r'^profile/(?P<user_id>[0-9]+)/addvehicle/$',
+    views.VehicleCreateView.as_view(), name='vehicle_create'),
 ]

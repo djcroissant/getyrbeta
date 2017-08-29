@@ -1,31 +1,56 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
 
 from .models import User, Vehicle, Trip
 
 
-def index(request):
-    return HttpResponse("Hi, you're at the trips index")
+class TripList(generic.ListView):
+    model = Trip
+    template_name = 'trips/index.html'
+    # context_object_name = 'trip_list'
+    #
+    # def get_queryset(self):
+    #     return Trip.objects.order_by('-title')
 
-def user_profile(request, user_id):
-    user = User.objects.get(pk = user_id)
-    vehicle_list = user.vehicle_set.all()
-    context = {
-        'user': user,
-        'vehicle_list': vehicle_list,
-    }
-    return render(request, 'users/profile.html', context)
+class UserView(generic.DetailView):
+    model = User
+    template_name = 'users/detail.html'
 
-def vehicle_detail(request, vehicle_id):
-    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
-    return render(request, 'vehicles/detail.html', {'vehicle': vehicle})
+    def get_context_data(self, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['vehicle_list'] = self.object.vehicle_set.all()
+        return context
 
-def trip_detail(request, trip_id):
-    trip = get_object_or_404(Trip, pk=trip_id)
-    user_list = trip.user_set.all()
-    context = {
-        'trip': trip,
-        'user_list': user_list,
-    }
-    return render(request, 'trips/detail.html', context)
+class VehicleView(generic.DetailView):
+    model = Vehicle
+    template_name = 'vehicles/detail.html'
+
+class VehicleCreateView(generic.CreateView):
+    model = Vehicle
+    template_name = 'vehicles/create.html'
+    fields = ['year', 'make', 'model', 'lic_plate_num',
+              'lic_plate_st']
+
+    def get_success_url(self, **kwargs):
+        return reverse('trips:user_detail', args=(self.kwargs['user_id'],))
+
+    def get_context_data(self, **kwargs):
+        context = super(VehicleCreateView, self).get_context_data(**kwargs)
+        context['user'] = User.objects.get(pk=self.kwargs['user_id'])
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = User.objects.get(pk=self.kwargs['user_id'])
+        return super(VehicleCreateView, self).form_valid(form)
+
+
+class TripView(generic.DetailView):
+    model = Trip
+    template_name = 'trips/detail.html'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['user_list'] = self.object.user_set.all()
+        return data

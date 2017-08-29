@@ -1,13 +1,13 @@
 {% if trip %}
   <h1>{{ trip.title }}</h1>
-  {% if trip.th_lat and trip.th_lon %}
-    <h3>Trailhead coordinates: {{ trip.th_lat }}, {{ trip.th_lon }}</h3>
+  {% if trip.trailhead_latitude and trip.trailhead_longitude %}
+    <h3>Trailhead coordinates: {{ trip.trailhead_latitude }}, {{ trip.trailhead_longitude }}</h3>
   {% endif %}
   <h2>Confirmed Attendees:</h2>
   {% if user_list %}
     <ul>
     {% for user in user_list %}
-      <li><a href="{% url 'trips:user_profile' user.id %}">{{ user }}</a></li>
+      <li><a href="{% url 'trips:user_detail' user.id %}">{{ user }}</a></li>
     {% endfor %}
     </ul>
   {% else %}

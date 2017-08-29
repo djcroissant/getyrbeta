@@ -1,0 +1,10 @@
+{% if trip_list %}
+  <h1>Trip Index</h1>
+    <ul>
+    {% for trip in trip_list %}
+      <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+  <p>There is no trip information available</p>
+{% endif %}

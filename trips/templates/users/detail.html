@@ -11,6 +11,7 @@
   {% else %}
     <p>No vehicle information available.</p>
   {% endif %}
+  <a href="{% url 'trips:vehicle_create' user.id %}">Add vehicle</a>
 {% else %}
   <p>No user information available.</p>
 {% endif %}
