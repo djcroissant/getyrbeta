@@ -1,3 +1,7 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
+
 {% if upcoming_trip_list %}
   <h1>Trip Index</h1>
     <ul>
