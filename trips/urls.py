@@ -6,6 +6,8 @@ app_name = 'trips'
 urlpatterns = [
     url(r'^$',
     views.TripList.as_view(), name='trip_list'),
+    url(r'^trip/addtrip/$',
+    views.TripCreateView.as_view(), name='trip_create'),
     url(r'^profile/(?P<pk>[0-9]+)/$',
     views.UserView.as_view(), name='user_detail'),
     url(r'^vehicle/(?P<pk>[0-9]+)/$',

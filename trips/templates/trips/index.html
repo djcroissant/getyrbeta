@@ -1,10 +1,13 @@
-{% if trip_list %}
+{% if upcoming_trip_list %}
   <h1>Trip Index</h1>
     <ul>
-    {% for trip in trip_list %}
-      <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a></li>
+    {% for trip in upcoming_trip_list %}
+      <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a>
+          - {{ trip.start_date }}</li>
     {% endfor %}
     </ul>
 {% else %}
   <p>There is no trip information available</p>
 {% endif %}
+
+<a href="{% url 'trips:trip_create' %}">Make a new trip</a>

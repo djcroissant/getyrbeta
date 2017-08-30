@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render#, get_object_or_404
+# from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from .models import User, Vehicle, Trip
 
@@ -9,10 +10,31 @@ from .models import User, Vehicle, Trip
 class TripList(generic.ListView):
     model = Trip
     template_name = 'trips/index.html'
-    # context_object_name = 'trip_list'
-    #
-    # def get_queryset(self):
-    #     return Trip.objects.order_by('-title')
+    context_object_name = 'upcoming_trip_list'
+
+    def get_queryset(self):
+        """
+        Return trips with a start date today or in the future
+        """
+        return Trip.objects.filter(start_date__gte=timezone.now()
+               ).order_by('start_date')
+
+class TripView(generic.DetailView):
+    model = Trip
+    template_name = 'trips/detail.html'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['user_list'] = self.object.user_set.all()
+        return data
+
+class TripCreateView(generic.CreateView):
+    model = Trip
+    template_name = 'trips/create.html'
+    fields = ['title', 'start_date', 'trailhead_latitude', 'trailhead_longitude']
+
+    def get_success_url(self, **kwargs):
+        return reverse('trips:trip_list')
 
 class UserView(generic.DetailView):
     model = User
@@ -44,13 +66,3 @@ class VehicleCreateView(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = User.objects.get(pk=self.kwargs['user_id'])
         return super(VehicleCreateView, self).form_valid(form)
-
-
-class TripView(generic.DetailView):
-    model = Trip
-    template_name = 'trips/detail.html'
-
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        data['user_list'] = self.object.user_set.all()
-        return data
