@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
-from .models import User, Vehicle, Trip
+from .models import Vehicle, Trip #, User
 
 
 class TripList(generic.ListView):
@@ -25,7 +25,7 @@ class TripView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['user_list'] = self.object.user_set.all()
+        # data['user_list'] = self.object.user_set.all()
         return data
 
 class TripCreateView(generic.CreateView):
@@ -36,14 +36,14 @@ class TripCreateView(generic.CreateView):
     def get_success_url(self, **kwargs):
         return reverse('trips:trip_list')
 
-class UserView(generic.DetailView):
-    model = User
-    template_name = 'users/detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(UserView, self).get_context_data(**kwargs)
-        context['vehicle_list'] = self.object.vehicle_set.all()
-        return context
+# class UserView(generic.DetailView):
+#     model = User
+#     template_name = 'users/detail.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(UserView, self).get_context_data(**kwargs)
+#         context['vehicle_list'] = self.object.vehicle_set.all()
+#         return context
 
 class VehicleView(generic.DetailView):
     model = Vehicle
@@ -55,8 +55,8 @@ class VehicleCreateView(generic.CreateView):
     fields = ['year', 'make', 'model', 'lic_plate_num',
               'lic_plate_st']
 
-    def get_success_url(self, **kwargs):
-        return reverse('trips:user_detail', args=(self.kwargs['user_id'],))
+    # def get_success_url(self, **kwargs):
+    #     return reverse('trips:user_detail', args=(self.kwargs['user_id'],))
 
     def get_context_data(self, **kwargs):
         context = super(VehicleCreateView, self).get_context_data(**kwargs)
