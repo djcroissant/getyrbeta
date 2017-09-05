@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Vehicle, Trip #, User
+from .models import Vehicle, Trip
 
 # class VehicleInline(admin.TabularInline):
 #     model = Vehicle
