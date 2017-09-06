@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -14,4 +15,6 @@ urlpatterns = [
         views.TripView.as_view(), name='trip_detail'),
     url(r'^profile/(?P<user_id>[0-9]+)/addvehicle/$',
         views.VehicleCreateView.as_view(), name='vehicle_create'),
+    url(r'^notifications/$',
+        views.notifications, name='notifications'),
 ]

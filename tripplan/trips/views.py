@@ -66,3 +66,9 @@ class VehicleCreateView(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = User.objects.get(pk=self.kwargs['user_id'])
         return super(VehicleCreateView, self).form_valid(form)
+
+# class NotificationView(generic.View):
+#     template_name = 'trips/notifications.html'
+
+def notifications(request):
+    return render(request, 'trips/notifications.html')
