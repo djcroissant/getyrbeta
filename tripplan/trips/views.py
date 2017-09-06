@@ -3,6 +3,7 @@ from django.shortcuts import render#, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth import authenticate, login, logout
 
 from .models import Vehicle, Trip #, User
 

@@ -8,40 +8,23 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="{% url 'welcome' %}" class="navbar-brand value-brand">Parsifal</a>
+        <a href="{% url 'welcome' %}" class="navbar-brand value-brand">Tripplan</a>
       </div>
       <div class="collapse navbar-collapse" id="header-menu">
         <ul class="nav navbar-nav">
-          <li><a href="{% url 'blog:entries' %}">Blog</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'help:articles' %}">Help</a></li>
+          <li>placeholder link</li>
         </ul>
         {% if user.is_authenticated %}
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'trips:trip_list' %}">Trips</a></li>
+            <li><a href="{% url 'trips:notifications' %}">Notifications</a></li>
             <li>
-              <a href="{% url 'reviews' user.username %}">
+              <a href="{% url 'account_info:account_profile' %}">
                 <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="My profile">{{ user.profile.get_screen_name }}</span>
               </a>
             </li>
             <li>
-              <span class="navbar-text username-divider"></span>
-            </li>
-            {% comment %}
-            <li>
-              <a href="{% url 'library:index' %}">
-                Library
-              </a>
-            </li>
-            {% endcomment %}
-            <li>
-              <a href="{% url 'settings:settings' %}">
-                <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="Account settings">
-                  <span class="glyphicon glyphicon-cog"></span>
-                </span>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'signout' %}">
+              <a href="{% url 'authentication:signout' %}">
                 <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="Sign out">
                   <span class="glyphicon glyphicon-log-out"></span>
                 </span>
@@ -49,8 +32,8 @@
             </li>
           </ul>
         {% else %}
-          <a href="{% url 'signin' %}" title="Sign in" class="btn btn-default navbar-btn navbar-right">Sign in</a>
-          <a href="{% url 'signup' %}" title="Sign up" class="btn btn-primary navbar-btn navbar-right" style="margin-right: 5px;">Sign up</a>
+          <a href="{% url 'auth:signin' %}" title="Sign in" class="btn btn-default navbar-btn navbar-right">Sign in</a>
+          <a href="{% url 'auth:signup' %}" title="Sign up" class="btn btn-primary navbar-btn navbar-right" style="margin-right: 5px;">Sign up</a>
         {% endif %}
       </div>
     </div>
