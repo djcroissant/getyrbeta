@@ -23,7 +23,7 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Your account was successfully created.')
-            return HttpResponseRedirect('/' + username + '/')
+            return HttpResponseRedirect('welcome')
     else:
         return render(request, 'auth/signup.html', { 'form': SignUpForm() })
 
@@ -61,4 +61,4 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('trips:trip_list'))
+    return HttpResponseRedirect(reverse('welcome'))
