@@ -21,6 +21,7 @@ urlpatterns = [
     # url(r'^signin/$', authentication.views.signin, name='signin'),
     # url(r'^signout/$', authentication.views.signout, name='signout'),
     # url(r'^signup/$', authentication.views.signup, name='signup'),
+    #url(r'^$', tripplan.views.welcome, name='welcome'),
     url(r'^auth/', include('authentication.urls')),
     url(r'^trips/', include('trips.urls')),
     url(r'^admin/', admin.site.urls),
