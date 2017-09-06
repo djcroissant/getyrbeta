@@ -16,7 +16,7 @@
           <h3 class="panel-title">Sign up for Tripplan</h3>
         </div>
         <div class="panel-body">
-          <form action="/signup/" method="post">
+          <form action="/auth/signup/" method="post">
             {% csrf_token %}
             <div class="panel-group{% if form.username.errors %} has-error{% endif %}">
               <label class="control-label" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>

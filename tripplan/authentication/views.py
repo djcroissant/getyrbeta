@@ -1,6 +1,7 @@
 from django.shortcuts import render#, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -23,7 +24,7 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Your account was successfully created.')
-            return HttpResponseRedirect('welcome')
+            return HttpResponseRedirect('/')
     else:
         return render(request, 'auth/signup.html', { 'form': SignUpForm() })
 
