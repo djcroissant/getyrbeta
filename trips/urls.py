@@ -15,6 +15,3 @@ urlpatterns = [
     url(r'^profile/(?P<user_id>[0-9]+)/addvehicle/$',
         views.VehicleCreateView.as_view(), name='vehicle_create'),
 ]
-
-    #     views.UserView.as_view(), name='user_detail'),
-    # url(r'^vehicle/(?P<pk>[0-9]+)/$',
