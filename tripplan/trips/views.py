@@ -5,7 +5,7 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Vehicle, Trip #, User
+from .models import Trip #, User
 
 
 class TripList(generic.ListView):
@@ -37,36 +37,36 @@ class TripCreateView(generic.CreateView):
     def get_success_url(self, **kwargs):
         return reverse('trips:trip_list')
 
-# class UserView(generic.DetailView):
-#     model = User
-#     template_name = 'users/detail.html'
+# # class UserView(generic.DetailView):
+# #     model = User
+# #     template_name = 'users/detail.html'
+# #
+# #     def get_context_data(self, **kwargs):
+# #         context = super(UserView, self).get_context_data(**kwargs)
+# #         context['vehicle_list'] = self.object.vehicle_set.all()
+# #         return context
+#
+# class VehicleView(generic.DetailView):
+#     model = Vehicle
+#     template_name = 'vehicles/detail.html'
+#
+# class VehicleCreateView(generic.CreateView):
+#     model = Vehicle
+#     template_name = 'vehicles/create.html'
+#     fields = ['year', 'make', 'model', 'lic_plate_num',
+#               'lic_plate_st']
+#
+#     # def get_success_url(self, **kwargs):
+#     #     return reverse('trips:user_detail', args=(self.kwargs['user_id'],))
 #
 #     def get_context_data(self, **kwargs):
-#         context = super(UserView, self).get_context_data(**kwargs)
-#         context['vehicle_list'] = self.object.vehicle_set.all()
+#         context = super(VehicleCreateView, self).get_context_data(**kwargs)
+#         context['user'] = User.objects.get(pk=self.kwargs['user_id'])
 #         return context
-
-class VehicleView(generic.DetailView):
-    model = Vehicle
-    template_name = 'vehicles/detail.html'
-
-class VehicleCreateView(generic.CreateView):
-    model = Vehicle
-    template_name = 'vehicles/create.html'
-    fields = ['year', 'make', 'model', 'lic_plate_num',
-              'lic_plate_st']
-
-    # def get_success_url(self, **kwargs):
-    #     return reverse('trips:user_detail', args=(self.kwargs['user_id'],))
-
-    def get_context_data(self, **kwargs):
-        context = super(VehicleCreateView, self).get_context_data(**kwargs)
-        context['user'] = User.objects.get(pk=self.kwargs['user_id'])
-        return context
-
-    def form_valid(self, form):
-        form.instance.user = User.objects.get(pk=self.kwargs['user_id'])
-        return super(VehicleCreateView, self).form_valid(form)
+#
+#     def form_valid(self, form):
+#         form.instance.user = User.objects.get(pk=self.kwargs['user_id'])
+#         return super(VehicleCreateView, self).form_valid(form)
 
 def notifications(request):
     return render(request, 'trips/notifications.html')

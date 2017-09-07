@@ -49,7 +49,7 @@ def signin(request):
                 #     else:
                 #         return HttpResponseRedirect('/')
                 # else:
-                #     messages.add_message(request, messages.ERROR, 'Your account is desactivated.')
+                #     messages.add_message(request, messages.ERROR, 'Your account is deactivated.')
                 #     return render(request, 'auth/signin.html')
 
                 login(request, user)
