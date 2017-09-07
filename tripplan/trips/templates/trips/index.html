@@ -2,26 +2,30 @@
 
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
+{% endblock stylesheet %}
 
-{% if upcoming_trip_list %}
-  <h1>Trip Index</h1>
-    {% comment %}
-    <ul>
-    {% for trip in upcoming_trip_list %}
-      <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a>
-          - {{ trip.start_date }}</li>
-    {% endfor %}
-    </ul>
-    {% endcomment %}
-    <ul>
-    {% for trip in upcoming_trip_list %}
-      <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-  <p>There is no trip information available</p>
-{% endif %}
-{% comment %}
-<a href="{% url 'trips:trip_create' %}">Make a new trip</a>
-{% endcomment %}
+{% block content %}
+  {% if upcoming_trip_list %}
+    <h1>Trip Index</h1>
+      {% comment %}
+      <ul>
+      {% for trip in upcoming_trip_list %}
+        <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a>
+            - {{ trip.start_date }}</li>
+      {% endfor %}
+      </ul>
+      {% endcomment %}
+      <ul>
+      {% for trip in upcoming_trip_list %}
+        <li><a href="{% url 'trips:trip_detail' trip.id %}">{{ trip }}</a></li>
+      {% endfor %}
+      </ul>
+  {% else %}
+    <p>There is no trip information available</p>
+  {% endif %}
+  {% comment %}
+  <a href="{% url 'trips:trip_create' %}">Make a new trip</a>
+  {% endcomment %}
+{% endblock content %}

@@ -1,0 +1,10 @@
+li a {
+  color: green;
+}
+body {
+  background-color: #000;
+  background-image: url("../trips/images/background.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+}
