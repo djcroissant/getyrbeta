@@ -1,0 +1,17 @@
+.navbar-light .navbar-brand {
+  color: #ff8000;
+  font-size: 32pt;
+  font-family: 'American Typewriter';
+  letter-spacing: -2px;
+}
+.navbar-nav .nav-item {
+  font-size: 15pt;
+}
+.navbar-btn {
+  font-size: 20pt;
+  font-family: 'Futura';
+  letter-spacing: .1pt;
+}
+body {
+  padding-top: 100px;
+}
