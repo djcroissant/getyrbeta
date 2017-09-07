@@ -1,7 +1,14 @@
-li a {
-  color: green;
+.navbar-brand a {
+  color: #FCA205;
+  font-size: 48pt;
+  font-family: 'Lobster';
+}
+h1 {
+  color: #FCA205;
+  font-family: 'Lobster';
 }
 body {
+  padding-left: 15px;
   background-color: #000;
   background-image: url("../trips/images/background.jpg");
   background-position: center top;
