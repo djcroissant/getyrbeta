@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'account_info.apps.AccountInfoConfig',
     'authentication.apps.AuthenticationConfig',
+    'authtools',
     'trips.apps.TripsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -131,3 +132,7 @@ STATICFILES_DIRS = ( os.path.join('tripplan', 'static'), )
 
 # URL for redirect after successful authentication
 LOGIN_REDIRECT_URL = '/trips'
+
+# Using django-authtools for User model
+# More documentation here: https://django-authtools.readthedocs.io/en/latest/#
+AUTH_USER_MODEL = 'account_info.User'

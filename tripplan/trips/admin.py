@@ -17,11 +17,4 @@ class TripAdmin(admin.ModelAdmin):
     list_filter = ['start_date']
     search_fields = ['title']
 
-# class UserAdmin(admin.ModelAdmin):
-#     fieldsets = [
-#         (None, {'fields': ['first_name', 'last_name', 'nickname']}),
-#     ]
-#     inlines = [VehicleInline]
-
 admin.site.register(Trip, TripAdmin)
-# admin.site.register(User, UserAdmin)
