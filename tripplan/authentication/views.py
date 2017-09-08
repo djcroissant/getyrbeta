@@ -28,6 +28,8 @@ def signup(request):
     else:
         return render(request, 'auth/signup.html', { 'form': SignUpForm() })
 
+# class authtools.views.LoginView <<<---- START HERE
+
 def signin(request):
     # if request.user.is_authenticated():
     #     return HttpResponseRedirect(reverse('trips:trip_list'))

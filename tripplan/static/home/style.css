@@ -1,0 +1,13 @@
+body {
+  background-color: #2d323b;
+  background-image: url("images/banner.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: 0px 91px;
+}
+.banner-logo h1{
+    color: #ff8000;
+    font-size: 32pt;
+    font-family: 'American Typewriter';
+    letter-spacing: -1px;
+}
