@@ -1,32 +1,12 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
-
-def ForbiddenUsernamesValidator(value):
-    forbidden_usernames = ['admin', 'settings', 'news', 'about', 'help', 'signin', 'signup',
-        'signout', 'terms', 'privacy', 'cookie', 'new', 'login', 'logout', 'administrator',
-        'join', 'account', 'username', 'root', 'user', 'users', 'billing', 'subscribe',
-        'reviews', 'review', 'blog', 'blogs', 'edit', 'mail', 'email', 'home', 'job', 'jobs',
-        'contribute', 'newsletter', 'shop', 'profile', 'register', 'auth', 'authentication',
-        'campaign', 'config', 'delete', 'remove', 'forum', 'forums', 'download', 'downloads',
-        'contact', 'blogs', 'feed', 'faq', 'intranet', 'log', 'registration', 'search',
-        'explore', 'rss', 'support', 'status', 'static', 'media', 'setting', 'css', 'js',
-        'follow', 'activity', 'library']
-    if value.lower() in forbidden_usernames:
-        raise ValidationError('This is a reserved word.')
-
-def InvalidUsernameValidator(value):
-    if '@' in value or '+' in value or '-' in value:
-        raise ValidationError('Enter a valid username.')
+User = get_user_model()
 
 def UniqueEmailValidator(value):
     if User.objects.filter(email__iexact=value).exists():
         raise ValidationError('User with this Email already exists.')
-
-def UniqueUsernameIgnoreCaseValidator(value):
-    if User.objects.filter(username__iexact=value).exists():
-        raise ValidationError('User with this Username already exists.')
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -39,9 +19,6 @@ class SignUpForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields['username'].validators.append(ForbiddenUsernamesValidator)
-        self.fields['username'].validators.append(InvalidUsernameValidator)
-        self.fields['username'].validators.append(UniqueUsernameIgnoreCaseValidator)
         self.fields['email'].validators.append(UniqueEmailValidator)
 
     def clean(self):

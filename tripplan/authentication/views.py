@@ -4,11 +4,12 @@ from django.urls import reverse
 from django.contrib import messages
 from django.views import generic
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 
 from .forms import SignUpForm
 
+User = get_user_model()
 
 def signup(request):
     if request.method == 'POST':
@@ -17,11 +18,10 @@ def signup(request):
             messages.add_message(request, messages.ERROR, 'There was a problem while creating your account. Please review your information and resubmit')
             return render(request, 'auth/signup.html', { 'form': form })
         else:
-            username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            User.objects.create_user(username=username, password=password, email=email)
-            user = authenticate(username=username, password=password)
+            User.objects.create_user(email=email, password=password)
+            user = authenticate(email=email, password=password)
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Your account was successfully created.')
             return HttpResponseRedirect('/')
@@ -35,9 +35,9 @@ def signin(request):
     #     return HttpResponseRedirect(reverse('trips:trip_list'))
     # else:
         if request.method == 'POST':
-            username = request.POST['username']
+            email = request.POST['email']
             password = request.POST['password']
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 ##
                 ## The code below came from Parsif.al. Not sure if it is recommended
@@ -57,7 +57,7 @@ def signin(request):
                 login(request, user)
                 return HttpResponseRedirect(reverse('trips:trip_list'))
             else:
-                messages.add_message(request, messages.ERROR, 'Username or password invalid.')
+                messages.add_message(request, messages.ERROR, 'User email or password invalid.')
                 return render(request, 'auth/signin.html')
         else:
             return render(request, 'auth/signin.html')
