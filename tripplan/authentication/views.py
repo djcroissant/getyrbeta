@@ -1,67 +1,40 @@
-from django.shortcuts import render#, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
 from django.views import generic
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
+
+from authtools import views
 
 from .forms import SignUpForm
 
 User = get_user_model()
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if not form.is_valid():
-            messages.add_message(request, messages.ERROR, 'There was a problem while creating your account. Please review your information and resubmit')
-            return render(request, 'auth/signup.html', { 'form': form })
-        else:
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            User.objects.create_user(email=email, password=password)
-            user = authenticate(email=email, password=password)
-            login(request, user)
-            messages.add_message(request, messages.SUCCESS, 'Your account was successfully created.')
-            return HttpResponseRedirect('/')
-    else:
-        return render(request, 'auth/signup.html', { 'form': SignUpForm() })
+class SignUpView(generic.edit.FormView):
+    template_name = 'auth/signup.html'
+    form_class = SignUpForm
 
-# class authtools.views.LoginView <<<---- START HERE
+    def get_success_url(self):
+        return reverse('welcome')
 
-def signin(request):
-    # if request.user.is_authenticated():
-    #     return HttpResponseRedirect(reverse('trips:trip_list'))
-    # else:
-        if request.method == 'POST':
-            email = request.POST['email']
-            password = request.POST['password']
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                ##
-                ## The code below came from Parsif.al. Not sure if it is recommended
-                ## but it doesn't currently apply, so I'm commenting it out. Might
-                ## want to revisit later
-                ##
-                # if user.is_active:
-                #     login(request, user)
-                #     if 'next' in request.GET:
-                #         return HttpResponseRedirect(request.GET['next'])
-                #     else:
-                #         return HttpResponseRedirect('/')
-                # else:
-                #     messages.add_message(request, messages.ERROR, 'Your account is deactivated.')
-                #     return render(request, 'auth/signin.html')
+    def form_valid(self, form):
+        '''
+        Given an email address and password, create a new
+        user account, login, and redirect to welcome page
+        '''
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        User.objects.create_user(email=email, password=password)
+        user = authenticate(email=email, password=password)
+        login(self.request, user)
+        messages.add_message(self.request, messages.SUCCESS, 'Your account was successfully created.')
 
-                login(request, user)
-                return HttpResponseRedirect(reverse('trips:trip_list'))
-            else:
-                messages.add_message(request, messages.ERROR, 'User email or password invalid.')
-                return render(request, 'auth/signin.html')
-        else:
-            return render(request, 'auth/signin.html')
+        return super(SignUpView, self).form_valid(form)
 
-def signout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('welcome'))
+class SignInView(views.LoginView):
+    disallow_authenticated = True
+    template_name = 'auth/signin.html'
+
+class SignOutView(views.LogoutView):
+    template_name = 'core/welcome.html'
