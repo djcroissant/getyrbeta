@@ -1,11 +1,9 @@
-from django.shortcuts import render#, get_object_or_404
-# from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from django.contrib.auth import authenticate, login, logout
 
-from .models import Trip #, User
+from .models import Trip
 
 
 class TripList(generic.ListView):

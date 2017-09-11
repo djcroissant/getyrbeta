@@ -3,10 +3,43 @@
 {% load static %}
 
 {% block stylesheet %}
-  <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="{% static 'account_info/style.css' %}" />
 {% endblock stylesheet %}
 
 {% block content %}
-<h1>User Profile</h1>
+  <div class="page">
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <div class="content">
+          <h1>Profile</h1>
+          <form action="/account_info/profile/" method="post">
+            {% csrf_token %}
+            <div class="panel-group{% if form.email.errors %} has-error{% endif %}">
+              <label class="control-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+              <input type="email" class="form-control" value="{{ form.email.value|default_if_none:'' }}" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" maxlength="{{ form.email.field.max_length }}">
+              {% for error in form.email.errors %}
+                <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="panel-group{% if form.full_name.errors %} has-error{% endif %}">
+              <label class="control-label" for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+              <input type="full_name" class="form-control" value="{{ form.full_name.value|default_if_none:'' }}" id="{{ form.full_name.id_for_label }}" name="{{ form.full_name.html_name }}" maxlength="{{ form.full_name.field.max_length }}">
+              {% for error in form.full_name.errors %}
+                <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-success">Update Profile</button>
+          </form>
+        </div>
+      </div>
+      <div class="sidebar">
+        <h2>Account Info:</h2><br>
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="#">Profile <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Emergency Contact</a></li>
+          <li><a href="#">Vehicle Info</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
