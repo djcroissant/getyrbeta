@@ -14,6 +14,7 @@ User = get_user_model()
 class SignUpView(generic.edit.FormView):
     template_name = 'auth/signup.html'
     form_class = SignUpForm
+    model = User
 
     def get_success_url(self):
         return reverse('welcome')

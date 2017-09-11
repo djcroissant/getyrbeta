@@ -19,7 +19,7 @@
           <a class="nav-link" href="#">Notifications</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
+          <a class="nav-link" href="{% url 'account_info:account_profile' user.id %}">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'authentication:signout' %}">Sign out</a>

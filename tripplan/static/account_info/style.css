@@ -57,3 +57,13 @@
     margin-left: 0;
   }
 }
+
+.control-label {
+  font-size: 14pt;
+  font-weight: bold;
+  display: block;
+}
+
+.form-field {
+  padding-bottom: 12px;
+}
