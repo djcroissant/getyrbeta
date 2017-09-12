@@ -28,9 +28,11 @@ class SignUpView(generic.edit.FormView):
         password = form.cleaned_data.get('password')
         User.objects.create_user(email=email, password=password)
         user = authenticate(email=email, password=password)
+        # NOTE: the following if statement should be included, probably
+        # https://docs.djangoproject.com/en/1.11/topics/auth/default/
+        # if user is not None:
         login(self.request, user)
         messages.add_message(self.request, messages.SUCCESS, 'Your account was successfully created.')
-
         return super(SignUpView, self).form_valid(form)
 
 class SignInView(views.LoginView):

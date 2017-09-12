@@ -15,6 +15,8 @@ class ProfileView(UpdateView):
     form_class = ProfileForm
     success_url = "."
 
+    def get_object(self):
+        return get_object_or_404(User, pk=self.request.user.id)
 
     #
     # def form_valid(self, form):

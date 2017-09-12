@@ -30,8 +30,6 @@ class User(AbstractEmailUser):
         else:
             return self.email
 
-#TESTING TO ADD:
-# -vehicle is deleted with user
 class Vehicle(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     make = models.CharField(max_length=50, blank=False)
@@ -50,8 +48,6 @@ class Vehicle(models.Model):
     def get_owner(self):
         return self.owner
 
-#TESTING TO ADD:
-# -contact is deleted with user
 class EmergencyContact(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255, blank=False)
