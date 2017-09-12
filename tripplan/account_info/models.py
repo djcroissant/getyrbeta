@@ -14,6 +14,7 @@ class User(AbstractEmailUser):
     city = models.CharField(max_length=50, blank=True)
     state = models.CharField(max_length=2, blank=True)
     zip_code = models.CharField(max_length=20, blank=True)
+    email = models.EmailField(max_length=255, unique=True, blank=False)
 
 
     def get_full_name(self):
