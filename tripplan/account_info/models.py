@@ -14,36 +14,49 @@ class User(AbstractEmailUser):
     city = models.CharField(max_length=50, blank=True)
     state = models.CharField(max_length=2, blank=True)
     zip_code = models.CharField(max_length=20, blank=True)
-    email = models.EmailField(max_length=255, unique=True, blank=False)
 
 
     def get_full_name(self):
-        return self.full_name
+        if self.full_name:
+            return self.full_name
+        else:
+            return self.email
 
-    def get_preferred_name(self):
-        return self.preferred_name
+    def get_short_name(self):
+        if self.preferred_name:
+            return self.preferred_name
+        elif self.full_name:
+            return self.full_name
+        else:
+            return self.email
 
 #TESTING TO ADD:
 # -vehicle is deleted with user
 class Vehicle(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    make = models.CharField(max_length=50, blank=True)
-    model = models.CharField(max_length=50, blank=True)
+    make = models.CharField(max_length=50, blank=False)
+    model = models.CharField(max_length=50, blank=False)
     year = models.CharField(max_length=4, blank=True)
-    color = models.CharField(max_length=20, blank=True)
-    lic_plate_num = models.CharField(max_length=20, blank=True)
-    lic_plate_st = models.CharField(max_length=2, blank=True)
+    color = models.CharField(max_length=20, blank=False)
+    lic_plate_num = models.CharField(max_length=20, blank=False)
+    lic_plate_st = models.CharField(max_length=2, blank=False)
 
     def __str__(self):
-        return self.year + ' ' + self.make + ' ' + self.model
+        if self.year:
+            return self.year + ' ' + self.make + ' ' + self.model
+        else:
+            return self.make + ' ' + self.model
+
+    def get_owner(self):
+        return self.owner
 
 #TESTING TO ADD:
 # -contact is deleted with user
 class EmergencyContact(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255, blank=True)
+    full_name = models.CharField(max_length=255, blank=False)
     preferred_name = models.CharField(max_length=255, blank=True)
-    relationship = models.CharField(max_length=50, blank=True)
+    relationship = models.CharField(max_length=50, blank=False)
     email = models.CharField(max_length=100, blank=True)
     primary_phone = models.CharField(max_length=20, blank=True)
     secondary_phone = models.CharField(max_length=20, blank=True)
@@ -54,4 +67,10 @@ class EmergencyContact(models.Model):
     zip_code = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        if self.preferred_name:
+            return self.relationship + ': ' + self.preferred_name
+        else:
+            return self.relationship + ': ' + self.full_name
+
+    def get_user(self):
+        return self.user
