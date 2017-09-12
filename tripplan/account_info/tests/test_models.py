@@ -188,6 +188,33 @@ class VehicleModelTests(TestCase):
             lic_plate_st="WA")
         self.assertEqual(vehicle.get_owner(), self.user)
 
+    def test_vehicle_is_deleted_when_owner_is_deleted(self):
+        '''
+        When a user is deleted fromt the database, all vehicles associated
+        with that user are also deleted
+        '''
+        temp_user = User.objects.create(email='temp@email.com',
+            password='ValidPassword')
+        vehicle = Vehicle.objects.create(owner = temp_user, make="Make",
+            model="Model", color="Color", lic_plate_num="123",
+            lic_plate_st="WA")
+        self.assertEqual(Vehicle.objects.all().count(), 1)
+        temp_user.delete()
+        self.assertEqual(Vehicle.objects.all().count(), 0)
+
+    def test_single_user_can_have_multiple_vehicles(self):
+        '''
+        It is possible for a single user to be associated with multiple
+        vehicles
+        '''
+        v_one = Vehicle.objects.create(owner = self.user, make="Make",
+            model="Model", color="Color", lic_plate_num="123",
+            lic_plate_st="WA")
+        v_two = Vehicle.objects.create(owner = self.user, make="Make",
+            model="Model", color="Color", lic_plate_num="123",
+            lic_plate_st="WA")
+        self.assertEqual(Vehicle.objects.filter(owner=self.user).count(), 2)
+
 class EmergencyContactModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -267,3 +294,27 @@ class EmergencyContactModelTests(TestCase):
         emcon = EmergencyContact.objects.create(user = self.user,
             full_name="Bob Hope", relationship="Cousin's brother's friend")
         self.assertEqual(emcon.get_user(), self.user)
+
+    def test_emcon_is_deleted_when_user_is_deleted(self):
+        '''
+        When a user is deleted fromt the database, all emcons associated
+        with that user are also deleted
+        '''
+        temp_user = User.objects.create(email='temp@email.com',
+            password='ValidPassword')
+        emcon = EmergencyContact.objects.create(user = temp_user,
+            full_name="Bob Hope", relationship="Relation")
+        self.assertEqual(EmergencyContact.objects.all().count(), 1)
+        temp_user.delete()
+        self.assertEqual(EmergencyContact.objects.all().count(), 0)
+
+    def test_single_user_can_have_multiple_emcons(self):
+        '''
+        It is possible for a single user to be associated with multiple
+        emcons
+        '''
+        e_one = EmergencyContact.objects.create(user = self.user,
+            full_name="Bob Hope", relationship="Relation")
+        e_two = EmergencyContact.objects.create(user = self.user,
+            full_name="Bob Hope", relationship="Relation")
+        self.assertEqual(EmergencyContact.objects.filter(user=self.user).count(), 2)
