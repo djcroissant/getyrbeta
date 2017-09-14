@@ -265,8 +265,8 @@ class EmergencyContactModelTests(TestCase):
 
     def test_emcon_invalid_without_user(self):
         '''
-        A ValidationError is raised if an instance of EmergencyContact without a
-        defined user is validated
+        A ValidationError is raised if an instance of EmergencyContact without
+        a defined user is validated
         '''
         emcon = EmergencyContact(full_name="Bob Hope",
             relationship="Cousin's brother's friend")
@@ -326,4 +326,5 @@ class EmergencyContactModelTests(TestCase):
             full_name="Bob Hope", relationship="Relation")
         e_two = EmergencyContact.objects.create(user = self.user,
             full_name="Bob Hope", relationship="Relation")
-        self.assertEqual(EmergencyContact.objects.filter(user=self.user).count(), 2)
+        self.assertEqual(EmergencyContact.objects.filter(
+            user=self.user).count(), 2)
