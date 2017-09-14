@@ -10,3 +10,8 @@ class ProfileForm(forms.ModelForm):
         fields = ['full_name', 'preferred_name', 'primary_phone',
             'secondary_phone', 'street_address_line1', 'street_address_line2',
             'city', 'state', 'zip_code']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.fields['street_address_line1'].label = "Street address"
+        self.fields['street_address_line2'].label = "Address (line 2)"
