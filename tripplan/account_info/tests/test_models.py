@@ -76,13 +76,10 @@ class UserModelTests(TestCase):
             password='ValidPassword')
         self.assertEqual(user.get_short_name(), user.email)
 
-    '''
-    tests to verify field names of User are correct
-    '''
 
 
     '''
-    tests to verify that max length of User fields are correct
+    NOTE: Add tests to verify that max length of User fields are correct
     '''
 
 class VehicleModelTests(TestCase):
