@@ -25,11 +25,11 @@ class ProfileFormTests(TestCase):
 
     def test_street_address_line_1_field_label(self):
         form = ProfileForm()
-        self.assertEqual(form.fields['street_address_line1'].label, 'Street address')
+        self.assertEqual(form.fields['street_address_line1'].label, 'Address 1')
 
     def test_street_address_line_2_field_label(self):
         form = ProfileForm()
-        self.assertEqual(form.fields['street_address_line2'].label, 'Address (line 2)')
+        self.assertEqual(form.fields['street_address_line2'].label, 'Address 2')
 
     def test_city_field_label(self):
         form = ProfileForm()
@@ -41,4 +41,4 @@ class ProfileFormTests(TestCase):
 
     def test_zip_code_field_label(self):
         form = ProfileForm()
-        self.assertEqual(form.fields['zip_code'].label, 'Zip code')
+        self.assertEqual(form.fields['zip_code'].label, 'ZIP code')
