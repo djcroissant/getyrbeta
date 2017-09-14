@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.views.generic import UpdateView
@@ -14,6 +14,22 @@ class ProfileView(UpdateView):
     template_name = 'account_info/profile.html'
     form_class = ProfileForm
     success_url = "."
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(ProfileView, self).get(self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(ProfileView, self).post(self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
 
     def get_object(self):
         return get_object_or_404(User, pk=self.request.user.id)
