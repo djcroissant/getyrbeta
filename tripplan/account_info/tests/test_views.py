@@ -291,32 +291,31 @@ class EmergencyContactEditViewTests(TestCase):
             'Buddy')
         self.assertEqual(response.context['form'].initial['preferred_name'], '')
 
-    # def test_post_will_update_user_and_redirect_to_list_view(self):
-    #     '''
-    #     When the user updates emergency contact info and saves, the database
-    #     will be updated and the user will be redirected to the emergency
-    #     contact list view
-    #     '''
-    #     # Login user
-    #     self.client.login(username='valid@email.com', password='ValidPassword')
-    #     # Create an emergency contact associated with logged in user
-    #     ec = EmergencyContact.objects.create(
-    #         full_name='Don Gately', relationship='Buddy', user=self.user)
-    #     preferred_name = 'DG to the first degree'
-    #      #pass the new 'preferred_name' to the post request
-    #     response = self.client.post(reverse('account_info:emerg_contact_edit',
-    #         args=[ec.id]), {'preferred_name':preferred_name})
-    #     # import pdb; pdb.set_trace()
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertRedirects(response,
-    #         reverse('account_info:emerg_contact_list'))
-    #     # fetch the logged in user from the database
-    #     updated_emeg_contact=EmergencyContact.objects.get(pk=ec.id)
-    #     # confirm the new preferred_name is set correctly
-    #     self.assertEqual(updated_emeg_contact.preferred_name,
-    #         'DG to the first degree')
-    #     # ensure the form is displaying the new data after a new get request
-    #     response = self.client.get(reverse('account_info:emerg_contact_edit',
-    #         args=[ec.id]))
-    #     self.assertEqual(response.context['form'].initial['preferred_name'],
-    #         'DG to the first degree')
+    def test_post_will_update_user_and_redirect_to_list_view(self):
+        '''
+        When the user updates emergency contact info and saves, the database
+        will be updated and the user will be redirected to the emergency
+        contact list view
+        '''
+        # Login user
+        self.client.login(username='valid@email.com', password='ValidPassword')
+        # Create an emergency contact associated with logged in user
+        ec = EmergencyContact.objects.create(
+            full_name='Don Gately', relationship='Buddy', user=self.user)
+        preferred_name = 'DG to the first degree'
+         #pass the new 'preferred_name' to the post request
+        response = self.client.post(reverse('account_info:emerg_contact_edit',
+            args=[ec.id]), {'preferred_name':preferred_name})
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            reverse('account_info:emerg_contact_list'))
+        # fetch the logged in user from the database
+        updated_emeg_contact=EmergencyContact.objects.get(pk=ec.id)
+        # confirm the new preferred_name is set correctly
+        self.assertEqual(updated_emeg_contact.preferred_name,
+            'DG to the first degree')
+        # ensure the form is displaying the new data after a new get request
+        response = self.client.get(reverse('account_info:emerg_contact_edit',
+            args=[ec.id]))
+        self.assertEqual(response.context['form'].initial['preferred_name'],
+            'DG to the first degree')

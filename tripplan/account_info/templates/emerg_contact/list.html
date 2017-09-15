@@ -19,7 +19,7 @@
             {% for emcon in object_list %}
               <div class="row">
                 <div class="col-md-2">
-                  <li><a href="#">edit</a></li>
+                  <li><a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}">edit</a></li>
                   <li><a href="#">delete</a></li>
                 </div>
                 <div class="col-md-8">

@@ -97,3 +97,8 @@ class EmergencyContactEditView(UpdateView):
             raise Http404('The requested emergency contact does not exist')
         else:
             return emerg_contact
+
+    def get_context_data(self, **kwargs):
+        context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
+        context['emergency_contact_id'] = self.kwargs.get('pk')
+        return context
