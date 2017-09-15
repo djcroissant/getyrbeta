@@ -8,4 +8,6 @@ urlpatterns = [
         views.ProfileView.as_view(), name='account_profile'),
     url(r'^emergency_contacts/$',
         views.EmergencyContactListView.as_view(), name='emerg_contact_list'),
+    url(r'^emergency_contacts/(?P<pk>[0-9]+)/edit/$',
+        views.EmergencyContactEditView.as_view(), name='emerg_contact_edit'),
     ]

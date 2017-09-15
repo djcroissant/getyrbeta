@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.views import generic
 from django.contrib.auth import get_user_model
@@ -15,9 +15,7 @@ class SignUpView(generic.edit.FormView):
     template_name = 'auth/signup.html'
     form_class = SignUpForm
     model = User
-
-    def get_success_url(self):
-        return reverse('welcome')
+    success_url = reverse_lazy('welcome')
 
     def form_valid(self, form):
         '''

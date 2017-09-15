@@ -18,11 +18,11 @@ class ProfileFormTests(TestCase):
 
     def test_primary_phone_field_label(self):
         form = ProfileForm()
-        self.assertEqual(form.fields['primary_phone'].label, 'Primary phone')
+        self.assertEqual(form.fields['primary_phone'].label, 'Phone (primary)')
 
     def test_secondary_phone_field_label(self):
         form = ProfileForm()
-        self.assertEqual(form.fields['secondary_phone'].label, 'Secondary phone')
+        self.assertEqual(form.fields['secondary_phone'].label, 'Phone (secondary)')
 
     def test_street_address_line_1_field_label(self):
         form = ProfileForm()
@@ -59,11 +59,11 @@ class EmergencyContactFormTests(TestCase):
 
     def test_primary_phone_field_label(self):
         form = EmergencyContactForm()
-        self.assertEqual(form.fields['primary_phone'].label, 'Primary phone')
+        self.assertEqual(form.fields['primary_phone'].label, 'Phone (primary)')
 
     def test_secondary_phone_field_label(self):
         form = EmergencyContactForm()
-        self.assertEqual(form.fields['secondary_phone'].label, 'Secondary phone')
+        self.assertEqual(form.fields['secondary_phone'].label, 'Phone (secondary)')
 
     def test_street_address_line_1_field_label(self):
         form = EmergencyContactForm()

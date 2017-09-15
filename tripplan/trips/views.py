@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.utils import timezone
 
@@ -31,9 +31,8 @@ class TripCreateView(generic.CreateView):
     model = Trip
     template_name = 'trips/create.html'
     fields = ['title', 'start_date', 'trailhead_latitude', 'trailhead_longitude']
+    success_url = reverse_lazy('trips:trip_list')
 
-    def get_success_url(self, **kwargs):
-        return reverse('trips:trip_list')
 
 # # class UserView(generic.DetailView):
 # #     model = User

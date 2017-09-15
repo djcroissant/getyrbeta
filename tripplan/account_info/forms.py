@@ -15,6 +15,8 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self.fields['primary_phone'].label = "Phone (primary)"
+        self.fields['secondary_phone'].label = "Phone (secondary)"
         self.fields['street_address_line1'].label = "Address 1"
         self.fields['street_address_line2'].label = "Address 2"
         self.fields['zip_code'].label = "ZIP code"
@@ -31,6 +33,8 @@ class EmergencyContactForm(forms.ModelForm):
         super(EmergencyContactForm, self).__init__(*args, **kwargs)
         self.fields['full_name'].label = "* Full name"
         self.fields['relationship'].label = "* Relationship"
+        self.fields['primary_phone'].label = "Phone (primary)"
+        self.fields['secondary_phone'].label = "Phone (secondary)"
         self.fields['street_address_line1'].label = "Address 1"
         self.fields['street_address_line2'].label = "Address 2"
         self.fields['zip_code'].label = "ZIP code"
