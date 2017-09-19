@@ -131,7 +131,7 @@ class EmergencyContactCreateView(CreateView):
 
 class EmergencyContactDeleteView(DeleteView):
     model = EmergencyContact
-    template_name = 'emerg_contact/confirm_delete.html'
+    template_name = 'emerg_contact/delete.html'
     success_url = reverse_lazy('account_info:emerg_contact_list')
 
     def get(self, request, *args, **kwargs):
@@ -158,9 +158,3 @@ class EmergencyContactDeleteView(DeleteView):
             raise Http404('The requested emergency contact does not exist')
         else:
             return emerg_contact
-
-    def get_context_data(self, **kwargs):
-        context = super(EmergencyContactDeleteView, self).get_context_data(**kwargs)
-        # import pdb; pdb.set_trace()
-        context['emcon'] = EmergencyContact.objects.get(pk=self.kwargs.get('pk'))
-        return context

@@ -108,7 +108,6 @@ class EmergencyContactFormTests(TestCase):
         self.assertEqual(form.errors, {
             'full_name': ['This field is required.'],
             'relationship': ['This field is required.'],
-            'user': ['This field is required.'],
         })
 
 class VehicleFormTests(TestCase):
