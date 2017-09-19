@@ -31,7 +31,7 @@ class User(AbstractEmailUser):
             return self.email
 
 class Vehicle(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     make = models.CharField(max_length=50, blank=False)
     model = models.CharField(max_length=50, blank=False)
     year = models.CharField(max_length=4, blank=True)
@@ -49,7 +49,7 @@ class Vehicle(models.Model):
         return self.owner
 
 class EmergencyContact(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255, blank=False)
     preferred_name = models.CharField(max_length=255, blank=True)
     relationship = models.CharField(max_length=50, blank=False)

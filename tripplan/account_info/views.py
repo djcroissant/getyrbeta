@@ -16,7 +16,7 @@ class ProfileView(UpdateView):
     model = User
     template_name = 'account_info/profile.html'
     form_class = ProfileForm
-    success_url = "."
+    success_url = reverse_lazy('account_info:account_profile')
 
     def get(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
@@ -37,10 +37,6 @@ class ProfileView(UpdateView):
     def get_object(self):
         return get_object_or_404(User, pk=self.request.user.id)
 
-    #
-    # def form_valid(self, form):
-    #     messages.add_message(self.request, messages.SUCCESS, 'Your account was successfully created.')
-
 class EmergencyContactListView(ListView):
     model = EmergencyContact
     template_name = 'emerg_contact/list.html'
@@ -54,14 +50,15 @@ class EmergencyContactListView(ListView):
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 
-    def post(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated():
-            return super(EmergencyContactListView, self).post(
-                self, request, *args, **kwargs)
-        else:
-            redirect_path = reverse('authentication:signin')
-            redirect_next = '?next=' + request.path
-            return redirect(redirect_path + redirect_next)
+# Removing this code. No reason why a post request should come to this view
+    # def post(self, request, *args, **kwargs):
+    #     if request.user and request.user.is_authenticated():
+    #         return super(EmergencyContactListView, self).post(
+    #             self, request, *args, **kwargs)
+    #     else:
+    #         redirect_path = reverse('authentication:signin')
+    #         redirect_next = '?next=' + request.path
+    #         return redirect(redirect_path + redirect_next)
 
     def get_queryset(self):
         queryset = super(EmergencyContactListView, self).get_queryset()
