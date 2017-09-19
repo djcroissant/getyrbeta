@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'account_info/style.css' %}" />
+{% endblock stylesheet %}
+
+{% block content %}
+  <div class="page">
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <div class="content">
+          <h1>Delete Emergency Contact</h1><br>
+          <form action="{% url 'account_info:emerg_contact_delete' emcon.id %}" method="post">
+            {% csrf_token %}
+          <ul class="emerg_contact_list">
+            <li class="emergency_contact_name">{{ emcon.full_name }}</li>
+            {% if emcon.preferred_name %}
+              <li class="emergency_contact_label">Preferred name:</li>
+              <li class="emergency_contact_info">{{ emcon.preferred_name }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.relationship %}
+              <li class="emergency_contact_label">Relationsip:</li>
+              <li class="emergency_contact_info">{{ emcon.relationship }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.primary_phone %}
+              <li class="emergency_contact_label">Phone number:</li>
+              <li class="emergency_contact_info">{{ emcon.primary_phone }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.secondary_phone %}
+              <li class="emergency_contact_label">Secondary phone number:</li>
+              <li class="emergency_contact_info">{{ emcon.secondary_phone }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.email %}
+              <li class="emergency_contact_label">Email:</li>
+              <li class="emergency_contact_info">{{ emcon.email }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.street_address_line1 %}
+              <li class="emergency_contact_label">Address 1:</li>
+              <li class="emergency_contact_info">{{ emcon.street_address_line1 }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.street_address_line2 %}
+              <li class="emergency_contact_label">Address 2:</li>
+              <li class="emergency_contact_info">{{ emcon.street_address_line2 }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.city %}
+              <li class="emergency_contact_label">City:</li>
+              <li class="emergency_contact_info">{{ emcon.city }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.state %}
+              <li class="emergency_contact_label">State:</li>
+              <li class="emergency_contact_info">{{ emcon.state }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.zip_code %}
+              <li class="emergency_contact_label">ZIP code:</li>
+              <li class="emergency_contact_info">{{ emcon.zip_code }}</li>
+            {% endif %}
+            <br><br>
+          </ul>
+            <button type="submit" name="submit" class="btn btn-success">Delete Emergency Contact</button>
+            <a href="{% url 'account_info:emerg_contact_list' %}" name="cancel" class="btn btn-secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+      {% include "../account_info/menu.html" %}
+    </div>
+  </div>
+{% endblock content %}

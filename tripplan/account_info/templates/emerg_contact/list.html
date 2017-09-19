@@ -12,14 +12,14 @@
       <div class="content-wrapper">
         <div class="content">
           <h1>Emergency Contacts</h1>
-          <a href="#">Add emergency contact</a>
+          <a href="{% url 'account_info:emerg_contact_create' %}">Add emergency contact</a>
           <br><br>
           <ul class="emerg_contact_list">
             {% for emcon in object_list %}
               <div class="row">
                 <div class="col-md-2">
                   <li><a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}">edit</a></li>
-                  <li><a href="#">delete</a></li>
+                  <li><a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}">delete</a></li>
                 </div>
                 <div class="col-md-8">
                   <li class="emergency_contact_name">{{ emcon.full_name }}</li>

@@ -27,7 +27,7 @@ class EmergencyContactForm(forms.ModelForm):
         model = EmergencyContact
         fields = ['relationship', 'full_name', 'preferred_name',
             'primary_phone', 'secondary_phone', 'street_address_line1',
-            'street_address_line2', 'city', 'state', 'zip_code', 'user']
+            'street_address_line2', 'city', 'state', 'zip_code']
 
     def __init__(self, *args, **kwargs):
         super(EmergencyContactForm, self).__init__(*args, **kwargs)

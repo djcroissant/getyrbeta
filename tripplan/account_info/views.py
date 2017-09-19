@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from django.views.generic import UpdateView, ListView
+from django.views.generic import UpdateView, ListView, \
+    CreateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from django.http import Http404
@@ -98,4 +99,68 @@ class EmergencyContactEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
         context['emergency_contact_id'] = self.kwargs.get('pk')
+        return context
+
+class EmergencyContactCreateView(CreateView):
+    model = EmergencyContact
+    template_name = 'emerg_contact/create.html'
+    form_class = EmergencyContactForm
+    success_url = reverse_lazy('account_info:emerg_contact_list')
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(EmergencyContactCreateView, self).get(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(EmergencyContactCreateView, self).post(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(EmergencyContactCreateView, self).form_valid(form)
+
+class EmergencyContactDeleteView(DeleteView):
+    model = EmergencyContact
+    template_name = 'emerg_contact/confirm_delete.html'
+    success_url = reverse_lazy('account_info:emerg_contact_list')
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(EmergencyContactDeleteView, self).get(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(EmergencyContactDeleteView, self).post(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def get_object(self):
+        emerg_contact = super(EmergencyContactDeleteView, self).get_object()
+        if not emerg_contact.user.id == self.request.user.id:
+            raise Http404('The requested emergency contact does not exist')
+        else:
+            return emerg_contact
+
+    def get_context_data(self, **kwargs):
+        context = super(EmergencyContactDeleteView, self).get_context_data(**kwargs)
+        # import pdb; pdb.set_trace()
+        context['emcon'] = EmergencyContact.objects.get(pk=self.kwargs.get('pk'))
         return context

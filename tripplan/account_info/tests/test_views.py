@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory
 
 from account_info.views import ProfileView, EmergencyContactListView, \
-    EmergencyContactEditView
+    EmergencyContactEditView, EmergencyContactCreateView
 from account_info.models import EmergencyContact
 
 User = get_user_model()
@@ -204,3 +204,107 @@ class EmergencyContactEditViewTests(TestCase):
         request.user = self.user
         response = EmergencyContactEditView.as_view()(request, pk=ec.id)
         self.assertTrue('emerg_contact/edit.html' in response.template_name)
+
+class EmergencyContactCreateViewTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(email='valid@email.com',
+            password='ValidPassword')
+
+    def test_200_response_from_get_request(self):
+        ec = EmergencyContact.objects.create(full_name='Don Gately',
+            relationship='Buddy', user = self.user)
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        response = EmergencyContactCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    # def test_post_redirects_to_list_view_if_user_is_logged_in(self):
+    #     ec = EmergencyContact.objects.create(full_name='Don Gately',
+    #         relationship='Buddy', user = self.user)
+    #     request = self.factory.post('/fake/')
+    #     request.user = self.user
+    #     response = EmergencyContactCreateView.as_view()(request)
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertEqual(response.url, reverse('account_info:emerg_contact_list'))
+
+    def test_url_name_reverses_correctly(self):
+        url_path = '/account_info/emergency_contacts/create/'
+        reverse_path = reverse('account_info:emerg_contact_create')
+        self.assertEqual(reverse_path, url_path)
+
+    def test_get_request_redirects_to_login_if_user_not_logged_in(self):
+        '''GET'''
+        request = self.factory.get('/fake/')
+        request.user = ''
+        response = EmergencyContactCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        self.assertEqual(response.url, redirect_url)
+
+    def test_post_request_redirects_to_login_if_user_not_logged_in(self):
+        '''POST'''
+        request = self.factory.post('/fake/')
+        request.user = ''
+        response = EmergencyContactCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        self.assertEqual(response.url, redirect_url)
+
+    def test_view_uses_correct_template_with_get_request(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        response = EmergencyContactCreateView.as_view()(request)
+        self.assertTrue('emerg_contact/create.html' in response.template_name)
+
+# class EmergencyContactDeleteViewTests(TestCase):
+#     def setUp(self):
+#         self.factory = RequestFactory()
+#         self.user = User.objects.create_user(email='valid@email.com',
+#             password='ValidPassword')
+#
+#     def test_200_response_from_get_request(self):
+#         ec = EmergencyContact.objects.create(full_name='Don Gately',
+#             relationship='Buddy', user = self.user)
+#         request = self.factory.get('/fake/')
+#         request.user = self.user
+#         response = EmergencyContactCreateView.as_view()(request)
+#         self.assertEqual(response.status_code, 200)
+#
+#     # def test_post_redirects_to_list_view_if_user_is_logged_in(self):
+#     #     ec = EmergencyContact.objects.create(full_name='Don Gately',
+#     #         relationship='Buddy', user = self.user)
+#     #     request = self.factory.post('/fake/')
+#     #     request.user = self.user
+#     #     response = EmergencyContactCreateView.as_view()(request)
+#     #     self.assertEqual(response.status_code, 302)
+#     #     self.assertEqual(response.url, reverse('account_info:emerg_contact_list'))
+#
+#     def test_url_name_reverses_correctly(self):
+#         url_path = '/account_info/emergency_contacts/create/'
+#         reverse_path = reverse('account_info:emerg_contact_create')
+#         self.assertEqual(reverse_path, url_path)
+#
+#     def test_get_request_redirects_to_login_if_user_not_logged_in(self):
+#         '''GET'''
+#         request = self.factory.get('/fake/')
+#         request.user = ''
+#         response = EmergencyContactCreateView.as_view()(request)
+#         self.assertEqual(response.status_code, 302)
+#         redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+#         self.assertEqual(response.url, redirect_url)
+#
+#     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
+#         '''POST'''
+#         request = self.factory.post('/fake/')
+#         request.user = ''
+#         response = EmergencyContactCreateView.as_view()(request)
+#         self.assertEqual(response.status_code, 302)
+#         redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+#         self.assertEqual(response.url, redirect_url)
+#
+#     def test_view_uses_correct_template_with_get_request(self):
+#         request = self.factory.get('/fake/')
+#         request.user = self.user
+#         response = EmergencyContactCreateView.as_view()(request)
+#         self.assertTrue('emerg_contact/create.html' in response.template_name)
