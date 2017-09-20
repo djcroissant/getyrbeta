@@ -3,9 +3,9 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory
 from django.http import Http404
 
-from account_info.views import ProfileView, \
-    EmergencyContactListView, EmergencyContactEditView, \
-    EmergencyContactCreateView, EmergencyContactDeleteView
+from account_info.views import EmergencyContactListView, \
+    EmergencyContactEditView, EmergencyContactCreateView, \
+    EmergencyContactDeleteView
 from account_info.models import EmergencyContact
 
 User = get_user_model()
@@ -19,72 +19,6 @@ def setup_view(view, request, *args, **kwargs):
     view.args = args
     view.kwargs = kwargs
     return view
-
-class ProfileViewTests(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
-        self.user = User.objects.create_user(email='valid@email.com',
-            password='ValidPassword', full_name='Hugh Steeply')
-
-    def test_200_response_from_get_request(self):
-        request = self.factory.get('/fake/')
-        request.user = self.user
-        response = ProfileView.as_view()(request)
-        self.assertEqual(response.status_code, 200)
-
-    def test_url_name_reverses_correctly(self):
-        url_path = '/account_info/profile/'
-        reverse_path = reverse('account_info:account_profile')
-        self.assertEqual(reverse_path, url_path)
-
-    def test_post_redirects_to_profile_page_if_user_is_logged_in(self):
-        request = self.factory.post('/fake/')
-        request.user = self.user
-        response = ProfileView.as_view()(request)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse('account_info:account_profile'))
-
-    def test_get_request_redirects_to_login_if_user_not_logged_in(self):
-        '''
-        A GET request will be redirected to login screen if user accesses
-        /account_info/profile/ without being logged in.
-        '''
-        request = self.factory.get('/fake/')
-        request.user = ''
-        response = ProfileView.as_view()(request)
-        self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
-        self.assertEqual(response.url, redirect_url)
-
-    def test_post_request_redirects_to_login_if_user_not_logged_in(self):
-        '''
-        A POST request will be redirected to login screen if user accesses
-        /account_info/profile/ without being logged in.
-        '''
-        request = self.factory.post('/fake/')
-        request.user = ''
-        response = ProfileView.as_view()(request)
-        self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
-        self.assertEqual(response.url, redirect_url)
-
-    def test_view_uses_correct_template(self):
-        request = self.factory.get(reverse('account_info:account_profile'))
-        request.user = self.user
-        response = ProfileView.as_view()(request)
-        self.assertTrue('account_info/profile.html' in response.template_name)
-
-    def test_get_object_returns_logged_in_user(self):
-        '''
-        Tests the get_object() method which is overridden in ProfileView.
-        Function returns currently logged in user
-        '''
-        request = self.factory.get('/fake/')
-        request.user = self.user
-        view = ProfileView()
-        view = setup_view(view, request)
-        obj = view.get_object()
-        self.assertEqual(obj, self.user)
 
 class EmergencyContactListViewTests(TestCase):
     def setUp(self):
