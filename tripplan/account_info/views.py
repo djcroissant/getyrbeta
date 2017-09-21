@@ -100,6 +100,7 @@ class EmergencyContactEditView(UpdateView):
         context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
         context['reverse_path'] = 'account_info:emerg_contact_edit'
         context['reverse_pk'] = self.kwargs.get('pk')
+        context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
 
 class EmergencyContactCreateView(CreateView):
@@ -135,6 +136,7 @@ class EmergencyContactCreateView(CreateView):
         context['reverse_path'] = 'account_info:emerg_contact_create'
         context['page_title'] = 'Add new emergency contact'
         context['save_button_title'] = 'Save Profile'
+        context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
 
 class EmergencyContactDeleteView(DeleteView):
@@ -229,6 +231,7 @@ class VehicleEditView(UpdateView):
         context = super(VehicleEditView, self).get_context_data(**kwargs)
         context['reverse_path'] = 'account_info:vehicle_edit'
         context['reverse_pk'] = self.kwargs.get('pk')
+        context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
 
 class VehicleCreateView(CreateView):
@@ -264,6 +267,7 @@ class VehicleCreateView(CreateView):
         context['reverse_path'] = 'account_info:vehicle_create'
         context['page_title'] = 'Add new vehicle'
         context['save_button_title'] = 'Save Vehicle'
+        context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
 
 class VehicleDeleteView(DeleteView):
