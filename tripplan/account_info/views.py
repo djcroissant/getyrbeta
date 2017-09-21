@@ -67,7 +67,7 @@ class EmergencyContactListView(ListView):
 
 class EmergencyContactEditView(UpdateView):
     model = EmergencyContact
-    template_name = 'emerg_contact/edit.html'
+    template_name = 'account_info/edit.html'
     form_class = EmergencyContactForm
     success_url = reverse_lazy('account_info:emerg_contact_list')
 
@@ -95,6 +95,12 @@ class EmergencyContactEditView(UpdateView):
             raise Http404('The requested emergency contact does not exist')
         else:
             return emerg_contact
+
+    def get_context_data(self, **kwargs):
+        context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
+        context['reverse_path'] = 'account_info:emerg_contact_edit'
+        context['reverse_pk'] = self.kwargs.get('pk')
+        return context
 
 class EmergencyContactCreateView(CreateView):
     model = EmergencyContact
@@ -183,7 +189,7 @@ class VehicleListView(ListView):
 
 class VehicleEditView(UpdateView):
     model = Vehicle
-    template_name = 'vehicle/edit.html'
+    template_name = 'account_info/edit.html'
     form_class = VehicleForm
     success_url = reverse_lazy('account_info:vehicle_list')
 
@@ -211,6 +217,12 @@ class VehicleEditView(UpdateView):
             raise Http404('The requested vehicle does not exist')
         else:
             return vehicle
+
+    def get_context_data(self, **kwargs):
+        context = super(VehicleEditView, self).get_context_data(**kwargs)
+        context['reverse_path'] = 'account_info:vehicle_edit'
+        context['reverse_pk'] = self.kwargs.get('pk')
+        return context
 
 class VehicleCreateView(CreateView):
     model = Vehicle

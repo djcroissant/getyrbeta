@@ -135,7 +135,7 @@ class EmergencyContactEditViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = EmergencyContactEditView.as_view()(request, pk=ec.id)
-        self.assertTrue('emerg_contact/edit.html' in response.template_name)
+        self.assertTrue('account_info/edit.html' in response.template_name)
 
 class EmergencyContactCreateViewTests(TestCase):
     def setUp(self):

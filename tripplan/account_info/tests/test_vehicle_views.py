@@ -134,7 +134,7 @@ class VehicleEditViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = VehicleEditView.as_view()(request, pk=v.id)
-        self.assertTrue('vehicle/edit.html' in response.template_name)
+        self.assertTrue('account_info/edit.html' in response.template_name)
 
 class VehicleCreateViewTests(TestCase):
     def setUp(self):
