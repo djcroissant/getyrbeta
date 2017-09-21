@@ -104,7 +104,7 @@ class EmergencyContactEditView(UpdateView):
 
 class EmergencyContactCreateView(CreateView):
     model = EmergencyContact
-    template_name = 'emerg_contact/create.html'
+    template_name = 'account_info/create.html'
     form_class = EmergencyContactForm
     success_url = reverse_lazy('account_info:emerg_contact_list')
 
@@ -129,6 +129,13 @@ class EmergencyContactCreateView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(EmergencyContactCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(EmergencyContactCreateView, self).get_context_data(**kwargs)
+        context['reverse_path'] = 'account_info:emerg_contact_create'
+        context['page_title'] = 'Add new emergency contact'
+        context['save_button_title'] = 'Save Profile'
+        return context
 
 class EmergencyContactDeleteView(DeleteView):
     model = EmergencyContact
@@ -226,7 +233,7 @@ class VehicleEditView(UpdateView):
 
 class VehicleCreateView(CreateView):
     model = Vehicle
-    template_name = 'vehicle/create.html'
+    template_name = 'account_info/create.html'
     form_class = VehicleForm
     success_url = reverse_lazy('account_info:vehicle_list')
 
@@ -251,6 +258,13 @@ class VehicleCreateView(CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super(VehicleCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(VehicleCreateView, self).get_context_data(**kwargs)
+        context['reverse_path'] = 'account_info:vehicle_create'
+        context['page_title'] = 'Add new vehicle'
+        context['save_button_title'] = 'Save Vehicle'
+        return context
 
 class VehicleDeleteView(DeleteView):
     model = Vehicle

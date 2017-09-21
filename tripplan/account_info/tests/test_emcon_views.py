@@ -190,7 +190,7 @@ class EmergencyContactCreateViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = EmergencyContactCreateView.as_view()(request)
-        self.assertTrue('emerg_contact/create.html' in response.template_name)
+        self.assertTrue('account_info/create.html' in response.template_name)
 
 class EmergencyContactDeleteViewTests(TestCase):
     def setUp(self):
