@@ -9,7 +9,7 @@ from django.http import Http404
 
 from account_info.models import EmergencyContact, Vehicle
 
-from .forms import ProfileForm, EmergencyContactForm
+from .forms import ProfileForm, EmergencyContactForm, VehicleForm
 
 User = get_user_model()
 
@@ -96,11 +96,6 @@ class EmergencyContactEditView(UpdateView):
         else:
             return emerg_contact
 
-    def get_context_data(self, **kwargs):
-        context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
-        context['emergency_contact_id'] = self.kwargs.get('pk')
-        return context
-
 class EmergencyContactCreateView(CreateView):
     model = EmergencyContact
     template_name = 'emerg_contact/create.html'
@@ -158,3 +153,119 @@ class EmergencyContactDeleteView(DeleteView):
             raise Http404('The requested emergency contact does not exist')
         else:
             return emerg_contact
+
+class VehicleListView(ListView):
+    model = Vehicle
+    template_name = 'vehicle/list.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleListView, self).get(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+# Removing this code. No reason why a post request should come to this view
+    # def post(self, request, *args, **kwargs):
+    #     if request.user and request.user.is_authenticated():
+    #         return super(VehicleListView, self).post(
+    #             self, request, *args, **kwargs)
+    #     else:
+    #         redirect_path = reverse('authentication:signin')
+    #         redirect_next = '?next=' + request.path
+    #         return redirect(redirect_path + redirect_next)
+
+    def get_queryset(self):
+        queryset = super(VehicleListView, self).get_queryset()
+        return queryset.filter(owner=self.request.user)
+
+class VehicleEditView(UpdateView):
+    model = Vehicle
+    template_name = 'vehicle/edit.html'
+    form_class = VehicleForm
+    success_url = reverse_lazy('account_info:vehicle_list')
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleEditView, self).get(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleEditView, self).post(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def get_object(self):
+        vehicle = super(VehicleEditView, self).get_object()
+        if not vehicle.owner.id == self.request.user.id:
+            raise Http404('The requested vehicle does not exist')
+        else:
+            return vehicle
+
+class VehicleCreateView(CreateView):
+    model = Vehicle
+    template_name = 'vehicle/create.html'
+    form_class = VehicleForm
+    success_url = reverse_lazy('account_info:vehicle_list')
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleCreateView, self).get(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleCreateView, self).post(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(VehicleCreateView, self).form_valid(form)
+
+class VehicleDeleteView(DeleteView):
+    model = Vehicle
+    template_name = 'vehicle/delete.html'
+    success_url = reverse_lazy('account_info:vehicle_list')
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleDeleteView, self).get(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            return super(VehicleDeleteView, self).post(
+                self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def get_object(self):
+        vehicle = super(VehicleDeleteView, self).get_object()
+        if not vehicle.owner.id == self.request.user.id:
+            raise Http404('The requested vehicle does not exist')
+        else:
+            return vehicle

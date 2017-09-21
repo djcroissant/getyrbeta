@@ -68,34 +68,26 @@
   padding-bottom: 12px;
 }
 
-/*.emerg_contact_list li{
-  font-size: 24pt;
-}
-
-li.emergency_contact_name {
-  font-size: 24pt;
-}*/
-
-ul.emerg_contact_list {
+ul.account_info_list {
   list-style-type: none;
 }
 
-ul.emerg_contact_list a {
+ul.account_info_list a {
   font-size: 13pt;
 }
 
-li.emergency_contact_name {
+li.list_item_title {
   font-size: 17pt;
   font-weight: bold;
 }
 
-li.emergency_contact_label {
+li.list_item_label {
   font-size: 15pt;
   font-weight: bold;
   display: inline-block;
 }
 
-li.emergency_contact_info {
+li.list_item_info {
   font-size: 15pt;
   display: inline-block;
 }

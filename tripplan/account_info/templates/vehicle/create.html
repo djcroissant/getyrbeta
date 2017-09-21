@@ -11,8 +11,8 @@
     <div class="wrapper">
       <div class="content-wrapper">
         <div class="content">
-          <h1>Edit Emergency Contact</h1><br>
-          <form action="{% url 'account_info:emerg_contact_edit' emergencycontact.id  %}" method="post">
+          <h1>Edit Vehicle</h1><br>
+          <form action="{% url 'account_info:vehicle_create' %}" method="post">
             {% csrf_token %}
             {% for field in form.visible_fields %}
               <div class="form-field">
@@ -23,7 +23,7 @@
                 {% endif %}
               </div>
             {% endfor %}
-            <button type="submit" class="btn btn-success">Save Profile</button>
+            <button type="submit" class="btn btn-success">Save Vehicle</button>
           </form>
         </div>
       </div>

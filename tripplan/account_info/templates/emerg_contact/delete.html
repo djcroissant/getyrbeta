@@ -14,56 +14,56 @@
           <h1>Delete Emergency Contact</h1><br>
           <form action="{% url 'account_info:emerg_contact_delete' emergencycontact.id %}" method="post">
             {% csrf_token %}
-          <ul class="emerg_contact_list">
-            <li class="emergency_contact_name">{{ emergencycontact.full_name }}</li>
+          <ul class="account_info_list">
+            <li class="list_item_title">{{ emergencycontact.full_name }}</li>
             {% if emergencycontact.preferred_name %}
-              <li class="emergency_contact_label">Preferred name:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.preferred_name }}</li>
+              <li class="list_item_label">Preferred name:</li>
+              <li class="list_item_info">{{ emergencycontact.preferred_name }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.relationship %}
-              <li class="emergency_contact_label">Relationsip:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.relationship }}</li>
+              <li class="list_item_label">Relationsip:</li>
+              <li class="list_item_info">{{ emergencycontact.relationship }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.primary_phone %}
-              <li class="emergency_contact_label">Phone number:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.primary_phone }}</li>
+              <li class="list_item_label">Phone number:</li>
+              <li class="list_item_info">{{ emergencycontact.primary_phone }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.secondary_phone %}
-              <li class="emergency_contact_label">Secondary phone number:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.secondary_phone }}</li>
+              <li class="list_item_label">Secondary phone number:</li>
+              <li class="list_item_info">{{ emergencycontact.secondary_phone }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.email %}
-              <li class="emergency_contact_label">Email:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.email }}</li>
+              <li class="list_item_label">Email:</li>
+              <li class="list_item_info">{{ emergencycontact.email }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.street_address_line1 %}
-              <li class="emergency_contact_label">Address 1:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.street_address_line1 }}</li>
+              <li class="list_item_label">Address 1:</li>
+              <li class="list_item_info">{{ emergencycontact.street_address_line1 }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.street_address_line2 %}
-              <li class="emergency_contact_label">Address 2:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.street_address_line2 }}</li>
+              <li class="list_item_label">Address 2:</li>
+              <li class="list_item_info">{{ emergencycontact.street_address_line2 }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.city %}
-              <li class="emergency_contact_label">City:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.city }}</li>
+              <li class="list_item_label">City:</li>
+              <li class="list_item_info">{{ emergencycontact.city }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.state %}
-              <li class="emergency_contact_label">State:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.state }}</li>
+              <li class="list_item_label">State:</li>
+              <li class="list_item_info">{{ emergencycontact.state }}</li>
               <br>
             {% endif %}
             {% if emergencycontact.zip_code %}
-              <li class="emergency_contact_label">ZIP code:</li>
-              <li class="emergency_contact_info">{{ emergencycontact.zip_code }}</li>
+              <li class="list_item_label">ZIP code:</li>
+              <li class="list_item_info">{{ emergencycontact.zip_code }}</li>
             {% endif %}
             <br><br>
           </ul>

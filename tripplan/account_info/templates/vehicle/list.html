@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'account_info/style.css' %}" />
+{% endblock stylesheet %}
+
+{% block content %}
+  <div class="page">
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <div class="content">
+          <h1>Vehicles</h1>
+          <a href="{% url 'account_info:vehicle_create' %}">Add Vehicle</a>
+          <br><br>
+          <ul class="account_info_list">
+            {% for vehicle in object_list %}
+              <div class="row">
+                <div class="col-md-2">
+                  <li><a href="{% url 'account_info:vehicle_edit' vehicle.id  %}">edit</a></li>
+                  <li><a href="{% url 'account_info:vehicle_delete' vehicle.id  %}">delete</a></li>
+                </div>
+                <div class="col-md-8">
+                  <li class="list_item_title">{{ vehicle }}</li>
+                  <li class="list_item_label">Color:</li>
+                  <li class="list_item_info">{{ vehicle.color }}</li>
+                  <br>
+                  <li class="list_item_label">License Plate Number:</li>
+                  <li class="list_item_info">{{ vehicle.lic_plate_num }}</li>
+                  <br>
+                  <li class="list_item_label">License Plate State:</li>
+                  <li class="list_item_info">{{ vehicle.lic_plate_st }}</li>
+                  <br><br>
+                </div>
+              </div>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% include "../account_info/menu.html" %}
+    </div>
+  </div>
+{% endblock content %}

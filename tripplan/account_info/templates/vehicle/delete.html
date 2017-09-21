@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'account_info/style.css' %}" />
+{% endblock stylesheet %}
+
+{% block content %}
+  <div class="page">
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <div class="content">
+          <h1>Delete Vehicle</h1><br>
+          <form action="{% url 'account_info:vehicle_delete' vehicle.id %}" method="post">
+            {% csrf_token %}
+          <ul class="account_info_list">
+            <li class="list_item_title">{{ vehicle }}</li>
+            <li class="list_item_label">Color:</li>
+            <li class="list_item_info">{{ vehicle.color }}</li>
+            <br>
+            <li class="list_item_label">License Plate Number:</li>
+            <li class="list_item_info">{{ vehicle.lic_plate_num }}</li>
+            <br>
+            <li class="list_item_label">License Plate State:</li>
+            <li class="list_item_info">{{ vehicle.lic_plate_st }}</li>
+            <br><br>
+          </ul>
+            <button type="submit" name="submit" class="btn btn-success">Delete Emergency Contact</button>
+            <a href="{% url 'account_info:vehicle_list' %}" name="cancel" class="btn btn-secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+      {% include "../account_info/menu.html" %}
+    </div>
+  </div>
+{% endblock content %}

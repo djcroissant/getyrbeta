@@ -51,7 +51,7 @@ class EmergencyContactListViewTests(TestCase):
         response = EmergencyContactListView.as_view()(request)
         self.assertTrue('emerg_contact/list.html' in response.template_name)
 
-    def test_get_queryset_returns_emcons_for_logged_in_userr(self):
+    def test_get_queryset_returns_emcons_for_logged_in_user(self):
         '''
         Tests the get_queryset() method which is overridden in EmergencyContactListView.
         Function returns emergency contacts for currently logged in user only
@@ -275,7 +275,7 @@ class EmergencyContactDeleteViewTests(TestCase):
             password='ValidPassword')
         # Assign one emergency contact to the logged out user
         ec = EmergencyContact.objects.create(full_name='Don Gately',
-            relationship='Buddy', user = logged_out_user)
+            relationship='Buddy', user=logged_out_user)
         request = self.factory.get(reverse('account_info:emerg_contact_delete',
             args = [ec.id]))
         request.user = self.user

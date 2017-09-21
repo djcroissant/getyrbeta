@@ -14,7 +14,7 @@
           <h1>Emergency Contacts</h1>
           <a href="{% url 'account_info:emerg_contact_create' %}">Add emergency contact</a>
           <br><br>
-          <ul class="emerg_contact_list">
+          <ul class="account_info_list">
             {% for emcon in object_list %}
               <div class="row">
                 <div class="col-md-2">
@@ -22,55 +22,55 @@
                   <li><a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}">delete</a></li>
                 </div>
                 <div class="col-md-8">
-                  <li class="emergency_contact_name">{{ emcon.full_name }}</li>
+                  <li class="list_item_title">{{ emcon.full_name }}</li>
                   {% if emcon.preferred_name %}
-                    <li class="emergency_contact_label">Preferred name:</li>
-                    <li class="emergency_contact_info">{{ emcon.preferred_name }}</li>
+                    <li class="list_item_label">Preferred name:</li>
+                    <li class="list_item_info">{{ emcon.preferred_name }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.relationship %}
-                    <li class="emergency_contact_label">Relationsip:</li>
-                    <li class="emergency_contact_info">{{ emcon.relationship }}</li>
+                    <li class="list_item_label">Relationsip:</li>
+                    <li class="list_item_info">{{ emcon.relationship }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.primary_phone %}
-                    <li class="emergency_contact_label">Phone number:</li>
-                    <li class="emergency_contact_info">{{ emcon.primary_phone }}</li>
+                    <li class="list_item_label">Phone number:</li>
+                    <li class="list_item_info">{{ emcon.primary_phone }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.secondary_phone %}
-                    <li class="emergency_contact_label">Secondary phone number:</li>
-                    <li class="emergency_contact_info">{{ emcon.secondary_phone }}</li>
+                    <li class="list_item_label">Secondary phone number:</li>
+                    <li class="list_item_info">{{ emcon.secondary_phone }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.email %}
-                    <li class="emergency_contact_label">Email:</li>
-                    <li class="emergency_contact_info">{{ emcon.email }}</li>
+                    <li class="list_item_label">Email:</li>
+                    <li class="list_item_info">{{ emcon.email }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.street_address_line1 %}
-                    <li class="emergency_contact_label">Address 1:</li>
-                    <li class="emergency_contact_info">{{ emcon.street_address_line1 }}</li>
+                    <li class="list_item_label">Address 1:</li>
+                    <li class="list_item_info">{{ emcon.street_address_line1 }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.street_address_line2 %}
-                    <li class="emergency_contact_label">Address 2:</li>
-                    <li class="emergency_contact_info">{{ emcon.street_address_line2 }}</li>
+                    <li class="list_item_label">Address 2:</li>
+                    <li class="list_item_info">{{ emcon.street_address_line2 }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.city %}
-                    <li class="emergency_contact_label">City:</li>
-                    <li class="emergency_contact_info">{{ emcon.city }}</li>
+                    <li class="list_item_label">City:</li>
+                    <li class="list_item_info">{{ emcon.city }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.state %}
-                    <li class="emergency_contact_label">State:</li>
-                    <li class="emergency_contact_info">{{ emcon.state }}</li>
+                    <li class="list_item_label">State:</li>
+                    <li class="list_item_info">{{ emcon.state }}</li>
                     <br>
                   {% endif %}
                   {% if emcon.zip_code %}
-                    <li class="emergency_contact_label">ZIP code:</li>
-                    <li class="emergency_contact_info">{{ emcon.zip_code }}</li>
+                    <li class="list_item_label">ZIP code:</li>
+                    <li class="list_item_info">{{ emcon.zip_code }}</li>
                   {% endif %}
                   <br><br>
                 </div>
