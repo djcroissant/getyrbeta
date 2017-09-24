@@ -99,8 +99,8 @@ class EmergencyContactEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
         context['page_title'] = 'Edit Emergency Contact'
-        context['reverse_path'] = 'account_info:emerg_contact_edit'
-        context['reverse_pk'] = self.kwargs.get('pk')
+        # context['reverse_path'] = 'account_info:emerg_contact_edit'
+        # context['reverse_pk'] = self.kwargs.get('pk')
         context['save_button_title'] = 'Update'
         context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
@@ -136,7 +136,7 @@ class EmergencyContactCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(EmergencyContactCreateView, self).get_context_data(**kwargs)
         context['page_title'] = 'Add new emergency contact'
-        context['reverse_path'] = 'account_info:emerg_contact_create'
+        # context['reverse_path'] = 'account_info:emerg_contact_create'
         context['save_button_title'] = 'Save Profile'
         context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
@@ -200,7 +200,7 @@ class VehicleListView(ListView):
 
 class VehicleEditView(UpdateView):
     model = Vehicle
-    template_name = 'account_info/edit.html'
+    template_name = 'account_info/form.html'
     form_class = VehicleForm
     success_url = reverse_lazy('account_info:vehicle_list')
 
@@ -231,17 +231,16 @@ class VehicleEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(VehicleEditView, self).get_context_data(**kwargs)
-        context['reverse_path'] = 'account_info:vehicle_edit'
-        context['reverse_pk'] = self.kwargs.get('pk')
-        context['cancel_button_path'] = 'account_info:emerg_contact_list'
-        context['page_title'] = 'Edit Emergency Contact'
+        # context['reverse_path'] = 'account_info:vehicle_edit'
+        # context['reverse_pk'] = self.kwargs.get('pk')
+        context['page_title'] = 'Edit Vehicle Information'
         context['save_button_title'] = 'Update'
-        context['cancel_button_path'] = 'account_info:emerg_contact_list'
+        context['cancel_button_path'] = 'account_info:vehicle_list'
         return context
 
 class VehicleCreateView(CreateView):
     model = Vehicle
-    template_name = 'account_info/create.html'
+    template_name = 'account_info/form.html'
     form_class = VehicleForm
     success_url = reverse_lazy('account_info:vehicle_list')
 
@@ -269,10 +268,10 @@ class VehicleCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(VehicleCreateView, self).get_context_data(**kwargs)
-        context['reverse_path'] = 'account_info:vehicle_create'
+        # context['reverse_path'] = 'account_info:vehicle_create'
         context['page_title'] = 'Add new vehicle'
         context['save_button_title'] = 'Save Vehicle'
-        context['cancel_button_path'] = 'account_info:emerg_contact_list'
+        context['cancel_button_path'] = 'account_info:vehicle_list'
         return context
 
 class VehicleDeleteView(DeleteView):

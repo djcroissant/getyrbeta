@@ -35,7 +35,7 @@ class EmergencyContactForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EmergencyContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = 'id-emergencyContactForm'
+        self.helper.form_id = 'id-EmergencyContactForm'
         self.helper.form_class = 'account_info_forms'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
@@ -73,8 +73,25 @@ class VehicleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(VehicleForm, self).__init__(*args, **kwargs)
-        self.fields['make'].label = "* Make"
-        self.fields['model'].label = "* Model"
-        self.fields['color'].label = "* Color"
-        self.fields['lic_plate_num'].label = "* License plate number"
-        self.fields['lic_plate_st'].label = "* License plate state"
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-VehicleForm'
+        self.helper.form_class = 'account_info_forms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+        self.helper.field_class = 'col-md-9'
+        self.fields['lic_plate_num'].label = "License plate number"
+        self.fields['lic_plate_st'].label = "License plate state"
+        self.helper.layout = Layout (
+            Fieldset(
+                '',
+                'make',
+                'model',
+                'color',
+                'year',
+                'lic_plate_num',
+                'lic_plate_st'),
+            FormActions(
+                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
+                HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel</a>')
+            )
+        )
