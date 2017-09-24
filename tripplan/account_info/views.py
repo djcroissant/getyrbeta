@@ -67,7 +67,7 @@ class EmergencyContactListView(ListView):
 
 class EmergencyContactEditView(UpdateView):
     model = EmergencyContact
-    template_name = 'account_info/edit.html'
+    template_name = 'account_info/form.html'
     form_class = EmergencyContactForm
     success_url = reverse_lazy('account_info:emerg_contact_list')
 
@@ -98,14 +98,16 @@ class EmergencyContactEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(EmergencyContactEditView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Edit Emergency Contact'
         context['reverse_path'] = 'account_info:emerg_contact_edit'
         context['reverse_pk'] = self.kwargs.get('pk')
+        context['save_button_title'] = 'Update'
         context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
 
 class EmergencyContactCreateView(CreateView):
     model = EmergencyContact
-    template_name = 'account_info/create.html'
+    template_name = 'account_info/form.html'
     form_class = EmergencyContactForm
     success_url = reverse_lazy('account_info:emerg_contact_list')
 
@@ -133,8 +135,8 @@ class EmergencyContactCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(EmergencyContactCreateView, self).get_context_data(**kwargs)
-        context['reverse_path'] = 'account_info:emerg_contact_create'
         context['page_title'] = 'Add new emergency contact'
+        context['reverse_path'] = 'account_info:emerg_contact_create'
         context['save_button_title'] = 'Save Profile'
         context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
@@ -231,6 +233,9 @@ class VehicleEditView(UpdateView):
         context = super(VehicleEditView, self).get_context_data(**kwargs)
         context['reverse_path'] = 'account_info:vehicle_edit'
         context['reverse_pk'] = self.kwargs.get('pk')
+        context['cancel_button_path'] = 'account_info:emerg_contact_list'
+        context['page_title'] = 'Edit Emergency Contact'
+        context['save_button_title'] = 'Update'
         context['cancel_button_path'] = 'account_info:emerg_contact_list'
         return context
 
