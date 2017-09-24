@@ -4,20 +4,17 @@
   clear: both;
 }
 
-/*Pad the entire page down so the fixed navbar doesn't overlap*/
 .wrapper {
   margin-top: 100px;
 }
 
-/*The menu bar is fixed width on the left and the content takes up the
-  remaining space to the right*/
 .content-wrapper {
   float: right;
   width: 100%;
 }
 
 .content {
-  margin-left: 310px;
+  margin-left: 300px;
   clear: both;
   overflow: auto;
 }
@@ -61,14 +58,14 @@
   }
 }
 
-.form-control-label {
+.control-label {
   font-size: 14pt;
   font-weight: bold;
   display: block;
 }
 
-.form-control {
-    font-size: 1.2rem;
+.form-field {
+  padding-bottom: 12px;
 }
 
 ul.account_info_list {
