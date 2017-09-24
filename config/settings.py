@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,6 @@ LOGIN_REDIRECT_URL = '/trips'
 # Using django-authtools for User model
 # More documentation here: https://django-authtools.readthedocs.io/en/latest/#
 AUTH_USER_MODEL = 'account_info.User'
+
+# Set the template pack (i.e. CSS framework) to be used by cripsy-forms:
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
