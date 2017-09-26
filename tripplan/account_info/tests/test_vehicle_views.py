@@ -134,7 +134,7 @@ class VehicleEditViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = VehicleEditView.as_view()(request, pk=v.id)
-        self.assertTrue('account_info/edit.html' in response.template_name)
+        self.assertTrue('account_info/form.html' in response.template_name)
 
 class VehicleCreateViewTests(TestCase):
     def setUp(self):
@@ -189,7 +189,7 @@ class VehicleCreateViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = VehicleCreateView.as_view()(request)
-        self.assertTrue('account_info/create.html' in response.template_name)
+        self.assertTrue('account_info/form.html' in response.template_name)
 
 class VehicleDeleteViewTests(TestCase):
     def setUp(self):
