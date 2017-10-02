@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from django.http import Http404
 
-from account_info.models import EmergencyContact, Vehicle
+from .models import EmergencyContact, Vehicle
 
 from .forms import ProfileForm, EmergencyContactForm, VehicleForm
 

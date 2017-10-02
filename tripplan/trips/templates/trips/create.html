@@ -1,9 +1,24 @@
-<h1>Where ya going?</h1>
+{% extends 'core/base.html' %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% load static %}
 
-<form action="" method="post">
-{% csrf_token %}
-  {{form.as_p}}
-  <input type="submit" value="Save" />
-</form>
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
+{% endblock stylesheet %}
+
+{% block content %}
+  <div class="page">
+    <div class="wrapper">
+      <div class="banner-logo" id="BannerLogo">
+        <h1>{{ page_title }}</h1>
+      </div>
+      <div class="trip-list" id="trip-list">
+        <div class="header">
+          <h3>Required Information</h3>
+        </div>
+        {% load crispy_forms_tags %}
+        {% crispy form form.helper %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}
