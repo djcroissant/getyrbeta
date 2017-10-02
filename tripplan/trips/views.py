@@ -54,7 +54,6 @@ class TripCreateView(LoginRequiredMixin, CreateView):
     model = Trip
     template_name = 'trips/create.html'
     form_class = CreateTripForm
-    # success_url = reverse_lazy('trips:trip_detail', args=(self.object.id,))
 
     def get_context_data(self, **kwargs):
         context = super(TripCreateView, self).get_context_data(**kwargs)

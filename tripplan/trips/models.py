@@ -1,17 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
-class TrailheadLocation(models.Model):
-    """
-    An abstract base class that provides trailhead coordinates
-    """
-    trailhead_latitude = models.CharField(max_length = 31, blank=True)
-    trailhead_longitude = models.CharField(max_length = 31, blank=True)
 
-    class Meta:
-        abstract = True
-
-class Trip(TrailheadLocation):
+class Trip(models.Model):
     title = models.CharField(max_length = 255)
     destination = models.CharField(max_length = 255, blank=True)
     start_date = models.DateField()
@@ -29,12 +20,14 @@ class Trip(TrailheadLocation):
     is_in_the_past.boolean = True
     is_in_the_past.short_description = 'Past Trip?'
 
-class SunTime(TrailheadLocation):
+class SunTime(models.Model):
     dawn = models.TimeField()
     dusk = models.TimeField()
     sunrise = models.TimeField()
     sunset = models.TimeField()
     date = models.DateField()
+    latitude = models.CharField(max_length = 31, blank=True)
+    longitude = models.CharField(max_length = 31, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
 class Item(models.Model):
@@ -53,3 +46,23 @@ class TripMember(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     organizer = models.BooleanField(default=False)
     accept_reqd = models.BooleanField(default=False)
+
+class TripLocation(models.Model):
+    BEGIN = 'ST'
+    END = 'EN'
+    OBJECTIVE = 'OB'
+    CAMP = 'CM'
+
+    LOCATION_TYPE_CHOICES = (
+        (BEGIN, 'Start Location'),
+        (END, 'End Location'),
+        (OBJECTIVE, 'Objective Location'),
+        (CAMP, 'Camp Location'),
+    )
+    location_type = models.CharField(max_length=2,
+        choices=LOCATION_TYPE_CHOICES)
+    title = models.CharField(max_length = 255, blank=True)
+    date = models.DateField(blank=True)
+    latitude = models.CharField(max_length = 31, blank=True)
+    longitude = models.CharField(max_length = 31, blank=True)
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
