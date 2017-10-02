@@ -27,25 +27,6 @@
 #     """
 #     return user.vehicle_set.create(year=year, make=make, model=model)
 #
-# class TripModelTests(TestCase):
-#
-#     def test_is_in_the_past_with_today_trip(self):
-#         """
-#         is_in_the_past() returns False for trips whose start_date is today
-#         or in the future
-#         """
-#         date = timezone.now().date()
-#         future_trip = Trip(start_date=date)
-#         self.assertIs(future_trip.is_in_the_past(), False)
-#
-#     def test_is_in_the_past_with_past_trip(self):
-#         """
-#         is_in_the_past() returns True for trips whose start_date is in the past
-#         """
-#         date = timezone.now().date() - datetime.timedelta(days=1)
-#         future_trip = Trip(start_date=date)
-#         self.assertIs(future_trip.is_in_the_past(), True)
-#
 # class TripListViewTests(TestCase):
 #     def test_no_trips(self):
 #         """

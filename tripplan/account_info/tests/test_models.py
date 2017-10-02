@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 
 from account_info.models import User, Vehicle, EmergencyContact
 
+
 class UserModelTests(TestCase):
     def test_invalid_user_without_email(self):
         '''
