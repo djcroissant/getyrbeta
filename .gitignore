@@ -303,3 +303,6 @@ pip-selfcheck.json
 
 ## Directory setup for temporary files
 working_docs/
+
+## Database backup file
+dump.sql
