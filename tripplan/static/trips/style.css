@@ -1,10 +1,24 @@
-li a {
-  color: green;
+/*Pad the entire page down so the fixed navbar doesn't overlap*/
+.wrapper {
+  margin-top: 10px;
 }
-body {
-  background-color: #000;
-  background-image: url("images/background.jpg");
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: 100% auto;
+
+.banner-logo {
+  margin-bottom: 20pt;
+}
+.banner-logo h1{
+  color: #ff8000;
+  font-size: 42pt;
+  font-family: 'American Typewriter';
+  letter-spacing: -1px;
+}
+
+.trip-list {
+  background: #e6f2ff;
+  margin-bottom: 50pt;
+}
+
+.trip-list .header {
+  background: #99ccff;
+  padding: 2pt;
 }

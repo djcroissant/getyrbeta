@@ -9,14 +9,14 @@ from .models import Trip
 class TripList(generic.ListView):
     model = Trip
     template_name = 'trips/index.html'
-    context_object_name = 'upcoming_trip_list'
 
-    def get_queryset(self):
-        """
-        Return trips with a start date today or in the future
-        """
-        return Trip.objects.filter(start_date__gte=timezone.now()
-               ).order_by('start_date')
+    def get_context_data(self, **kwargs):
+        context = super(TripList, self).get_context_data(**kwargs)
+        context['upcoming_trip_list'] = Trip.objects.filter(
+            start_date__gte=timezone.now()).order_by('start_date')
+        context['past_trip_list'] = Trip.objects.filter(
+            start_date__lt=timezone.now()).order_by('start_date')
+        return context
 
 class TripView(generic.DetailView):
     model = Trip
