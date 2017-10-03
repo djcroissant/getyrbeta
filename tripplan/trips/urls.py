@@ -8,6 +8,7 @@ app_name = 'trips'
 urlpatterns = [
     url(r'^$', views.TripList.as_view(), name='trip_list'),
     url(r'^(?P<pk>[0-9]+)/$', views.TripView.as_view(), name='trip_detail'),
+    # url(r'^edit/(?P<pk>[0-9]+)/$', views.TripEditView.as_view(), name='trip_edit'),
     url(r'^create/$',
         views.TripCreateView.as_view(), name='trip_create'),
     url(r'^notifications/$', views.notifications, name='notifications'),

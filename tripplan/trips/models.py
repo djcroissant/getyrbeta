@@ -13,6 +13,22 @@ class Trip(models.Model):
     def __str__(self):
         return self.title
 
+    def get_trailhead(self):
+        try:
+            th = self.triplocation_set.filter(
+                location_type=TripLocation.BEGIN)[0]
+        except IndexError:
+            th = None
+        return th
+
+    def get_endpoint(self):
+        try:
+            ep = self.triplocation_set.filter(
+                location_type=TripLocation.END)[0]
+        except IndexError:
+            ep = None
+        return ep
+    
     def is_in_the_past(self):
         return self.start_date < timezone.now().date()
 
@@ -59,6 +75,14 @@ class TripLocation(models.Model):
         (OBJECTIVE, 'Objective Location'),
         (CAMP, 'Camp Location'),
     )
+
+    # LABEL_CHOICES = {
+    #     BEGIN: 'Trailhead description',
+    #     END: 'End point description',
+    #     OBJECTIVE: 'Description',
+    #     CAMP: 'Description'
+    # }
+
     location_type = models.CharField(max_length=2,
         choices=LOCATION_TYPE_CHOICES)
     title = models.CharField(max_length = 255, blank=True)

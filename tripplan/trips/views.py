@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
@@ -46,9 +48,29 @@ class TripView(LoginRequiredMixin, DetailView):
     template_name = 'trips/detail.html'
 
     def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        # data['user_list'] = self.object.user_set.all()
-        return data
+        context = super(TripView, self).get_context_data(**kwargs)
+        trip = self.get_object()
+        context['page_title'] = trip.title
+        if trip.number_nights > 0:
+            context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
+        context['trailhead'] = trip.get_trailhead()
+        context['endpoint'] = trip.get_endpoint()
+        return context
+
+# class TripEditView(LoginRequiredMixin, UpdateView):
+#     model = Trip
+#     template_name = 'trips/edit.html'
+#     form_class = TripLocationForm
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(TripEditView, self).get_context_data(**kwargs)
+#         trip = self.get_object()
+#         context['page_title'] = trip.title
+#         context['save_button_title'] = 'Save Trip'
+#         context['cancel_button_path'] = 'trips:trip_list'
+#         if trip.number_nights > 0:
+#             context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
+#         return context
 
 class TripCreateView(LoginRequiredMixin, CreateView):
     model = Trip
