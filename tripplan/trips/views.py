@@ -31,6 +31,27 @@ class LoginRequiredMixin:
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 
+class CreateLocationMixin:
+    model = TripLocation
+    template_name = 'trips/location.html'
+    form_class = CreateLocationForm
+
+    def form_valid(self, form):
+        form.instance.trip = Trip.objects.get(pk=self.kwargs.get('trip_id'))
+        form.instance.location_type = self.location_type
+        return super(CreateLocationMixin, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateLocationMixin, self).get_context_data(**kwargs)
+        context['page_title'] = self.page_title
+        context['save_button_title'] = self.save_button_title
+        context['cancel_button_path'] = 'trips:trip_detail'
+        context['trip_id'] = self.kwargs.get('trip_id')
+        return context
+
+    def get_success_url(self):
+        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+
 class TripList(LoginRequiredMixin, ListView):
     model = Trip
     template_name = 'trips/index.html'
@@ -89,6 +110,16 @@ class TrailheadCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+
+class ObjectiveCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
+    location_type = TripLocation.OBJECTIVE
+    page_title = 'Enter a new objective'
+    save_button_title = 'Save Objective'
+
+class CampCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
+    location_type = TripLocation.CAMP
+    page_title = 'Enter a new camp location'
+    save_button_title = 'Save Camp'
 
 
 # class TripEditView(LoginRequiredMixin, UpdateView):

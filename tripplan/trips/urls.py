@@ -13,6 +13,10 @@ urlpatterns = [
         views.TripCreateView.as_view(), name='trip_create'),
     url(r'^create/(?P<trip_id>[0-9]+)/trailhead/$',
         views.TrailheadCreateView.as_view(), name='trailhead_create'),
+    url(r'^create/(?P<trip_id>[0-9]+)/objective/$',
+        views.ObjectiveCreateView.as_view(), name='objective_create'),
+    url(r'^create/(?P<trip_id>[0-9]+)/camp/$',
+        views.CampCreateView.as_view(), name='camp_create'),
     url(r'^notifications/$', views.notifications, name='notifications'),
 ]
 

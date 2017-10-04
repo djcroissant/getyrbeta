@@ -33,35 +33,49 @@
         {% endif %}
       </div>
       <div class="trip-list" id="trip-list">
-        <div class="row">
-          <div class="header col-lg-4">
-            <h3>Trailhead and Trailend Locations</h3>
-          </div>
-          <div class="header col-lg-4">
-            <a href="{% url 'trips:trailhead_create' trip.id %}">Add new location</a>
+        <div class="header">
+          <div class="row">
+            <div class="col-md-5">
+              <h3>Trailhead Location</h3>
+            </div>
+            <div class="col-md-6">
+              <a href="{% url 'trips:trailhead_create' trip.id %}">Add new location</a>
+            </div>
           </div>
         </div>
         {% if trailhead %}
           {% if trailhead.title %}
-            <p>Trailhead: {{ trailhead.title }}</p>
+            <div class="row">
+              <div class="col-md-3">
+                <p>Trailhead:</p>
+              </div>
+              <div class="col-md-5">
+                <p>{{ trailhead.title }}</p>
+              </div>
+            </div>
           {% endif %}
           {% if trailhead.latitude and trailhead.longitude %}
-            <p>Trailhead coordinates: {{ trailhead.latitude }}, {{ trailhead.longitude }}</p>
-          {% endif %}
-        {% endif %}
-
-        {% if endpoint %}
-          {% if endpoint.title %}
-            <p>End point: {{ endpoint.title }}</p>
-          {% endif %}
-          {% if endpoint.latitude and endpoint.longitude %}
-            <p>End point coordinates: {{ endpoint.latitude }}, {{ endpoint.longitude }}</p>
+            <div class="row">
+              <div class="col-md-3">
+                <p>Trailhead coordinates: </p>
+              </div>
+              <div class="col-md-5">
+                <p>{{ trailhead.latitude }}, {{ trailhead.longitude }}</p>
+              </div>
+            </div>
           {% endif %}
         {% endif %}
       </div>
       <div class="trip-list" id="trip-list">
         <div class="header">
-          <h3>Objectives</h3>
+          <div class="row">
+            <div class="col-md-5">
+              <h3>Objectives</h3>
+            </div>
+            <div class="col-md-6">
+              <a href="{% url 'trips:objective_create' trip.id %}">Add new objective</a>
+            </div>
+          </div>
         </div>
         {% if objectives.objectivelist == None %}
           <p>There are no objectives for this trip yet</p>
@@ -84,7 +98,14 @@
       {% if trip.number_nights > 0 %}
         <div class="trip-list" id="trip-list">
           <div class="header">
-            <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
+            <div class="row">
+              <div class="col-md-5">
+                <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
+              </div>
+              <div class="col-md-6">
+                <a href="{% url 'trips:camp_create' trip.id %}">Add new camp</a>
+              </div>
+            </div>
           </div>
           {% if objectives.objectivelist == None %}
             <p>There are no camp spots for this trip yet</p>
