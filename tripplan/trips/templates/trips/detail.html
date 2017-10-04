@@ -77,12 +77,12 @@
             </div>
           </div>
         </div>
-        {% if objectives.objectivelist == None %}
+        {% if objectives.locationlist == None %}
           <p>There are no objectives for this trip yet</p>
         {% else %}
-          {% for i in objectives.objrange %}
+          {% for i in objectives.locationrange %}
             <p>{{ objectives.datelist|index:i }}</p>
-            {% for obj in objectives.objectivelist|index:i %}
+            {% for obj in objectives.locationlist|index:i %}
               <ul>
                 <li>
                   <p>{{ obj.title }}</p>
@@ -107,12 +107,12 @@
               </div>
             </div>
           </div>
-          {% if objectives.objectivelist == None %}
+          {% if camp_locations.locationlist == None %}
             <p>There are no camp spots for this trip yet</p>
           {% else %}
-            {% for i in objectives.objrange %}
-              <p>{{ objectives.datelist|index:i }}</p>
-              {% for obj in objectives.objectivelist|index:i %}
+            {% for i in camp_locations.locationrange %}
+              <p>{{ camp_locations.datelist|index:i }}</p>
+              {% for obj in camp_locations.locationlist|index:i %}
                 <ul>
                   <li>
                     <p>{{ obj.title }}</p>

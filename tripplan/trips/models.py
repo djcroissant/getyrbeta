@@ -53,111 +53,52 @@ class Trip(models.Model):
             datehash[key] = value
         return datehash
 
-    # def get_context_for_multi_day(self):
-    #     """ This function is used in get_objectives and get_camps """
-    #     datelist = []
-    #     objlist = []
-    #     datehash = get_datehash()
-    #     date = None
-    #     filtered_locations = locations.filter(date=date)
-    #     if filtered_locations.count() > 0:
-    #         datelist.append(datehash[date])
-    #         objlist.append(list(filtered_locations))
-    #     for i in range(0, trip.number_nights):
-    #         date = self.start_date + datetime.timedelta(days=i)
-    #         filtered_locations = locations.filter(date=date)
-    #         if filtered_locations.count() > 0:
-    #             datelist.append(datehash[date])
-    #             objlist.append(list(filtered_locations))
-    #     objrange = range(len(datelist))
-    #     return datelist, objlist, objrange
-    #
-    # def get_objectives(self):
-    #     """
-    #     This funtion will return a dictionary with keys 'datelist' and
-    #     'objectivelist'.
-    #
-    #     The value corresponding to 'datelist' is a list of
-    #     days for which objectives have been defined, in day number format
-    #     (e.g. 'datelist': ['Unassigned', 'Day 2', 'Day 5']). 'Unassigned' is
-    #     included when there are objectives that don't have a date.
-    #
-    #     The value corresponding to 'objectivelist is a list of lists.
-    #     Each sublist is a list of TripLocation objects corresponding to
-    #     objectives for the date in the corresponding element of datelist
-    #
-    #     Special circumstances are defined when the Trip has no objectives
-    #     defined or when the trip has number_nights == 0
-    #     """
-    #     locations = self.triplocation_set.filter(
-    #         location_type=TripLocation.OBJECTIVE)
-    #     if locations.count() == 0:
-    #         datelist = objlist = objrange = None
-    #     elif self.number_nights == 0:
-    #         datelist = ['Day 1']
-    #         objlist = [list(locations)]
-    #         objrange = range(len(datelist))
-    #     else:
-    #         datelist, objlist, objrange = get_context_for_multi_day()
-    #     return{'datelist': datelist, 'objectivelist': objlist, 'objrange': objrange}
-
-    # def get_camp_locations(self):
-    #     locations = self.triplocation_set.filter(
-    #         location_type=TripLocation.CAMP)
-    #     if locations.count() == 0:
-    #         datelist = objlist = objrange = None
-    #     else:
-    #         datelist, objlist, objrange = get_context_for_multi_day()
-    #     return{'datelist': datelist, 'objectivelist': objlist, 'objrange': objrange}
-
-
-
-
-
-
-
     def get_location_context(self, location_type):
         """
-        This funtion will return a dictionary with keys 'datelist' and
-        'objectivelist'.
+        This funtion will return a dictionary with keys 'datelist',
+        'locationlist', and 'locationrange'.
 
         The value corresponding to 'datelist' is a list of
         days for which objectives have been defined, in day number format
         (e.g. 'datelist': ['Unassigned', 'Day 2', 'Day 5']). 'Unassigned' is
         included when there are objectives that don't have a date.
 
-        The value corresponding to 'objectivelist is a list of lists.
+        The value corresponding to 'locationlist is a list of lists.
         Each sublist is a list of TripLocation objects corresponding to
-        objectives for the date in the corresponding element of datelist
+        locations for the date in the corresponding element of datelist
 
-        Special circumstances are defined when the Trip has no objectives
-        defined or when the trip has number_nights == 0
+        Special circumstances are defined when the Trip has no locations for
+        the relevant location_type or when the trip has number_nights == 0
         """
         locations = self.triplocation_set.filter(
             location_type=location_type)
         if locations.count() == 0:
-            datelist = objlist = objrange = None
+            datelist = loclist = locrange = None
         elif self.number_nights == 0 and location_type == TripLocation.OBJECTIVE:
             datelist = ['Day 1']
-            objlist = [list(locations)]
-            objrange = range(len(datelist))
+            loclist = [list(locations)]
+            locrange = range(len(datelist))
         else:
             datelist = []
-            objlist = []
+            loclist = []
             datehash = self.get_datehash()
             date = None
             filtered_locations = locations.filter(date=date)
             if filtered_locations.count() > 0:
                 datelist.append(datehash[date])
-                objlist.append(list(filtered_locations))
+                loclist.append(list(filtered_locations))
             for i in range(0, self.number_nights):
                 date = self.start_date + datetime.timedelta(days=i)
                 filtered_locations = locations.filter(date=date)
                 if filtered_locations.count() > 0:
                     datelist.append(datehash[date])
-                    objlist.append(list(filtered_locations))
-            objrange = range(len(datelist))
-        return{'datelist': datelist, 'objectivelist': objlist, 'objrange': objrange}
+                    loclist.append(list(filtered_locations))
+            locrange = range(len(datelist))
+        return{
+            'datelist': datelist,
+            'locationlist': loclist,
+            'locationrange': locrange
+        }
 
 
 
