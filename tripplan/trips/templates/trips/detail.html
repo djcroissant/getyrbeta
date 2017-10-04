@@ -33,8 +33,13 @@
         {% endif %}
       </div>
       <div class="trip-list" id="trip-list">
-        <div class="header">
-          <h3>Trailhead Location</h3>
+        <div class="row">
+          <div class="header col-lg-4">
+            <h3>Trailhead and Trailend Locations</h3>
+          </div>
+          <div class="header col-lg-4">
+            <a href="{% url 'trips:trailhead_create' trip.id %}">Add new location</a>
+          </div>
         </div>
         {% if trailhead %}
           {% if trailhead.title %}

@@ -11,7 +11,7 @@ from .models import Trip, TripLocation
 
 from account_info.models import User
 
-from .forms import CreateTripForm
+from .forms import CreateTripForm, CreateLocationForm
 
 
 class LoginRequiredMixin:
@@ -68,6 +68,29 @@ class TripView(LoginRequiredMixin, DetailView):
         context['camp_locations'] = trip.get_location_context(TripLocation.CAMP)
 
         return context
+
+class TrailheadCreateView(LoginRequiredMixin, CreateView):
+    model = TripLocation
+    template_name = 'trips/location.html'
+    form_class = CreateLocationForm
+
+    def form_valid(self, form):
+        import pdb; pdb.set_trace()
+
+        form.instance.trip = Trip.objects.get(pk=self.kwargs.get('trip_id'))
+        return super(TrailheadCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(TrailheadCreateView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Enter a new Start or End location'
+        context['save_button_title'] = 'Save Location'
+        context['cancel_button_path'] = 'trips:trip_detail'
+        context['trip_id'] = self.kwargs.get('trip_id')
+        return context
+
+    def get_success_url(self):
+        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+
 
 # class TripEditView(LoginRequiredMixin, UpdateView):
 #     model = Trip
