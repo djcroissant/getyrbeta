@@ -1,6 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% load static %}
+{% load trip_extras %}
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
@@ -57,14 +58,48 @@
         <div class="header">
           <h3>Objectives</h3>
         </div>
-        <p>Day 1 etc</p>
+        {% if objectives.objectivelist == None %}
+          <p>There are no objectives for this trip yet</p>
+        {% else %}
+          {% for i in objectives.objrange %}
+            <p>{{ objectives.datelist|index:i }}</p>
+            {% for obj in objectives.objectivelist|index:i %}
+              <ul>
+                <li>
+                  <p>{{ obj.title }}</p>
+                  {% if obj.latitude and obj.longitude %}
+                    <p>Coordinates: {{ obj.latitude }}, {{ obj.longitude }}</p>
+                  {% endif %}
+                </li>
+              </ul>
+            {% endfor %}
+          {% endfor %}
+        {% endif %}
       </div>
-      <div class="trip-list" id="trip-list">
-        <div class="header">
-          <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
+      {% if trip.number_nights > 0 %}
+        <div class="trip-list" id="trip-list">
+          <div class="header">
+            <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
+          </div>
+          {% if objectives.objectivelist == None %}
+            <p>There are no camp spots for this trip yet</p>
+          {% else %}
+            {% for i in objectives.objrange %}
+              <p>{{ objectives.datelist|index:i }}</p>
+              {% for obj in objectives.objectivelist|index:i %}
+                <ul>
+                  <li>
+                    <p>{{ obj.title }}</p>
+                    {% if obj.latitude and obj.longitude %}
+                      <p>Coordinates: {{ obj.latitude }}, {{ obj.longitude }}</p>
+                    {% endif %}
+                  </li>
+                </ul>
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
         </div>
-        <p>Night 1 etc</p>
-      </div>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}

@@ -50,11 +50,21 @@ class TripView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TripView, self).get_context_data(**kwargs)
         trip = self.get_object()
+
+        # Context for page title
         context['page_title'] = trip.title
         if trip.number_nights > 0:
             context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
+
+        # Context for trailhead / endpoint section
         context['trailhead'] = trip.get_trailhead()
         context['endpoint'] = trip.get_endpoint()
+
+        # Context for objective setion
+        context['objectives'] = trip.get_objectives()
+        # import pdb; pdb.set_trace()
+
+        # Context for camp location section
         return context
 
 # class TripEditView(LoginRequiredMixin, UpdateView):
