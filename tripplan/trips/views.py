@@ -7,7 +7,7 @@ from django.views.generic import UpdateView, ListView, \
 from django.utils import timezone
 from django.contrib.auth import authenticate
 
-from .models import Trip
+from .models import Trip, TripLocation
 
 from account_info.models import User
 
@@ -61,10 +61,12 @@ class TripView(LoginRequiredMixin, DetailView):
         context['endpoint'] = trip.get_endpoint()
 
         # Context for objective setion
-        context['objectives'] = trip.get_objectives()
+        context['objectives'] = trip.get_location_context(TripLocation.OBJECTIVE)
         # import pdb; pdb.set_trace()
 
         # Context for camp location section
+        context['camp_locations'] = trip.get_location_context(TripLocation.CAMP)
+
         return context
 
 # class TripEditView(LoginRequiredMixin, UpdateView):
