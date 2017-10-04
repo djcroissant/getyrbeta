@@ -90,26 +90,10 @@ class TripView(LoginRequiredMixin, DetailView):
 
         return context
 
-class TrailheadCreateView(LoginRequiredMixin, CreateView):
-    model = TripLocation
-    template_name = 'trips/location.html'
-    form_class = CreateLocationForm
-
-    def form_valid(self, form):
-        form.instance.trip = Trip.objects.get(pk=self.kwargs.get('trip_id'))
-        form.instance.location_type = TripLocation.BEGIN
-        return super(TrailheadCreateView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(TrailheadCreateView, self).get_context_data(**kwargs)
-        context['page_title'] = 'Enter a new Start or End location'
-        context['save_button_title'] = 'Save Location'
-        context['cancel_button_path'] = 'trips:trip_detail'
-        context['trip_id'] = self.kwargs.get('trip_id')
-        return context
-
-    def get_success_url(self):
-        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+class TrailheadCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
+    location_type = TripLocation.BEGIN
+    page_title = 'Enter a new trailhead location'
+    save_button_title = 'Save Trailhead'
 
 class ObjectiveCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
     location_type = TripLocation.OBJECTIVE
