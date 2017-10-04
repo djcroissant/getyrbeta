@@ -75,9 +75,8 @@ class TrailheadCreateView(LoginRequiredMixin, CreateView):
     form_class = CreateLocationForm
 
     def form_valid(self, form):
-        import pdb; pdb.set_trace()
-
         form.instance.trip = Trip.objects.get(pk=self.kwargs.get('trip_id'))
+        form.instance.location_type = TripLocation.BEGIN
         return super(TrailheadCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):

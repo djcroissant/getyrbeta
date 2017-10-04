@@ -15,3 +15,9 @@ urlpatterns = [
         views.TrailheadCreateView.as_view(), name='trailhead_create'),
     url(r'^notifications/$', views.notifications, name='notifications'),
 ]
+
+
+    # url(r'^create/(?P<trip_id>[0-9]+)/(?P<location_type>[\w])/$',
+    #     views.TrailheadCreateView.as_view(), name='trailhead_create'),
+
+            # <a href="{% url 'trips:trailhead_create' trip_id=trip.id location_type='trailhead' %}">Add new location</a>

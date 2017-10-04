@@ -39,12 +39,10 @@ class CreateTripForm(forms.ModelForm):
 class CreateLocationForm(forms.ModelForm):
     class Meta:
         model = TripLocation
-        fields = ['location_type', 'title', 'date', 'latitude', 'longitude']
+        fields = ['title', 'date', 'latitude', 'longitude']
 
     def __init__(self, *args, **kwargs):
         super(CreateLocationForm, self).__init__(*args, **kwargs)
-        # self.trip=kwargs.pop('trip', None)
-        # import pdb; pdb.set_trace()
         self.helper = FormHelper()
         self.helper.form_id = 'id-CreateLocationForm'
         self.helper.form_class = 'trip_forms'
@@ -55,7 +53,7 @@ class CreateLocationForm(forms.ModelForm):
         self.helper.layout = Layout (
             Fieldset(
                 '',
-                'location_type',
+                # 'location_type',
                 'title',
                 'date',
                 'latitude',
