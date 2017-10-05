@@ -5,7 +5,7 @@ from account_info.models import User
 from .models import Trip, TripLocation
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, HTML
+from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field
 from crispy_forms.bootstrap import FormActions
 
 
@@ -42,6 +42,7 @@ class CreateLocationForm(forms.ModelForm):
         fields = ['title', 'date', 'latitude', 'longitude']
 
     def __init__(self, *args, **kwargs):
+        choices = kwargs.pop('choices')
         super(CreateLocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-CreateLocationForm'
@@ -50,6 +51,8 @@ class CreateLocationForm(forms.ModelForm):
         self.helper.form_action = ''
         self.helper.field_class = 'col-md-9'
         self.fields['title'].label = 'Description'
+        # import pdb; pdb.set_trace()
+        self.fields['date'] = forms.ChoiceField(choices=choices)
         self.helper.layout = Layout (
             Fieldset(
                 '',
@@ -57,6 +60,7 @@ class CreateLocationForm(forms.ModelForm):
                 'date',
                 'latitude',
                 'longitude'),
+            # Field('date', choices=)
             FormActions(
                 Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')

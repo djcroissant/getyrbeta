@@ -49,6 +49,23 @@ class CreateLocationMixin:
         context['trip_id'] = self.kwargs.get('trip_id')
         return context
 
+    def get_form_kwargs(self):
+        """
+        Adds a tuple of choices for the datefield. This allows the user
+        to select by the day # and automatically saves the corresponding
+        date in the database.
+        """
+        kwargs = super(CreateLocationMixin, self).get_form_kwargs()
+        datehash = Trip.objects.get(pk=self.kwargs.get('trip_id')).get_datehash()
+        choices = []
+        for key, value in datehash.items():
+            if key == None:
+                choices.append((key, value))
+            else:
+                choices.append((key, str(value)  + ' - ' + str(key)))
+        kwargs['choices'] = tuple(choices)
+        return kwargs
+
     def get_success_url(self):
         return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
 

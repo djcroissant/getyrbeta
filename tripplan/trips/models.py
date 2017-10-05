@@ -159,18 +159,10 @@ class TripLocation(models.Model):
         (CAMP, 'Camp Location'),
     )
 
-    def __init__(self):
-        super(TripLocation, self).__init__()
-        datehash = self.trip.get_datehash()
-        date_choices = []
-        for key, value in datehash:
-            date_choices.append((key, value))
-        date_choices = tuple(date_choices)
-
     location_type = models.CharField(max_length=2,
         choices=LOCATION_TYPE_CHOICES)
     title = models.CharField(max_length = 255, blank=True)
-    date = models.DateField(null=True, blank=True, choices=date_choices, default = None)
+    date = models.DateField(null=True, blank=True)
     latitude = models.CharField(max_length = 31, blank=True)
     longitude = models.CharField(max_length = 31, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
