@@ -34,14 +34,7 @@
       </div>
       <div class="trip-list" id="trip-list">
         <div class="header">
-          <div class="row">
-            <div class="col-md-5">
-              <h3>Trailhead Location</h3>
-            </div>
-            <div class="col-md-6">
-              <a href="{% url 'trips:trailhead_create' trip.id %}">Add new location</a>
-            </div>
-          </div>
+          <h3>Trailhead Location</h3>
         </div>
         {% if trailhead %}
           {% if trailhead.title %}
@@ -64,6 +57,8 @@
               </div>
             </div>
           {% endif %}
+        {% else %}
+          <a href="{% url 'trips:trailhead_create' trip.id %}">Add trailhead information</a>
         {% endif %}
       </div>
       <div class="trip-list" id="trip-list">

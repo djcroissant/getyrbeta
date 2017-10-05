@@ -53,7 +53,6 @@ class CreateLocationForm(forms.ModelForm):
         self.helper.layout = Layout (
             Fieldset(
                 '',
-                # 'location_type',
                 'title',
                 'date',
                 'latitude',

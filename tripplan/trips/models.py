@@ -63,9 +63,14 @@ class Trip(models.Model):
         (e.g. 'datelist': ['Unassigned', 'Day 2', 'Day 5']). 'Unassigned' is
         included when there are objectives that don't have a date.
 
-        The value corresponding to 'locationlist is a list of lists.
+        The value corresponding to 'locationlist' is a list of lists.
         Each sublist is a list of TripLocation objects corresponding to
         locations for the date in the corresponding element of datelist
+
+        The value corresponding to 'locationrange' is a range from 0 to the
+        number of elements in datelist. this also corresponds to the number of
+        1st level lists in locationlist. It must be passed via context to
+        the template because the template does not support the 'range' tag.
 
         Special circumstances are defined when the Trip has no locations for
         the relevant location_type or when the trip has number_nights == 0
@@ -82,11 +87,14 @@ class Trip(models.Model):
             datelist = []
             loclist = []
             datehash = self.get_datehash()
+            # Address the special case for locations with no date assigned
+            # this will be listed as 'unassigned'
             date = None
             filtered_locations = locations.filter(date=date)
             if filtered_locations.count() > 0:
                 datelist.append(datehash[date])
                 loclist.append(list(filtered_locations))
+            # Address all locations with specific dates assigned.
             for i in range(0, self.number_nights):
                 date = self.start_date + datetime.timedelta(days=i)
                 filtered_locations = locations.filter(date=date)
@@ -151,17 +159,18 @@ class TripLocation(models.Model):
         (CAMP, 'Camp Location'),
     )
 
-    # LABEL_CHOICES = {
-    #     BEGIN: 'Trailhead description',
-    #     END: 'End point description',
-    #     OBJECTIVE: 'Description',
-    #     CAMP: 'Description'
-    # }
+    def __init__(self):
+        super(TripLocation, self).__init__()
+        datehash = self.trip.get_datehash()
+        date_choices = []
+        for key, value in datehash:
+            date_choices.append((key, value))
+        date_choices = tuple(date_choices)
 
     location_type = models.CharField(max_length=2,
         choices=LOCATION_TYPE_CHOICES)
     title = models.CharField(max_length = 255, blank=True)
-    date = models.DateField(null=True, blank=True)
+    date = models.DateField(null=True, blank=True, choices=date_choices, default = None)
     latitude = models.CharField(max_length = 31, blank=True)
     longitude = models.CharField(max_length = 31, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
