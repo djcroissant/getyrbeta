@@ -20,7 +20,7 @@
             {% if trip.number_nights == 0 %}
               <p>Day trip</p>
             {% else %}
-              <p>{{ trip.number_nights }} Nights</p>
+              <p>{{ trip.number_nights }} Night{% if trip.number_nights > 1 %}s{% endif %}</p>
             {% endif %}
           </div>
         </div>

@@ -1,4 +1,5 @@
-from django import forms
+# from django import forms
+import floppyforms.__future__ as forms
 
 from account_info.models import User
 
