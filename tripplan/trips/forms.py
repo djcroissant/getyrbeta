@@ -52,7 +52,6 @@ class CreateLocationForm(forms.ModelForm):
         self.helper.form_action = ''
         self.helper.field_class = 'col-md-9'
         self.fields['title'].label = 'Description'
-        # import pdb; pdb.set_trace()
         self.fields['date'] = forms.ChoiceField(choices=choices)
         self.helper.layout = Layout (
             Fieldset(
@@ -61,7 +60,6 @@ class CreateLocationForm(forms.ModelForm):
                 'date',
                 'latitude',
                 'longitude'),
-            # Field('date', choices=)
             FormActions(
                 Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')

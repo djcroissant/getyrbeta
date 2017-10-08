@@ -17,6 +17,14 @@ urlpatterns = [
         views.ObjectiveCreateView.as_view(), name='objective_create'),
     url(r'^create/(?P<trip_id>[0-9]+)/camp/$',
         views.CampCreateView.as_view(), name='camp_create'),
+    url(r'^edit/(?P<trip_id>[0-9]+)/objective/(?P<pk>[0-9]+)$',
+        views.ObjectiveEditView.as_view(), name='objective_edit'),
+    url(r'^edit/(?P<trip_id>[0-9]+)/camp/(?P<pk>[0-9]+)$',
+        views.CampEditView.as_view(), name='camp_edit'),
+    url(r'^delete/(?P<trip_id>[0-9]+)/objective/(?P<pk>[0-9]+)$',
+        views.ObjectiveDeleteView.as_view(), name='objective_delete'),
+    # url(r'^delete/(?P<trip_id>[0-9]+)/location/(?P<location_id>[0-9]+)/$',
+    #     views.LocationDeleteView.as_view(), name='location_delete'),
     url(r'^notifications/$', views.notifications, name='notifications'),
 ]
 
