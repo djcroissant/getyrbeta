@@ -34,7 +34,11 @@
               </div>
             </div>
           {% endif %}
-          <button type="delete" name="delete" class="btn btn-success">Delete Objective</button>
+          <form action="" method="POST">
+            {% csrf_token %}
+            <button type="submit" value="Delete" class="btn btn-success">Delete</button>
+            <a href="{% url 'trips:trip_detail' trip_id %}" name="cancel" value="Cancel" class="btn btn-secondary">Cancel</a>
+          </form>
         </div>
       </div>
     </div>
