@@ -162,7 +162,7 @@ class TripLocation(models.Model):
     location_type = models.CharField(max_length=2,
         choices=LOCATION_TYPE_CHOICES)
     title = models.CharField(max_length = 255, blank=True)
-    date = models.DateField(null=True, blank=True)
+    date = models.CharField(max_length = 255, default='Unassigned')
     latitude = models.CharField(max_length = 31, blank=True)
     longitude = models.CharField(max_length = 31, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
