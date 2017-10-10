@@ -118,20 +118,23 @@ class TripView(LoginRequiredMixin, DetailView):
         context['camp_dict'] = trip.get_location_context(TripLocation.CAMP)
         return context
 
-class TrailheadCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
-    location_type = TripLocation.BEGIN
-    page_title = 'Enter a new trailhead location'
-    submit_button_title = 'Save Trailhead'
-
-class ObjectiveCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
-    location_type = TripLocation.OBJECTIVE
-    page_title = 'Enter a new objective'
-    submit_button_title = 'Save Objective'
-
-class CampCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
-    location_type = TripLocation.CAMP
-    page_title = 'Enter a new camp location'
-    submit_button_title = 'Save Camp'
+class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
+    def set_instance_variables(self, **kwargs):
+        url_location_type = self.kwargs.get('location_type')
+        if url_location_type == 'trailhead':
+            self.location_type = TripLocation.BEGIN
+            self.page_title = 'Enter a new trailhead location'
+            self.submit_button_title = 'Save Trailhead'
+        elif url_location_type == 'objective':
+            self.location_type = 'TripLocation.OBJECTIVE'
+            self.page_title = 'Enter a new objective'
+            self.submit_button_title = 'Save Objective'
+        elif url_location_type == 'camp':
+            self.location_type = TripLocation.CAMP
+            self.page_title = 'Enter a new camp location'
+            self.submit_button_title = 'Save Camp'
+        else:
+            raise ValueError('Invalid location type: ' + self.location_type)
 
 class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     def set_instance_variables(self, **kwargs):
@@ -148,51 +151,20 @@ class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
         else:
             raise ValueError('Invalid location type: ' + self.location_type)
 
-# class TrailheadEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
-#     location_type = TripLocation.BEGIN
-#     page_title = 'Edit trailhead details'
-#     submit_button_title = 'Save Trailhead'
-#
-# class ObjectiveEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
-#     location_type = TripLocation.OBJECTIVE
-#     page_title = 'Edit objective details'
-#     submit_button_title = 'Save Objective'
-#
-# class CampEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
-#     location_type = TripLocation.CAMP
-#     page_title = 'Edit camp details'
-#     submit_button_title = 'Save Camp'
-
-class TrailheadDeleteView(DeleteLocationMixin, DeleteView):
-    page_title = 'Delete trailhead'
-    submit_button_title = 'Delete Trailhead'
-
-class ObjectiveDeleteView(DeleteLocationMixin, DeleteView):
-    page_title = 'Delete objective'
-    submit_button_title = 'Delete Objective'
-
-class CampDeleteView(DeleteLocationMixin, DeleteView):
-    page_title = 'Delete camp'
-    submit_button_title = 'Delete Camp'
-
-# class LocationDeleteView(LoginRequiredMixin, DeleteView):
-
-
-
-# class TripEditView(LoginRequiredMixin, UpdateView):
-#     model = Trip
-#     template_name = 'trips/edit.html'
-#     form_class = TripLocationForm
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(TripEditView, self).get_context_data(**kwargs)
-#         trip = self.get_object()
-#         context['page_title'] = trip.title
-#         context['submit_button_title'] = 'Save Trip'
-#         context['cancel_button_path'] = 'trips:trip_list'
-#         if trip.number_nights > 0:
-#             context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
-#         return context
+class LocationDeleteView(DeleteLocationMixin, DeleteView):
+    def set_instance_variables(self, **kwargs):
+        self.location_type = self.kwargs.get('location_type')
+        if self.location_type == TripLocation.BEGIN:
+            self.page_title = 'Delete trailhead'
+            self.submit_button_title = 'Delete Trailhead'
+        elif self.location_type == TripLocation.OBJECTIVE:
+            self.page_title = 'Delete objective'
+            self.submit_button_title = 'Delete Objective'
+        elif self.location_type == TripLocation.CAMP:
+            self.page_title = 'Delete camp'
+            self.submit_button_title = 'Delete Camp'
+        else:
+            raise ValueError('Invalid location type: ' + self.location_type)
 
 class TripCreateView(LoginRequiredMixin, CreateView):
     model = Trip
@@ -210,36 +182,6 @@ class TripCreateView(LoginRequiredMixin, CreateView):
         return reverse('trips:trip_detail', args=(self.object.id,))
 
 
-# # class UserView(generic.DetailView):
-# #     model = User
-# #     template_name = 'users/detail.html'
-# #
-# #     def get_context_data(self, **kwargs):
-# #         context = super(UserView, self).get_context_data(**kwargs)
-# #         context['vehicle_list'] = self.object.vehicle_set.all()
-# #         return context
-#
-# class VehicleView(generic.DetailView):
-#     model = Vehicle
-#     template_name = 'vehicles/detail.html'
-#
-# class VehicleCreateView(generic.CreateView):
-#     model = Vehicle
-#     template_name = 'vehicles/create.html'
-#     fields = ['year', 'make', 'model', 'lic_plate_num',
-#               'lic_plate_st']
-#
-#     # def get_success_url(self, **kwargs):
-#     #     return reverse('trips:user_detail', args=(self.kwargs['user_id'],))
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(VehicleCreateView, self).get_context_data(**kwargs)
-#         context['user'] = User.objects.get(pk=self.kwargs['user_id'])
-#         return context
-#
-#     def form_valid(self, form):
-#         form.instance.user = User.objects.get(pk=self.kwargs['user_id'])
-#         return super(VehicleCreateView, self).form_valid(form)
-
 def notifications(request):
+    #placeholder
     return render(request, 'trips/notifications.html')

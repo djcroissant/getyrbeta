@@ -42,7 +42,7 @@
             <div class="col-md-6">
               {% if trailhead %}
                 <a href="{% url 'trips:location_edit' trip.id trailhead.location_type trailhead.id  %}">edit</a>
-                <a href="{% url 'trips:trailhead_delete' trip.id trailhead.id  %}">delete</a>
+                <a href="{% url 'trips:location_delete' trip.id trailhead.location_type trailhead.id  %}">delete</a>
               {% endif %}
             </div>
           </div>
@@ -69,7 +69,7 @@
             </div>
           {% endif %}
         {% else %}
-          <a href="{% url 'trips:trailhead_create' trip.id %}">Add trailhead information</a>
+          <a href="{% url 'trips:location_create' trip.id 'trailhead' %}">Add trailhead information</a>
         {% endif %}
       </div>
 {# Objective Location Section #}
@@ -80,7 +80,7 @@
               <h3>Objectives</h3>
             </div>
             <div class="col-md-6">
-              <a href="{% url 'trips:objective_create' trip.id %}">Add new objective</a>
+              <a href="{% url 'trips:location_create' trip.id 'objective' %}">Add new objective</a>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
                 <div class="row">
                   <div class="col-sm-2">
                     <a href="{% url 'trips:location_edit' trip.id location.location_type location.id  %}">edit</a>
-                    <a href="{% url 'trips:objective_delete' trip.id location.id  %}">delete</a>
+                    <a href="{% url 'trips:location_delete' trip.id location.location_type location.id  %}">delete</a>
                   </div>
                   <div class="col-sm-8">
                     <li>{{ location.title }}</li>
@@ -111,7 +111,7 @@
                 <div class="row">
                   <div class="col-sm-2">
                     <a href="{% url 'trips:location_edit' trip.id location.location_type location.id  %}">edit</a>
-                    <a href="{% url 'trips:objective_delete' trip.id location.id  %}">delete</a>
+                    <a href="{% url 'trips:location_delete' trip.id location.location_type location.id  %}">delete</a>
                   </div>
                   <div class="col-sm-8">
                     <li>{{ location.title }}</li>
@@ -144,7 +144,7 @@
                 <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
               </div>
               <div class="col-md-6">
-                <a href="{% url 'trips:camp_create' trip.id %}">Add new camp</a>
+                <a href="{% url 'trips:location_create' trip.id 'camp' %}">Add new camp</a>
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@
                   <div class="row">
                     <div class="col-sm-2">
                       <a href="{% url 'trips:location_edit' trip.id location.location_type location.id  %}">edit</a>
-                      <a href="{% url 'trips:camp_delete' trip.id location.id  %}">delete</a>
+                      <a href="{% url 'trips:location_delete' trip.id location.location_type location.id  %}">delete</a>
                     </div>
                     <div class="col-sm-8">
                       <li>{{ location.title }}</li>
@@ -175,7 +175,7 @@
                   <div class="row">
                     <div class="col-sm-2">
                       <a href="{% url 'trips:location_edit' trip.id location.location_type location.id  %}">edit</a>
-                      <a href="{% url 'trips:camp_delete' trip.id location.id  %}">delete</a>
+                      <a href="{% url 'trips:location_delete' trip.id location.location_type location.id  %}">delete</a>
                     </div>
                     <div class="col-sm-8">
                       <li>{{ location.title }}</li>
