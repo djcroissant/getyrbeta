@@ -1,6 +1,6 @@
 import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
     CreateView, DeleteView, DetailView
@@ -36,8 +36,16 @@ class LocationFormMixin:
     template_name = 'trips/location.html'
     form_class = LocationForm
 
+    def get(self, request, *args, **kwargs):
+        self.set_instance_variables(**kwargs)
+        return super(LocationFormMixin, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.set_instance_variables(**kwargs)
+        return super(LocationFormMixin, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
-        form.instance.trip = Trip.objects.get(pk=self.kwargs.get('trip_id'))
+        form.instance.trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
         form.instance.location_type = self.location_type
         return super(LocationFormMixin, self).form_valid(form)
 
@@ -125,20 +133,35 @@ class CampCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     page_title = 'Enter a new camp location'
     submit_button_title = 'Save Camp'
 
-class TrailheadEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
-    location_type = TripLocation.BEGIN
-    page_title = 'Edit trailhead details'
-    submit_button_title = 'Save Trailhead'
+class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
+    def set_instance_variables(self, **kwargs):
+        self.location_type = self.kwargs.get('location_type')
+        if self.location_type == TripLocation.BEGIN:
+            self.page_title = 'Edit trailhead details'
+            self.submit_button_title = 'Save Trailhead'
+        elif self.location_type == TripLocation.OBJECTIVE:
+            self.page_title = 'Edit objective details'
+            self.submit_button_title = 'Save Objective'
+        elif self.location_type == TripLocation.CAMP:
+            self.page_title = 'Edit camp details'
+            self.submit_button_title = 'Save Camp'
+        else:
+            raise ValueError('Invalid location type: ' + self.location_type)
 
-class ObjectiveEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
-    location_type = TripLocation.OBJECTIVE
-    page_title = 'Edit objective details'
-    submit_button_title = 'Save Objective'
-
-class CampEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
-    location_type = TripLocation.CAMP
-    page_title = 'Edit camp details'
-    submit_button_title = 'Save Camp'
+# class TrailheadEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
+#     location_type = TripLocation.BEGIN
+#     page_title = 'Edit trailhead details'
+#     submit_button_title = 'Save Trailhead'
+#
+# class ObjectiveEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
+#     location_type = TripLocation.OBJECTIVE
+#     page_title = 'Edit objective details'
+#     submit_button_title = 'Save Objective'
+#
+# class CampEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
+#     location_type = TripLocation.CAMP
+#     page_title = 'Edit camp details'
+#     submit_button_title = 'Save Camp'
 
 class TrailheadDeleteView(DeleteLocationMixin, DeleteView):
     page_title = 'Delete trailhead'

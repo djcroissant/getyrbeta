@@ -65,6 +65,7 @@ class Trip(models.Model):
                 date=date
             )
             context[date] = locations
+            # import pdb; pdb.set_trace()
         return context
 
 
@@ -184,6 +185,13 @@ class TripLocation(models.Model):
         (OBJECTIVE, 'Objective Location'),
         (CAMP, 'Camp Location'),
     )
+
+    LOCATION_URL = {
+        BEGIN: 'trailhead',
+        END: 'endpoint',
+        OBJECTIVE: 'objective',
+        CAMP: 'camp'
+    }
 
     location_type = models.CharField(max_length=2,
         choices=LOCATION_TYPE_CHOICES)
