@@ -11,7 +11,7 @@ from .models import Trip, TripLocation
 
 from account_info.models import User
 
-from .forms import CreateTripForm, CreateLocationForm
+from .forms import TripForm, LocationForm
 
 
 class LoginRequiredMixin:
@@ -31,40 +31,51 @@ class LoginRequiredMixin:
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 
-class CreateLocationMixin:
+class LocationFormMixin:
     model = TripLocation
     template_name = 'trips/location.html'
-    form_class = CreateLocationForm
+    form_class = LocationForm
 
     def form_valid(self, form):
         form.instance.trip = Trip.objects.get(pk=self.kwargs.get('trip_id'))
         form.instance.location_type = self.location_type
-        return super(CreateLocationMixin, self).form_valid(form)
+        return super(LocationFormMixin, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(CreateLocationMixin, self).get_context_data(**kwargs)
+        context = super(LocationFormMixin, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
-        context['save_button_title'] = self.save_button_title
+        context['submit_button_title'] = self.submit_button_title
         context['cancel_button_path'] = 'trips:trip_detail'
         context['trip_id'] = self.kwargs.get('trip_id')
         return context
 
     def get_form_kwargs(self):
         """
-        Adds a tuple of choices for the datefield. This allows the user
-        to select by the day # and automatically saves the corresponding
-        date in the database.
+        Adds a tuple of choices for the date field to the form kwargs.
         """
-        kwargs = super(CreateLocationMixin, self).get_form_kwargs()
-        datehash = Trip.objects.get(pk=self.kwargs.get('trip_id')).get_datehash()
+        kwargs = super(LocationFormMixin, self).get_form_kwargs()
+        date_list = Trip.objects.get(pk=self.kwargs.get('trip_id')).get_date_choices()
         choices = []
-        for key, value in datehash.items():
-            if key == None:
-                choices.append((key, value))
-            else:
-                choices.append((key, str(value)  + ' - ' + str(key)))
+        for item in date_list:
+            choices.append((item, item))
         kwargs['choices'] = tuple(choices)
         return kwargs
+
+    def get_success_url(self):
+        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+
+class DeleteLocationMixin:
+    model = TripLocation
+    template_name = 'trips/delete.html'
+    context_object_name = 'triplocation'
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteLocationMixin, self).get_context_data(**kwargs)
+        context['page_title'] = self.page_title
+        context['submit_button_title'] = self.submit_button_title
+        context['cancel_button_path'] = 'trips:trip_detail'
+        context['trip_id'] = self.kwargs.get('trip_id')
+        return context
 
     def get_success_url(self):
         return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
@@ -88,84 +99,50 @@ class TripView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TripView, self).get_context_data(**kwargs)
         trip = self.get_object()
-
-        # Context for page title
         context['page_title'] = trip.title
         if trip.number_nights > 0:
             context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
 
-        # Context for trailhead / endpoint section
         context['trailhead'] = trip.get_trailhead()
         context['endpoint'] = trip.get_endpoint()
 
-        # Context for objective setion
-        context['objectives'] = trip.get_location_context(TripLocation.OBJECTIVE)
+        context['date_list'] = trip.get_date_choices()
+        context['objective_dict'] = trip.get_location_context(TripLocation.OBJECTIVE)
         # import pdb; pdb.set_trace()
-
-        # Context for camp location section
-        context['camp_locations'] = trip.get_location_context(TripLocation.CAMP)
-
         return context
 
-class TrailheadCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
+class TrailheadCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     location_type = TripLocation.BEGIN
     page_title = 'Enter a new trailhead location'
-    save_button_title = 'Save Trailhead'
+    submit_button_title = 'Save Trailhead'
 
-class ObjectiveCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
+class ObjectiveCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     location_type = TripLocation.OBJECTIVE
     page_title = 'Enter a new objective'
-    save_button_title = 'Save Objective'
+    submit_button_title = 'Save Objective'
 
-class CampCreateView(LoginRequiredMixin, CreateLocationMixin, CreateView):
+class CampCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     location_type = TripLocation.CAMP
     page_title = 'Enter a new camp location'
-    save_button_title = 'Save Camp'
+    submit_button_title = 'Save Camp'
 
-class ObjectiveEditView(LoginRequiredMixin, CreateLocationMixin, UpdateView):
+class ObjectiveEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     location_type = TripLocation.OBJECTIVE
     page_title = 'Edit objective details'
-    save_button_title = 'Save Objective'
+    submit_button_title = 'Save Objective'
 
-class CampEditView(LoginRequiredMixin, CreateLocationMixin, UpdateView):
+class CampEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     location_type = TripLocation.CAMP
     page_title = 'Edit camp details'
-    save_button_title = 'Save Camp'
+    submit_button_title = 'Save Camp'
 
-class ObjectiveDeleteView(DeleteView):
+class ObjectiveDeleteView(DeleteLocationMixin, DeleteView):
     page_title = 'Delete objective'
-    button_title = 'Delete Objective'
-    model = TripLocation
-    template_name = 'trips/delete.html'
-    context_object_name = 'triplocation'
+    submit_button_title = 'Delete Objective'
 
-    def get_context_data(self, **kwargs):
-        context = super(ObjectiveDeleteView, self).get_context_data(**kwargs)
-        context['page_title'] = self.page_title
-        context['button_title'] = self.button_title
-        context['cancel_button_path'] = 'trips:trip_detail'
-        context['trip_id'] = self.kwargs.get('trip_id')
-        return context
-
-    # def get_form_kwargs(self):
-    #     """
-    #     Adds a tuple of choices for the datefield. This allows the user
-    #     to select by the day # and automatically saves the corresponding
-    #     date in the database.
-    #     """
-    #     kwargs = super(CreateLocationMixin, self).get_form_kwargs()
-    #     datehash = Trip.objects.get(pk=self.kwargs.get('trip_id')).get_datehash()
-    #     choices = []
-    #     for key, value in datehash.items():
-    #         if key == None:
-    #             choices.append((key, value))
-    #         else:
-    #             choices.append((key, str(value)  + ' - ' + str(key)))
-    #     kwargs['choices'] = tuple(choices)
-    #     return kwargs
-
-    def get_success_url(self):
-        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+class CampDeleteView(DeleteLocationMixin, DeleteView):
+    page_title = 'Delete camp'
+    submit_button_title = 'Delete Camp'
 
 # class LocationDeleteView(LoginRequiredMixin, DeleteView):
 
@@ -180,7 +157,7 @@ class ObjectiveDeleteView(DeleteView):
 #         context = super(TripEditView, self).get_context_data(**kwargs)
 #         trip = self.get_object()
 #         context['page_title'] = trip.title
-#         context['save_button_title'] = 'Save Trip'
+#         context['submit_button_title'] = 'Save Trip'
 #         context['cancel_button_path'] = 'trips:trip_list'
 #         if trip.number_nights > 0:
 #             context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
@@ -189,12 +166,12 @@ class ObjectiveDeleteView(DeleteView):
 class TripCreateView(LoginRequiredMixin, CreateView):
     model = Trip
     template_name = 'trips/create.html'
-    form_class = CreateTripForm
+    form_class = TripForm
 
     def get_context_data(self, **kwargs):
         context = super(TripCreateView, self).get_context_data(**kwargs)
         context['page_title'] = 'Start a new trip'
-        context['save_button_title'] = 'Save Trip'
+        context['submit_button_title'] = 'Save Trip'
         context['cancel_button_path'] = 'trips:trip_list'
         return context
 

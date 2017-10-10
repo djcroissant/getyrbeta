@@ -10,15 +10,15 @@ from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field
 from crispy_forms.bootstrap import FormActions
 
 
-class CreateTripForm(forms.ModelForm):
+class TripForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = ['title', 'start_date', 'number_nights']
 
     def __init__(self, *args, **kwargs):
-        super(CreateTripForm, self).__init__(*args, **kwargs)
+        super(TripForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = 'id-CreateTripForm'
+        self.helper.form_id = 'id-TripForm'
         self.helper.form_class = 'trip_forms'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
@@ -32,21 +32,21 @@ class CreateTripForm(forms.ModelForm):
                 'start_date',
                 'number_nights'),
             FormActions(
-                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
+                Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel</a>')
             )
         )
 
-class CreateLocationForm(forms.ModelForm):
+class LocationForm(forms.ModelForm):
     class Meta:
         model = TripLocation
         fields = ['title', 'date', 'latitude', 'longitude']
 
     def __init__(self, *args, **kwargs):
         choices = kwargs.pop('choices')
-        super(CreateLocationForm, self).__init__(*args, **kwargs)
+        super(LocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = 'id-CreateLocationForm'
+        self.helper.form_id = 'id-LocationForm'
         self.helper.form_class = 'trip_forms'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
@@ -61,7 +61,7 @@ class CreateLocationForm(forms.ModelForm):
                 'latitude',
                 'longitude'),
             FormActions(
-                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
+                Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')
             )
         )

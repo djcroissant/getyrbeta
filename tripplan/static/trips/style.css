@@ -22,3 +22,8 @@
   background: #99ccff;
   padding: 2pt;
 }
+
+li.hidden_bullet {
+  list-style:none;
+  padding-left: 22px;
+}
