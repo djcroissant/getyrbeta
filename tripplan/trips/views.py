@@ -106,9 +106,8 @@ class TripView(LoginRequiredMixin, DetailView):
         context['trailhead'] = trip.get_trailhead()
         context['endpoint'] = trip.get_endpoint()
 
-        context['date_list'] = trip.get_date_choices()
         context['objective_dict'] = trip.get_location_context(TripLocation.OBJECTIVE)
-        # import pdb; pdb.set_trace()
+        context['camp_dict'] = trip.get_location_context(TripLocation.CAMP)
         return context
 
 class TrailheadCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
@@ -126,6 +125,11 @@ class CampCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     page_title = 'Enter a new camp location'
     submit_button_title = 'Save Camp'
 
+class TrailheadEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
+    location_type = TripLocation.BEGIN
+    page_title = 'Edit trailhead details'
+    submit_button_title = 'Save Trailhead'
+
 class ObjectiveEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     location_type = TripLocation.OBJECTIVE
     page_title = 'Edit objective details'
@@ -135,6 +139,10 @@ class CampEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     location_type = TripLocation.CAMP
     page_title = 'Edit camp details'
     submit_button_title = 'Save Camp'
+
+class TrailheadDeleteView(DeleteLocationMixin, DeleteView):
+    page_title = 'Delete trailhead'
+    submit_button_title = 'Delete Trailhead'
 
 class ObjectiveDeleteView(DeleteLocationMixin, DeleteView):
     page_title = 'Delete objective'
