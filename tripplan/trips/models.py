@@ -2,11 +2,11 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class Trip(models.Model):
     title = models.CharField(max_length = 255)
-    destination = models.CharField(max_length = 255, blank=True)
     start_date = models.DateField()
     number_nights = models.PositiveSmallIntegerField(default=0)
     trip_members = models.ManyToManyField('account_info.User',
@@ -41,8 +41,9 @@ class Trip(models.Model):
 
     def get_date_choices(self):
         """
-        This function returns a list of choices for the date field. The format
-        is either "Unassigned" or "Day X - Month, DD YYYY"
+        This function returns a list of choices for the date field.
+        Example: ["Unassigned", "Day X - Month, DD YYYY"]
+        TripLocation.date field will hold one of these choices as a string.
         """
         datelist = ["Unassigned"]
         for i in range(0, self.number_nights):
@@ -64,7 +65,7 @@ class Trip(models.Model):
                 location_type=location_type,
                 date=date
             )
-            context[date] = locations
+            context[date] = list(locations)
         return context
 
     def is_in_the_past(self):
@@ -114,10 +115,16 @@ class TripLocation(models.Model):
         (CAMP, 'Camp Location'),
     )
 
-    location_type = models.CharField(max_length=2,
-        choices=LOCATION_TYPE_CHOICES)
+    location_type = models.CharField(
+        max_length=2,
+        choices=LOCATION_TYPE_CHOICES
+    )
     title = models.CharField(max_length = 255, blank=True)
-    date = models.CharField(max_length = 255, default='Unassigned')
+    date = models.CharField(
+        max_length = 255,
+        default='Unassigned',
+        # validators=[validate_date]
+    )
     latitude = models.CharField(max_length = 31, blank=True)
     longitude = models.CharField(max_length = 31, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
@@ -139,9 +146,10 @@ class TripLocation(models.Model):
         """
         if self.date_assigned():
             date_components = self.date.split(' - ')
+            date={}
             date['day'] = date_components[0]
-            date['date'] = datetime.strptime(date_components[1], '%Y-%m-%d').date()
-            return date
+            date['date'] = datetime.datetime.strptime(date_components[1], '%Y-%m-%d').date()
+            return date['date']
         else:
             return "Unassigned"
 
@@ -149,4 +157,22 @@ class TripLocation(models.Model):
         """
         This function returns a list of choices for the date field on forms
         """
-        return self.trip.get_date_options()
+        return self.trip.get_date_choices()
+
+    def clean_fields(self, exclude=None):
+        """
+        The value for date must be one of those returned by the
+        Trip.get_date_choices() method
+        """
+        super(TripLocation, self).clean_fields(exclude=None)
+        if self.date not in self.get_date_choices():
+            if exclude and 'date' in exclude:
+                raise ValidationError(
+                    '%s is not a valid date format.' % self.date
+                )
+            else:
+                raise ValidationError(
+                    {
+                        'date': '%s is not a valid date format.' % self.date
+                    }
+                )

@@ -52,6 +52,7 @@ class LocationForm(forms.ModelForm):
         self.helper.form_action = ''
         self.helper.field_class = 'col-md-9'
         self.fields['title'].label = 'Description'
+        self.fields['date'].label = 'Date'
         self.fields['date'] = forms.ChoiceField(choices=choices)
         self.helper.layout = Layout (
             Fieldset(

@@ -88,24 +88,24 @@ class DeleteLocationMixin:
     def get_success_url(self):
         return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
 
-class TripList(LoginRequiredMixin, ListView):
+class TripListView(LoginRequiredMixin, ListView):
     model = Trip
     template_name = 'trips/index.html'
 
     def get_context_data(self, **kwargs):
-        context = super(TripList, self).get_context_data(**kwargs)
+        context = super(TripListView, self).get_context_data(**kwargs)
         context['upcoming_trip_list'] = Trip.objects.filter(
             start_date__gte=timezone.now()).order_by('start_date')
         context['past_trip_list'] = Trip.objects.filter(
             start_date__lt=timezone.now()).order_by('start_date')
         return context
 
-class TripView(LoginRequiredMixin, DetailView):
+class TripDetailView(LoginRequiredMixin, DetailView):
     model = Trip
     template_name = 'trips/detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(TripView, self).get_context_data(**kwargs)
+        context = super(TripDetailView, self).get_context_data(**kwargs)
         trip = self.get_object()
         context['page_title'] = trip.title
         if trip.number_nights > 0:
@@ -117,6 +117,21 @@ class TripView(LoginRequiredMixin, DetailView):
         context['objective_dict'] = trip.get_location_context(TripLocation.OBJECTIVE)
         context['camp_dict'] = trip.get_location_context(TripLocation.CAMP)
         return context
+
+class TripCreateView(LoginRequiredMixin, CreateView):
+    model = Trip
+    template_name = 'trips/create.html'
+    form_class = TripForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TripCreateView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Start a new trip'
+        context['submit_button_title'] = 'Save Trip'
+        context['cancel_button_path'] = 'trips:trip_list'
+        return context
+
+    def get_success_url(self):
+        return reverse('trips:trip_detail', args=(self.object.id,))
 
 class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     def set_instance_variables(self, **kwargs):
@@ -166,20 +181,6 @@ class LocationDeleteView(DeleteLocationMixin, DeleteView):
         else:
             raise ValueError('Invalid location type: ' + self.location_type)
 
-class TripCreateView(LoginRequiredMixin, CreateView):
-    model = Trip
-    template_name = 'trips/create.html'
-    form_class = TripForm
-
-    def get_context_data(self, **kwargs):
-        context = super(TripCreateView, self).get_context_data(**kwargs)
-        context['page_title'] = 'Start a new trip'
-        context['submit_button_title'] = 'Save Trip'
-        context['cancel_button_path'] = 'trips:trip_list'
-        return context
-
-    def get_success_url(self):
-        return reverse('trips:trip_detail', args=(self.object.id,))
 
 
 def notifications(request):
