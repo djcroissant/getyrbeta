@@ -8,8 +8,7 @@ app_name = 'trips'
 urlpatterns = [
     url(r'^$', views.TripListView.as_view(), name='trip_list'),
     url(r'^(?P<pk>[0-9]+)/$', views.TripDetailView.as_view(), name='trip_detail'),
-    url(r'^create/$',
-        views.TripCreateView.as_view(), name='trip_create'),
+    url(r'^create/$', views.TripCreateView.as_view(), name='trip_create'),
     url(r'^(?P<trip_id>[0-9]+)/create/(?P<location_type>[\w]+)/$',
         views.LocationCreateView.as_view(), name='location_create'),
     url(r'^(?P<trip_id>[0-9]+)/edit/(?P<location_type>[\w]+)/(?P<pk>[0-9]+)/$',

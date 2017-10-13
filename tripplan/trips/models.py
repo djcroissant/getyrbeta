@@ -123,7 +123,6 @@ class TripLocation(models.Model):
     date = models.CharField(
         max_length = 255,
         default='Unassigned',
-        # validators=[validate_date]
     )
     latitude = models.CharField(max_length = 31, blank=True)
     longitude = models.CharField(max_length = 31, blank=True)

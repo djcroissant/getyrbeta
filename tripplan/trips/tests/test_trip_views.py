@@ -13,6 +13,7 @@ from trips.models import Trip
 
 User = get_user_model()
 
+
 def setup_view(view, request, *args, **kwargs):
     '''
     Mimic as_view() returned callable, but returns view instance.
@@ -22,6 +23,7 @@ def setup_view(view, request, *args, **kwargs):
     view.args = args
     view.kwargs = kwargs
     return view
+
 
 class TripListViewTests(TestCase):
     def setUp(self):
@@ -122,14 +124,9 @@ class TripDetailViewTests(TestCase):
         response = TripDetailView.as_view()(request, pk=self.trip.id)
         self.assertTrue('trips/detail.html' in response.template_name)
 
-    def test_get_context_data_returns_page_title(self):
-        '''
-        The get_context_data returns 'page_title' set to trip.title
-        '''
-
     def test_get_context_data_includes_key_page_title(self):
         '''
-        The get_context_data includes key 'page_title' set to trip.title
+        The get_context_data includes key 'page_title'
         '''
         request = self.factory.get('/fake/')
         request.user = self.user
@@ -209,3 +206,92 @@ class TripDetailViewTests(TestCase):
         view.object = self.trip
         context = view.get_context_data()
         self.assertIn('camp_dict', context)
+
+
+class TripCreateViewTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(email='valid@email.com',
+            password='ValidPassword')
+
+    def test_200_response_from_get_request(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        response = TripCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_url_name_reverses_correctly(self):
+        url_path = '/trips/create/'
+        reverse_path = reverse('trips:trip_create')
+        self.assertEqual(reverse_path, url_path)
+
+    def test_get_request_redirects_to_login_if_user_not_logged_in(self):
+        request = self.factory.get('/fake/')
+        request.user = ''
+        response = TripCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        self.assertEqual(response.url, redirect_url)
+
+    def test_post_request_redirects_to_login_if_user_not_logged_in(self):
+        request = self.factory.post('/fake/')
+        request.user = ''
+        response = TripCreateView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        self.assertEqual(response.url, redirect_url)
+
+    def test_view_uses_correct_template(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        response = TripCreateView.as_view()(request)
+        self.assertTrue('trips/create.html' in response.template_name)
+
+    def test_get_context_data_includes_key_page_title(self):
+        '''
+        The get_context_data includes key 'page_title'
+        '''
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripCreateView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        view.object = Trip()
+        context = view.get_context_data()
+        self.assertIn('page_title', context)
+
+    def test_get_context_data_includes_key_submit_button_title(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripCreateView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        view.object = Trip()
+        context = view.get_context_data()
+        self.assertIn('submit_button_title', context)
+
+    def test_get_context_data_includes_key_cancel_button_path(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripCreateView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        view.object = Trip()
+        context = view.get_context_data()
+        self.assertIn('cancel_button_path', context)
+
+    def test_get_success_url_redirects_to_trip_detail(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripCreateView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        trip = Trip.objects.create(title='title',
+            start_date=timezone.now().date())
+        view.object = trip
+        success_url = view.get_success_url()
+        intended_url = reverse('trips:trip_detail', args=(trip.id,))
+        self.assertEqual(success_url, intended_url)

@@ -70,7 +70,7 @@ class LocationFormMixin:
         return kwargs
 
     def get_success_url(self):
-        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
 
 class DeleteLocationMixin:
     model = TripLocation
@@ -86,7 +86,7 @@ class DeleteLocationMixin:
         return context
 
     def get_success_url(self):
-        return reverse('trips:trip_detail', args=self.kwargs.get('trip_id'))
+        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
 
 class TripListView(LoginRequiredMixin, ListView):
     model = Trip
@@ -141,7 +141,7 @@ class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
             self.page_title = 'Enter a new trailhead location'
             self.submit_button_title = 'Save Trailhead'
         elif url_location_type == 'objective':
-            self.location_type = 'TripLocation.OBJECTIVE'
+            self.location_type = TripLocation.OBJECTIVE
             self.page_title = 'Enter a new objective'
             self.submit_button_title = 'Save Objective'
         elif url_location_type == 'camp':
@@ -149,7 +149,7 @@ class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
             self.page_title = 'Enter a new camp location'
             self.submit_button_title = 'Save Camp'
         else:
-            raise ValueError('Invalid location type: ' + self.location_type)
+            raise ValueError('Invalid location type: ' + url_location_type)
 
 class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     def set_instance_variables(self, **kwargs):

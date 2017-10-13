@@ -43,6 +43,7 @@ class LocationForm(forms.ModelForm):
         fields = ['title', 'date', 'latitude', 'longitude']
 
     def __init__(self, *args, **kwargs):
+        # import pdb; pdb.set_trace()
         choices = kwargs.pop('choices')
         super(LocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
