@@ -44,11 +44,6 @@ class LocationFormMixin:
         self.set_instance_variables(**kwargs)
         return super(LocationFormMixin, self).post(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        # form.instance.trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
-        # form.instance.location_type = self.location_type
-        return super(LocationFormMixin, self).form_valid(form)
-
     def get_context_data(self, **kwargs):
         context = super(LocationFormMixin, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
@@ -68,14 +63,6 @@ class LocationFormMixin:
             choices.append((item, item))
         kwargs['choices'] = tuple(choices)
         return kwargs
-
-    def get_initial(self):
-        trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
-        location_type = self.kwargs.get('location_type')
-        return {
-            'trip': trip,
-            'location_type': location_type
-        }
 
     def get_success_url(self):
         return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
@@ -159,20 +146,28 @@ class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
         else:
             raise ValueError('Invalid location type: ' + url_location_type)
 
+    def get_initial(self):
+        trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
+        location_type = self.kwargs.get('location_type')
+        return {
+            'trip': trip,
+            'location_type': location_type
+        }
+
 class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     def set_instance_variables(self, **kwargs):
-        self.location_type = self.kwargs.get('location_type')
-        if self.location_type == TripLocation.BEGIN:
+        url_location_type = self.kwargs.get('location_type')
+        if url_location_type == 'trailhead':
             self.page_title = 'Edit trailhead details'
             self.submit_button_title = 'Save Trailhead'
-        elif self.location_type == TripLocation.OBJECTIVE:
+        elif url_location_type == 'objective':
             self.page_title = 'Edit objective details'
             self.submit_button_title = 'Save Objective'
-        elif self.location_type == TripLocation.CAMP:
+        elif url_location_type == 'camp':
             self.page_title = 'Edit camp details'
             self.submit_button_title = 'Save Camp'
         else:
-            raise ValueError('Invalid location type: ' + self.location_type)
+            raise ValueError('Invalid location type: ' + url_location_type)
 
 class LocationDeleteView(DeleteLocationMixin, DeleteView):
     def set_instance_variables(self, **kwargs):
