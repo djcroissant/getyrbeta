@@ -40,7 +40,8 @@ class TripForm(forms.ModelForm):
 class LocationForm(forms.ModelForm):
     class Meta:
         model = TripLocation
-        fields = ['title', 'date', 'latitude', 'longitude']
+        fields = ['trip', 'location_type', 'title', 'date',
+            'latitude', 'longitude']
 
     def __init__(self, *args, **kwargs):
         # import pdb; pdb.set_trace()
@@ -62,6 +63,8 @@ class LocationForm(forms.ModelForm):
                 'date',
                 'latitude',
                 'longitude'),
+            Field('trip', type='hidden'),
+            Field('location_type', type='hidden'),
             FormActions(
                 Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')

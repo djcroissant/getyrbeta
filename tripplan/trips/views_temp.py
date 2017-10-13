@@ -50,11 +50,13 @@ class LocationFormMixin:
         return super(LocationFormMixin, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
+        # import pdb; pdb.set_trace()
         context = super(LocationFormMixin, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
         context['submit_button_title'] = self.submit_button_title
         context['cancel_button_path'] = 'trips:trip_detail'
         context['trip_id'] = self.kwargs.get('trip_id')
+        # context['location_type'] = self.kwargs.get('location_type')
         return context
 
     def get_form_kwargs(self):
@@ -68,14 +70,6 @@ class LocationFormMixin:
             choices.append((item, item))
         kwargs['choices'] = tuple(choices)
         return kwargs
-
-    def get_initial(self):
-        trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
-        location_type = self.kwargs.get('location_type')
-        return {
-            'trip': trip,
-            'location_type': location_type
-        }
 
     def get_success_url(self):
         return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
@@ -91,6 +85,7 @@ class DeleteLocationMixin:
         context['submit_button_title'] = self.submit_button_title
         context['cancel_button_path'] = 'trips:trip_detail'
         context['trip_id'] = self.kwargs.get('trip_id')
+        # context['location_type'] = self.kwargs.get('location_type')
         return context
 
     def get_success_url(self):
@@ -143,21 +138,26 @@ class TripCreateView(LoginRequiredMixin, CreateView):
 
 class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
     def set_instance_variables(self, **kwargs):
-        url_location_type = self.kwargs.get('location_type')
-        if url_location_type == 'trailhead':
-            self.kwargs['location_type'] = TripLocation.BEGIN
-            self.page_title = 'Enter a new trailhead location'
+        self.location_type = self.kwargs.get('location_type')
+        if self.location_type == TripLocation.BEGIN:
+            self.page_title = 'Create trailhead details'
             self.submit_button_title = 'Save Trailhead'
-        elif url_location_type == 'objective':
-            self.kwargs['location_type'] = TripLocation.OBJECTIVE
-            self.page_title = 'Enter a new objective'
+        elif self.location_type == TripLocation.OBJECTIVE:
+            self.page_title = 'Create objective details'
             self.submit_button_title = 'Save Objective'
-        elif url_location_type == 'camp':
-            self.kwargs['location_type'] = TripLocation.CAMP
-            self.page_title = 'Enter a new camp location'
+        elif self.location_type == TripLocation.CAMP:
+            self.page_title = 'Create camp details'
             self.submit_button_title = 'Save Camp'
         else:
-            raise ValueError('Invalid location type: ' + url_location_type)
+            raise ValueError('Invalid location type: ' + self.location_type)
+
+    def get_initial(self):
+        trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
+        location_type = self.kwargs.get('location_type')
+        return {
+            'trip': trip,
+            'location_type': location_type
+        }
 
 class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
     def set_instance_variables(self, **kwargs):
