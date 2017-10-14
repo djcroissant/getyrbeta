@@ -67,22 +67,6 @@ class LocationFormMixin:
     def get_success_url(self):
         return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
 
-class DeleteLocationMixin:
-    model = TripLocation
-    template_name = 'trips/delete.html'
-    context_object_name = 'triplocation'
-
-    def get_context_data(self, **kwargs):
-        context = super(DeleteLocationMixin, self).get_context_data(**kwargs)
-        context['page_title'] = self.page_title
-        context['submit_button_title'] = self.submit_button_title
-        context['cancel_button_path'] = 'trips:trip_detail'
-        context['trip_id'] = self.kwargs.get('trip_id')
-        return context
-
-    def get_success_url(self):
-        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
-
 class TripListView(LoginRequiredMixin, ListView):
     model = Trip
     template_name = 'trips/index.html'
@@ -169,21 +153,53 @@ class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
         else:
             raise ValueError('Invalid location type: ' + url_location_type)
 
-class LocationDeleteView(DeleteLocationMixin, DeleteView):
+class LocationDeleteView(DeleteView):
+    model = TripLocation
+    template_name = 'trips/delete.html'
+    context_object_name = 'triplocation'
+
     def set_instance_variables(self, **kwargs):
-        self.location_type = self.kwargs.get('location_type')
-        if self.location_type == TripLocation.BEGIN:
+        url_location_type = self.kwargs.get('location_type')
+        if url_location_type == 'trailhead':
             self.page_title = 'Delete trailhead'
             self.submit_button_title = 'Delete Trailhead'
-        elif self.location_type == TripLocation.OBJECTIVE:
+        elif url_location_type == 'objective':
             self.page_title = 'Delete objective'
             self.submit_button_title = 'Delete Objective'
-        elif self.location_type == TripLocation.CAMP:
+        elif url_location_type == 'camp':
             self.page_title = 'Delete camp'
             self.submit_button_title = 'Delete Camp'
         else:
-            raise ValueError('Invalid location type: ' + self.location_type)
+            raise ValueError('Invalid location type: ' + url_location_type)
 
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            self.set_instance_variables(**kwargs)
+            return super(LocationDeleteView, self).get(self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def post(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            self.set_instance_variables(**kwargs)
+            return super(LocationDeleteView, self).post(self, request, *args, **kwargs)
+        else:
+            redirect_path = reverse('authentication:signin')
+            redirect_next = '?next=' + request.path
+            return redirect(redirect_path + redirect_next)
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationDeleteView, self).get_context_data(**kwargs)
+        context['page_title'] = self.page_title
+        context['submit_button_title'] = self.submit_button_title
+        context['cancel_button_path'] = 'trips:trip_detail'
+        context['trip_id'] = self.kwargs.get('trip_id')
+        return context
+
+    def get_success_url(self):
+        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
 
 
 def notifications(request):
