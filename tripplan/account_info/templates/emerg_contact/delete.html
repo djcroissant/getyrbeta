@@ -67,7 +67,7 @@
           </ul>
           <form action="{% url 'account_info:emerg_contact_delete' emergencycontact.id %}" method="post">
             {% csrf_token %}
-            <button type="submit" name="submit" class="btn btn-success">Delete Emergency Contact</button>
+            <button type="submit" name="submit" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i> Delete Emergency Contact</button>
             <a href="{% url 'account_info:emerg_contact_list' %}" name="cancel" value="Cancel" class="btn btn-secondary">Cancel</a>
           </form>
         </div>

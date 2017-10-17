@@ -18,8 +18,8 @@
             {% for emcon in object_list %}
               <div class="row">
                 <div class="col-md-2">
-                  <li><a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}">edit</a></li>
-                  <li><a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}">delete</a></li>
+                  <li><a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a></li>
+                  <li><a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a></li>
                 </div>
                 <div class="col-md-8">
                   <li class="list_item_title">{{ emcon.full_name }}</li>

@@ -41,8 +41,8 @@
             </div>
             <div class="col-md-6">
               {% if trailhead %}
-                <a href="{% url 'trips:location_edit' trip.id trailhead.location_type trailhead.id  %}">edit</a>
-                <a href="{% url 'trips:location_delete' trip.id trailhead.location_type trailhead.id  %}">delete</a>
+                <a href="{% url 'trips:location_edit' trip.id trailhead.location_type trailhead.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                <a href="{% url 'trips:location_delete' trip.id trailhead.location_type trailhead.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
               {% endif %}
             </div>
           </div>
@@ -91,8 +91,8 @@
                 {% for location in location_list %}
                   <div class="row">
                     <div class="col-sm-2">
-                      <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}">edit</a>
-                      <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}">delete</a>
+                      <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                      <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                     </div>
                     <div class="col-sm-8">
                       <li>{{ location.title }}</li>
@@ -113,8 +113,8 @@
                 {% for location in location_list %}
                   <div class="row">
                     <div class="col-sm-2">
-                      <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}">edit</a>
-                      <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}">delete</a>
+                      <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                      <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                     </div>
                     <div class="col-sm-8">
                       <li>{{ location.title }}</li>
@@ -159,8 +159,8 @@
                   {% for location in location_list %}
                     <div class="row">
                       <div class="col-sm-2">
-                        <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}">edit</a>
-                        <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}">delete</a>
+                        <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                        <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                       </div>
                       <div class="col-sm-8">
                         <li>{{ location.title }}</li>
@@ -181,8 +181,8 @@
                   {% for location in location_list %}
                     <div class="row">
                       <div class="col-sm-2">
-                        <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}">edit</a>
-                        <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}">delete</a>
+                        <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                        <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                       </div>
                       <div class="col-sm-8">
                         <li>{{ location.title }}</li>
