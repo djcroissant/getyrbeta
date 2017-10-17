@@ -94,3 +94,12 @@ li.list_item_info {
   font-size: 15pt;
   display: inline-block;
 }
+
+
+.header {
+  margin-bottom: 20pt
+}
+
+.header a{
+  font-size: 1.3em;
+}

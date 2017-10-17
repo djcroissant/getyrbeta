@@ -11,15 +11,16 @@
     <div class="wrapper">
       <div class="content-wrapper">
         <div class="content">
-          <h1>Emergency Contacts</h1>
-          <a href="{% url 'account_info:emerg_contact_create' %}">Add emergency contact</a>
-          <br><br>
+          <div class="header">
+            <h1>Emergency Contacts</h1>
+            <a href="{% url 'account_info:emerg_contact_create' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add emergency contact</a>
+          </div>
           <ul class="account_info_list">
             {% for emcon in object_list %}
               <div class="row">
                 <div class="col-md-2">
-                  <li><a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a></li>
-                  <li><a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a></li>
+                  <a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                  <a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                 </div>
                 <div class="col-md-8">
                   <li class="list_item_title">{{ emcon.full_name }}</li>

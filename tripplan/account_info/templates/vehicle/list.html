@@ -11,15 +11,16 @@
     <div class="wrapper">
       <div class="content-wrapper">
         <div class="content">
-          <h1>Vehicles</h1>
-          <a href="{% url 'account_info:vehicle_create' %}">Add Vehicle</a>
-          <br><br>
+          <div class="header">
+            <h1>Vehicles</h1>
+            <a href="{% url 'account_info:vehicle_create' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Vehicle</a>
+          </div>
           <ul class="account_info_list">
             {% for vehicle in object_list %}
               <div class="row">
                 <div class="col-md-2">
-                  <li><a href="{% url 'account_info:vehicle_edit' vehicle.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a></li>
-                  <li><a href="{% url 'account_info:vehicle_delete' vehicle.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a></li>
+                  <a href="{% url 'account_info:vehicle_edit' vehicle.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                  <a href="{% url 'account_info:vehicle_delete' vehicle.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                 </div>
                 <div class="col-md-8">
                   <li class="list_item_title">{{ vehicle }}</li>
