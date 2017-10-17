@@ -26,3 +26,31 @@
 li.hidden_bullet {
   list-style:none;
 }
+
+.header i{
+  margin-left: 7pt;
+}
+
+.header h3{
+  margin-right: 20pt;
+  display: inline;
+}
+
+.header a{
+  font-size: 20pt;
+}
+
+.bold-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-left: 8pt;
+}
+
+.trip-info {
+  font-size: 1.1em;
+}
+
+.list-padding {
+  margin-top: 10pt;
+  margin-bottom: 10pt;
+}
