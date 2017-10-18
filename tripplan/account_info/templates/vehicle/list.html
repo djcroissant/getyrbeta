@@ -18,11 +18,11 @@
         <ul class="account_info_list">
           {% for vehicle in object_list %}
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-sm-auto">
                 <a href="{% url 'account_info:vehicle_edit' vehicle.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
                 <a href="{% url 'account_info:vehicle_delete' vehicle.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
               </div>
-              <div class="col-md-8">
+              <div class="col-sm">
                 <li class="list_item_title">{{ vehicle }}</li>
                 <li class="list_item_label">Color:</li>
                 <li class="list_item_info">{{ vehicle.color }}</li>

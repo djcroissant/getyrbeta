@@ -18,11 +18,11 @@
         <ul class="account_info_list">
           {% for emcon in object_list %}
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-sm-auto">
                 <a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
                 <a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
               </div>
-              <div class="col-md-8">
+              <div class="col-sm">
                 <li class="list_item_title">{{ emcon.full_name }}</li>
                 {% if emcon.preferred_name %}
                   <li class="list_item_label">Preferred name:</li>

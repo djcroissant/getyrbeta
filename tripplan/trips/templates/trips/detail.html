@@ -80,11 +80,11 @@
                 <ul>
                   {% for location in location_list %}
                     <div class="row list-padding">
-                      <div class="col-sm-1">
+                      <div class="col-sm-auto">
                         <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
                         <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                       </div>
-                      <div class="col-sm-8">
+                      <div class="col-sm">
                         <li class="hidden_bullet trip-info">{{ location.title }}</li>
                         {% if location.latitude and location.longitude %}
                           <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
@@ -102,11 +102,11 @@
                 <ul>
                   {% for location in location_list %}
                     <div class="row list-padding">
-                      <div class="col-sm-1">
+                      <div class="col-sm-auto">
                         <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
                         <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                       </div>
-                      <div class="col-sm-8">
+                      <div class="col-sm">
                         <li class="hidden_bullet trip-info">{{ location.title }}</li>
                         {% if location.latitude and location.longitude %}
                           <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
@@ -136,11 +136,11 @@
                   <ul>
                     {% for location in location_list %}
                       <div class="row list-padding">
-                        <div class="col-sm-1">
+                        <div class="col-sm-auto">
                           <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
                           <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm">
                           <li class="hidden_bullet trip-info">{{ location.title }}</li>
                           {% if location.latitude and location.longitude %}
                             <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
@@ -158,11 +158,11 @@
                   <ul>
                     {% for location in location_list %}
                       <div class="row list-padding">
-                        <div class="col-sm-1">
+                        <div class="col-sm-auto">
                           <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
                           <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm">
                           <li class="hidden_bullet trip-info">{{ location.title }}</li>
                           {% if location.latitude and location.longitude %}
                             <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
