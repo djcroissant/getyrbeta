@@ -48,7 +48,7 @@
   width: 100%;
 }
 
-.nav-sidebar > .active > a {
+.nav-sidebar > .nav-item > .active {
   color: #000099;
 }
 
