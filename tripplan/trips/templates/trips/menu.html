@@ -1,10 +1,23 @@
 <div class="sidebar">
   <h2>Account Info:</h2><br>
   <ul class="nav nav-sidebar">
-    <li class="active"><a href="{% url 'account_info:account_profile' %}">Profile <span class="sr-only">(current)</span></a></li>
-    <li><a href="#">Picture</a></li>
-    <li><a href="{% url 'account_info:emerg_contact_list' %}">Emergency Contact</a></li>
-    <li><a href="{% url 'account_info:vehicle_list' %}">Vehicle Info</a></li>
-    <li><a href="#">Login Info</a></li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'account_info:account_profile' %}">Overview</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Members</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Emergency Info</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Vehicles</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Gear List</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Trip Plan</a>
+    </li>
   </ul>
 </div>

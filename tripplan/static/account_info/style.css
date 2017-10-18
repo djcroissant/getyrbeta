@@ -1,16 +1,14 @@
-.page:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 /*Pad the entire page down so the fixed navbar doesn't overlap*/
 .wrapper {
   margin-top: 100px;
 }
 
-/*The menu bar is fixed width on the left and the content takes up the
-  remaining space to the right*/
+/*The content-wrapper uses float:right so that it exists inline
+with the sidebar. Neither is cleared, so they will float on
+top of each other. The content-wrapper sets width:100% so that it
+takes up the full screen width. The sidebar then has a fixed width
+from the left and the .content class has a fixed margin from the
+left.*/
 .content-wrapper {
   float: right;
   width: 100%;
@@ -18,7 +16,6 @@
 
 .content {
   margin-left: 310px;
-  clear: both;
   overflow: auto;
 }
 
@@ -30,6 +27,10 @@
   color: #00021A;
   border-right: 1px solid black;
   min-height: 600px;
+}
+
+.sidebar-heading {
+  margin-bottom: 20px
 }
 
 .nav-sidebar li{
@@ -52,25 +53,26 @@
   color: #000099;
 }
 
-@media only screen and (max-width: 768px) {
+/*This eliminates the sidebar for small screens.
+To be implemented later*/
+/*@media only screen and (max-width: 768px) {
   .sidebar {
     display: none;
   }
   .content {
     margin-left: 0;
   }
-}
+}*/
 
+/*Emergency Contact and Vehicle Forms*/
+/*This is the label suffixed by a :*/
 .form-control-label {
   font-size: 14pt;
   font-weight: bold;
   display: block;
 }
 
-.form-control {
-    font-size: 1.2rem;
-}
-
+/*Emergency Contact and Vehicle lists*/
 ul.account_info_list {
   list-style-type: none;
 }
@@ -95,7 +97,7 @@ li.list_item_info {
   display: inline-block;
 }
 
-
+/*Content headers and "add new" links*/
 .header {
   margin-bottom: 20pt
 }

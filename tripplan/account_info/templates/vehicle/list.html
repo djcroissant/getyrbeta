@@ -7,39 +7,37 @@
 {% endblock stylesheet %}
 
 {% block content %}
-  <div class="page">
-    <div class="wrapper">
-      <div class="content-wrapper">
-        <div class="content">
-          <div class="header">
-            <h1>Vehicles</h1>
-            <a href="{% url 'account_info:vehicle_create' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Vehicle</a>
-          </div>
-          <ul class="account_info_list">
-            {% for vehicle in object_list %}
-              <div class="row">
-                <div class="col-md-2">
-                  <a href="{% url 'account_info:vehicle_edit' vehicle.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
-                  <a href="{% url 'account_info:vehicle_delete' vehicle.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
-                </div>
-                <div class="col-md-8">
-                  <li class="list_item_title">{{ vehicle }}</li>
-                  <li class="list_item_label">Color:</li>
-                  <li class="list_item_info">{{ vehicle.color }}</li>
-                  <br>
-                  <li class="list_item_label">License Plate Number:</li>
-                  <li class="list_item_info">{{ vehicle.lic_plate_num }}</li>
-                  <br>
-                  <li class="list_item_label">License Plate State:</li>
-                  <li class="list_item_info">{{ vehicle.lic_plate_st }}</li>
-                  <br><br>
-                </div>
-              </div>
-            {% endfor %}
-          </ul>
+  <div class="wrapper">
+    {% include "../account_info/menu.html" %}
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="header">
+          <h1>Vehicles</h1>
+          <a href="{% url 'account_info:vehicle_create' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Vehicle</a>
         </div>
+        <ul class="account_info_list">
+          {% for vehicle in object_list %}
+            <div class="row">
+              <div class="col-md-2">
+                <a href="{% url 'account_info:vehicle_edit' vehicle.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                <a href="{% url 'account_info:vehicle_delete' vehicle.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
+              </div>
+              <div class="col-md-8">
+                <li class="list_item_title">{{ vehicle }}</li>
+                <li class="list_item_label">Color:</li>
+                <li class="list_item_info">{{ vehicle.color }}</li>
+                <br>
+                <li class="list_item_label">License Plate Number:</li>
+                <li class="list_item_info">{{ vehicle.lic_plate_num }}</li>
+                <br>
+                <li class="list_item_label">License Plate State:</li>
+                <li class="list_item_info">{{ vehicle.lic_plate_st }}</li>
+                <br><br>
+              </div>
+            </div>
+          {% endfor %}
+        </ul>
       </div>
-      {% include "../account_info/menu.html" %}
     </div>
   </div>
 {% endblock content %}
