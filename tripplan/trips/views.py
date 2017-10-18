@@ -17,7 +17,8 @@ from .forms import TripForm, LocationForm
 class LoginRequiredMixin:
     def get(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
-            return super(LoginRequiredMixin, self).get(self, request, *args, **kwargs)
+            return super(LoginRequiredMixin, self).get(
+                self, request, *args, **kwargs)
         else:
             redirect_path = reverse('authentication:signin')
             redirect_next = '?next=' + request.path
@@ -25,47 +26,63 @@ class LoginRequiredMixin:
 
     def post(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
-            return super(LoginRequiredMixin, self).post(self, request, *args, **kwargs)
+            return super(LoginRequiredMixin, self).post(
+                self, request, *args, **kwargs)
         else:
             redirect_path = reverse('authentication:signin')
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 
-class LocationFormMixin:
-    model = TripLocation
-    template_name = 'trips/location.html'
-    form_class = LocationForm
 
+class LocationGeneralMixin:
+    """
+    This mixin is used by all views for the Location model.
+    """
+    model = TripLocation
+
+    # set_instance_variables() is a callable located in the primary class
+    # description. The output is used by get_context_data()
     def get(self, request, *args, **kwargs):
         self.set_instance_variables(**kwargs)
-        return super(LocationFormMixin, self).get(request, *args, **kwargs)
+        return super(LocationGeneralMixin, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.set_instance_variables(**kwargs)
-        return super(LocationFormMixin, self).post(request, *args, **kwargs)
+        return super(LocationGeneralMixin, self).post(request, *args, **kwargs)
 
+    # The context data is used by the template
     def get_context_data(self, **kwargs):
-        context = super(LocationFormMixin, self).get_context_data(**kwargs)
+        context = super(LocationGeneralMixin, self).get_context_data(**kwargs)
         context['page_title'] = self.page_title
         context['submit_button_title'] = self.submit_button_title
         context['cancel_button_path'] = 'trips:trip_detail'
         context['trip_id'] = self.kwargs.get('trip_id')
         return context
 
+    def get_success_url(self):
+        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
+
+class LocationFormMixin:
+    """
+    This mixin is used by all views for the Location model that include a
+    form.
+    """
+    model = TripLocation
+    template_name = 'trips/location.html'
+    form_class = LocationForm
+
     def get_form_kwargs(self):
         """
         Adds a tuple of choices for the date field to the form kwargs.
         """
         kwargs = super(LocationFormMixin, self).get_form_kwargs()
-        date_list = Trip.objects.get(pk=self.kwargs.get('trip_id')).get_date_choices()
+        date_list = Trip.objects.get(pk=self.kwargs.get(
+            'trip_id')).get_date_choices()
         choices = []
         for item in date_list:
             choices.append((item, item))
         kwargs['choices'] = tuple(choices)
         return kwargs
-
-    def get_success_url(self):
-        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
 
 class TripListView(LoginRequiredMixin, ListView):
     model = Trip
@@ -88,12 +105,14 @@ class TripDetailView(LoginRequiredMixin, DetailView):
         trip = self.get_object()
         context['page_title'] = trip.title
         if trip.number_nights > 0:
-            context['end_date'] = trip.start_date + datetime.timedelta(days=trip.number_nights)
+            context['end_date'] = trip.start_date + datetime.timedelta(
+                days=trip.number_nights)
 
         context['trailhead'] = trip.get_trailhead()
         context['endpoint'] = trip.get_endpoint()
 
-        context['objective_dict'] = trip.get_location_context(TripLocation.OBJECTIVE)
+        context['objective_dict'] = trip.get_location_context(
+            TripLocation.OBJECTIVE)
         context['camp_dict'] = trip.get_location_context(TripLocation.CAMP)
         return context
 
@@ -112,7 +131,9 @@ class TripCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('trips:trip_detail', args=(self.object.id,))
 
-class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
+class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
+    LocationFormMixin, CreateView):
+    model = 'TripLocation'
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type')
         if url_location_type == 'trailhead':
@@ -138,7 +159,8 @@ class LocationCreateView(LoginRequiredMixin, LocationFormMixin, CreateView):
             'location_type': location_type
         }
 
-class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
+class LocationEditView(LoginRequiredMixin, LocationGeneralMixin,
+    LocationFormMixin, UpdateView):
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type')
         if url_location_type == 'trailhead':
@@ -153,8 +175,7 @@ class LocationEditView(LoginRequiredMixin, LocationFormMixin, UpdateView):
         else:
             raise ValueError('Invalid location type: ' + url_location_type)
 
-class LocationDeleteView(DeleteView):
-    model = TripLocation
+class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
     template_name = 'trips/delete.html'
     context_object_name = 'triplocation'
 
@@ -172,35 +193,8 @@ class LocationDeleteView(DeleteView):
         else:
             raise ValueError('Invalid location type: ' + url_location_type)
 
-    def get(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated():
-            self.set_instance_variables(**kwargs)
-            return super(LocationDeleteView, self).get(self, request, *args, **kwargs)
-        else:
-            redirect_path = reverse('authentication:signin')
-            redirect_next = '?next=' + request.path
-            return redirect(redirect_path + redirect_next)
-
-    def post(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated():
-            self.set_instance_variables(**kwargs)
-            return super(LocationDeleteView, self).post(self, request, *args, **kwargs)
-        else:
-            redirect_path = reverse('authentication:signin')
-            redirect_next = '?next=' + request.path
-            return redirect(redirect_path + redirect_next)
-
-    def get_context_data(self, **kwargs):
-        context = super(LocationDeleteView, self).get_context_data(**kwargs)
-        context['page_title'] = self.page_title
-        context['submit_button_title'] = self.submit_button_title
-        context['cancel_button_path'] = 'trips:trip_detail'
-        context['trip_id'] = self.kwargs.get('trip_id')
-        return context
-
-    def get_success_url(self):
-        return reverse('trips:trip_detail', args=(self.kwargs.get('trip_id'),))
-
+class TripMemberList(LoginRequiredMixin, ListView):
+    pass
 
 def notifications(request):
     #placeholder

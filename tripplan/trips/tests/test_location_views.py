@@ -39,13 +39,14 @@ class LocationCreateViewTests(TestCase):
     def test_200_response_from_get_request(self):
         request = self.factory.get('/fake/')
         request.user = self.user
-        response = LocationCreateView.as_view()(request, trip_id=1,
+        response = LocationCreateView.as_view()(request, trip_id=self.trip.id,
             location_type='trailhead')
         self.assertEqual(response.status_code, 200)
 
     def test_url_name_reverses_correctly(self):
         url_path = '/trips/1/create/location_type/'
-        reverse_path = reverse('trips:location_create', args=(1, 'location_type'))
+        reverse_path = reverse('trips:location_create', args=(
+            1, 'location_type'))
         self.assertEqual(reverse_path, url_path)
 
     def test_get_request_redirects_to_login_if_user_not_logged_in(self):
@@ -67,7 +68,7 @@ class LocationCreateViewTests(TestCase):
     def test_view_uses_correct_template(self):
         request = self.factory.get('/fake/')
         request.user = self.user
-        response = LocationCreateView.as_view()(request, trip_id=1,
+        response = LocationCreateView.as_view()(request, trip_id=self.trip.id,
             location_type='trailhead')
         self.assertTrue('trips/location.html' in response.template_name)
 
@@ -302,8 +303,8 @@ class LocationEditViewTests(TestCase):
     def test_view_uses_correct_template(self):
         request = self.factory.get('/fake/')
         request.user = self.user
-        response = LocationEditView.as_view()(request, trip_id=1,
-            location_type='trailhead', pk=1)
+        response = LocationEditView.as_view()(request, trip_id=self.trip.id,
+            location_type='trailhead', pk=self.triplocation.id)
         self.assertTrue('trips/location.html' in response.template_name)
 
     def test_view_sets_instance_variables_through_get_request(self):
@@ -536,8 +537,8 @@ class LocationDeleteViewTests(TestCase):
     def test_view_uses_correct_template(self):
         request = self.factory.get('/fake/')
         request.user = self.user
-        response = LocationDeleteView.as_view()(request, trip_id=1,
-            location_type='trailhead', pk=1)
+        response = LocationDeleteView.as_view()(request, trip_id=self.trip.id,
+            location_type='trailhead', pk=self.triplocation.id)
         self.assertTrue('trips/delete.html' in response.template_name)
 
     def test_view_sets_instance_variables_through_get_request(self):

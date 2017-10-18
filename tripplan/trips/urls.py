@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^(?P<trip_id>[0-9]+)/delete/(?P<location_type>[\w]+)/(?P<pk>[0-9]+)/$',
         views.LocationDeleteView.as_view(), name='location_delete'),
     url(r'^notifications/$', views.notifications, name='notifications'),
+    url(r'^(?P<pk>[0-9]+)/members/$', views.TripMemberList.as_view(), name='trip_members'),
 ]
