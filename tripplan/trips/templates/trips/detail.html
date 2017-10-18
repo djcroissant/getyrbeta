@@ -8,128 +8,74 @@
 {% endblock stylesheet %}
 
 {% block content %}
-  <div class="page">
-    <div class="wrapper">
-      <div class="banner-logo" id="BannerLogo">
-        <h1>{{ page_title }}</h1>
-        <div class="row">
-          <div class="col-sm-3">
-            <p class="trip-info">Start date: {{ trip.start_date }}</p>
-          </div>
-          <div class="col-sm-3">
-            {% if trip.number_nights == 0 %}
-              <p class="trip-info">Day trip</p>
-            {% else %}
-              <p class="trip-info">{{ trip.number_nights }} Night{% if trip.number_nights > 1 %}s{% endif %}</p>
-            {% endif %}
-          </div>
-        </div>
-        {% if end_date %}
+  <div class="wrapper">
+    {% include "./menu.html" %}
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="banner-logo" id="BannerLogo">
+          <h1>{{ page_title }}</h1>
           <div class="row">
             <div class="col-sm-3">
-              <p class="trip-info">End date: {{ end_date }}</p>
+              <p class="trip-info">Start date: {{ trip.start_date }}</p>
+            </div>
+            <div class="col-sm-3">
+              {% if trip.number_nights == 0 %}
+                <p class="trip-info">Day trip</p>
+              {% else %}
+                <p class="trip-info">{{ trip.number_nights }} Night{% if trip.number_nights > 1 %}s{% endif %}</p>
+              {% endif %}
             </div>
           </div>
-        {% endif %}
-      </div>
+          {% if end_date %}
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="trip-info">End date: {{ end_date }}</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
 {# Trailhead Location Section #}
-      <div class="trip-list" id="trip-list">
-        <div class="header">
-          <h3>Trailhead Location</h3>
-          {% if trailhead %}
-            <a href="{% url 'trips:location_edit' trip.id 'trailhead' trailhead.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
-            <a href="{% url 'trips:location_delete' trip.id 'trailhead' trailhead.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
-          {% else %}
-            <a href="{% url 'trips:location_create' trip.id 'trailhead' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add trailhead information</a>
-          {% endif %}
-        </div>
-        {% if trailhead %}
-          {% if trailhead.title %}
-            <div class="row">
-              <div class="col-md-3">
-                <p class="bold-label">Trailhead:</p>
-              </div>
-              <div class="col-md-5">
-                <p class="trip-info">{{ trailhead.title }}</p>
-              </div>
-            </div>
-          {% endif %}
-          {% if trailhead.latitude and trailhead.longitude %}
-            <div class="row">
-              <div class="col-md-3">
-                <p class="bold-label">Trailhead coordinates: </p>
-              </div>
-              <div class="col-md-5">
-                <p class="trip-info">{{ trailhead.latitude }}, {{ trailhead.longitude }}</p>
-              </div>
-            </div>
-          {% endif %}
-        {% endif %}
-      </div>
-{# Objective Location Section #}
-      <div class="trip-list" id="trip-list">
-        <div class="header">
-          <h3>Objectives</h3>
-          <a href="{% url 'trips:location_create' trip.id 'objective' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new objective</a>
-        </div>
-        {% if trip.number_nights == 0 %}
-          {% for date, location_list in objective_dict.items %}
-            {% if location_list|length > 0 %}
-              <ul>
-                {% for location in location_list %}
-                  <div class="row list-padding">
-                    <div class="col-sm-1">
-                      <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
-                      <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
-                    </div>
-                    <div class="col-sm-8">
-                      <li class="hidden_bullet trip-info">{{ location.title }}</li>
-                      {% if location.latitude and location.longitude %}
-                        <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              </div>
-            </div>
-          {% endfor %}
-        {% else %}
-          {% for date, location_list in objective_dict.items %}
-            <h5 class="location_date">{{ date }}</h5>
-            {% if location_list|length > 0 %}
-              <ul>
-                {% for location in location_list %}
-                  <div class="row list-padding">
-                    <div class="col-sm-1">
-                      <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
-                      <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
-                    </div>
-                    <div class="col-sm-8">
-                      <li class="hidden_bullet trip-info">{{ location.title }}</li>
-                      {% if location.latitude and location.longitude %}
-                        <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
-                      {% endif %}
-                    </div>
-                  </div>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <ul>
-                <li class="trip-info">No objectives available</li>
-              </ul>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      </div>
-{# Camp Location Section #}
-      {% if trip.number_nights > 0 %}
         <div class="trip-list" id="trip-list">
           <div class="header">
-            <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
-            <a href="{% url 'trips:location_create' trip.id 'camp' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new camp</a>
+            <h3>Trailhead Location</h3>
+            {% if trailhead %}
+              <a href="{% url 'trips:location_edit' trip.id 'trailhead' trailhead.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+              <a href="{% url 'trips:location_delete' trip.id 'trailhead' trailhead.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
+            {% else %}
+              <a href="{% url 'trips:location_create' trip.id 'trailhead' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add trailhead information</a>
+            {% endif %}
           </div>
-          {% if trip.number_nights == 1 %}
-            {% for date, location_list in camp_dict.items %}
+          {% if trailhead %}
+            {% if trailhead.title %}
+              <div class="row">
+                <div class="col-md-3">
+                  <p class="bold-label">Trailhead:</p>
+                </div>
+                <div class="col-md-5">
+                  <p class="trip-info">{{ trailhead.title }}</p>
+                </div>
+              </div>
+            {% endif %}
+            {% if trailhead.latitude and trailhead.longitude %}
+              <div class="row">
+                <div class="col-md-3">
+                  <p class="bold-label">Trailhead coordinates: </p>
+                </div>
+                <div class="col-md-5">
+                  <p class="trip-info">{{ trailhead.latitude }}, {{ trailhead.longitude }}</p>
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+{# Objective Location Section #}
+        <div class="trip-list" id="trip-list">
+          <div class="header">
+            <h3>Objectives</h3>
+            <a href="{% url 'trips:location_create' trip.id 'objective' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new objective</a>
+          </div>
+          {% if trip.number_nights == 0 %}
+            {% for date, location_list in objective_dict.items %}
               {% if location_list|length > 0 %}
                 <ul>
                   {% for location in location_list %}
@@ -143,14 +89,14 @@
                         {% if location.latitude and location.longitude %}
                           <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
                         {% endif %}
-                      </div>
-                    </div>
-                  {% endfor %}
-                </ul>
-              {% endif %}
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
             {% endfor %}
           {% else %}
-            {% for date, location_list in camp_dict.items %}
+            {% for date, location_list in objective_dict.items %}
               <h5 class="location_date">{{ date }}</h5>
               {% if location_list|length > 0 %}
                 <ul>
@@ -171,14 +117,70 @@
                 </ul>
               {% else %}
                 <ul>
-                  <li class="trip-info">No camps available</li>
+                  <li class="trip-info">No objectives available</li>
                 </ul>
               {% endif %}
             {% endfor %}
           {% endif %}
         </div>
-      {% endif %}
-      {% include "./menu.html" %}
+{# Camp Location Section #}
+        {% if trip.number_nights > 0 %}
+          <div class="trip-list" id="trip-list">
+            <div class="header">
+              <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
+              <a href="{% url 'trips:location_create' trip.id 'camp' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new camp</a>
+            </div>
+            {% if trip.number_nights == 1 %}
+              {% for date, location_list in camp_dict.items %}
+                {% if location_list|length > 0 %}
+                  <ul>
+                    {% for location in location_list %}
+                      <div class="row list-padding">
+                        <div class="col-sm-1">
+                          <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                          <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
+                        </div>
+                        <div class="col-sm-8">
+                          <li class="hidden_bullet trip-info">{{ location.title }}</li>
+                          {% if location.latitude and location.longitude %}
+                            <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {% for date, location_list in camp_dict.items %}
+                <h5 class="location_date">{{ date }}</h5>
+                {% if location_list|length > 0 %}
+                  <ul>
+                    {% for location in location_list %}
+                      <div class="row list-padding">
+                        <div class="col-sm-1">
+                          <a href="{% url 'trips:location_edit' trip.id location.location_type|convert_location location.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                          <a href="{% url 'trips:location_delete' trip.id location.location_type|convert_location location.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
+                        </div>
+                        <div class="col-sm-8">
+                          <li class="hidden_bullet trip-info">{{ location.title }}</li>
+                          {% if location.latitude and location.longitude %}
+                            <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <ul>
+                    <li class="trip-info">No camps available</li>
+                  </ul>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 {% endblock content %}

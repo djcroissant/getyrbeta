@@ -7,19 +7,21 @@
 {% endblock stylesheet %}
 
 {% block content %}
-  <div class="page">
     <div class="wrapper">
-      <div class="banner-logo" id="BannerLogo">
-        <h1>{{ page_title }}</h1>
-      </div>
-      <div class="trip-list" id="trip-list">
-        <div class="header">
-          <h3>Required Information</h3>
-        </div>
-        {% load crispy_forms_tags %}
-        {% crispy form form.helper %}
-      </div>
       {% include "./menu.html" %}
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="banner-logo" id="BannerLogo">
+            <h1>{{ page_title }}</h1>
+          </div>
+          <div class="trip-list" id="trip-list">
+            <div class="header">
+              <h3>Required Information</h3>
+            </div>
+            {% load crispy_forms_tags %}
+            {% crispy form form.helper %}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 {% endblock content %}

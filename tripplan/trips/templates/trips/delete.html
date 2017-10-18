@@ -8,40 +8,41 @@
 {% endblock stylesheet %}
 
 {% block content %}
-  <div class="page">
     <div class="wrapper">
-      <div class="banner-logo" id="BannerLogo">
-        <h1>{{ page_title }}</h1>
-        <div class="trip-list" id="trip-list">
-          <div class="header">
-            <h3>{{ triplocation.title }}</h3>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">
-              <p>Date:</p>
-            </div>
-            <div class="col-sm-3">
-              <p>{{ triplocation.date }}</p>
-            </div>
-          </div>
-          {% if triplocation.latitude and triplocation.longitude %}
-            <div class="row">
-              <div class="col-sm-3">
-                <p>Coordinates:</p>
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="banner-logo" id="BannerLogo">
+            <h1>{{ page_title }}</h1>
+            <div class="trip-list" id="trip-list">
+              <div class="header">
+                <h3>{{ triplocation.title }}</h3>
               </div>
-              <div class="col-sm-3">
-                <p>{{ triplocation.latitude }}, {{ triplocation.longitude }}</p>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p>Date:</p>
+                </div>
+                <div class="col-sm-3">
+                  <p>{{ triplocation.date }}</p>
+                </div>
               </div>
+              {% if triplocation.latitude and triplocation.longitude %}
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p>Coordinates:</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p>{{ triplocation.latitude }}, {{ triplocation.longitude }}</p>
+                  </div>
+                </div>
+              {% endif %}
+              <form action="" method="POST">
+                {% csrf_token %}
+                <button type="submit" value="Delete" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i> Delete</button>
+                <a href="{% url 'trips:trip_detail' trip_id %}" name="cancel" value="Cancel" class="btn btn-secondary">Cancel</a>
+              </form>
             </div>
-          {% endif %}
-          <form action="" method="POST">
-            {% csrf_token %}
-            <button type="submit" value="Delete" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i> Delete</button>
-            <a href="{% url 'trips:trip_detail' trip_id %}" name="cancel" value="Cancel" class="btn btn-secondary">Cancel</a>
-          </form>
+          </div>
         </div>
       </div>
-      {% include "./menu.html" %}
     </div>
-  </div>
 {% endblock content %}
