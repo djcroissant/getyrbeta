@@ -101,6 +101,7 @@ class TripMember(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     organizer = models.BooleanField(default=False)
     accept_reqd = models.BooleanField(default=False)
+    email = models.CharField(max_length=255)
 
 class TripLocation(models.Model):
     BEGIN = 'ST'

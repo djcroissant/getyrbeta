@@ -7,7 +7,7 @@
       <a class="nav-link" href="{% url 'trips:trip_detail' trip.id %}">Overview</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Members</a>
+      <a class="nav-link" href="{% url 'trips:trip_members' trip.id %}">Members</a>
     </li>
     <li class="nav-item">
       <a class="nav-link disabled" href="#">Emergency Info</a>

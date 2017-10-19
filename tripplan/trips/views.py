@@ -7,7 +7,7 @@ from django.views.generic import UpdateView, ListView, \
 from django.utils import timezone
 from django.contrib.auth import authenticate
 
-from .models import Trip, TripLocation
+from .models import Trip, TripLocation, TripMember
 
 from account_info.models import User
 
@@ -133,7 +133,7 @@ class TripCreateView(LoginRequiredMixin, CreateView):
 
 class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
     LocationFormMixin, CreateView):
-    model = 'TripLocation'
+    model = TripLocation
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type')
         if url_location_type == 'trailhead':
@@ -193,8 +193,19 @@ class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
         else:
             raise ValueError('Invalid location type: ' + url_location_type)
 
-class TripMemberList(LoginRequiredMixin, ListView):
-    pass
+class TripMemberListView(LoginRequiredMixin, ListView):
+    model = TripMember
+    template_name = 'trips/members.html'
+    queryset = TripMember.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(TripMemberListView, self).get_context_data(**kwargs)
+        context['trip'] = Trip.objects.get(pk=self.kwargs['pk'])
+        # context['upcoming_trip_list'] = Trip.objects.filter(
+        #     start_date__gte=timezone.now()).order_by('start_date')
+        # context['past_trip_list'] = Trip.objects.filter(
+        #     start_date__lt=timezone.now()).order_by('start_date')
+        return context
 
 def notifications(request):
     #placeholder
