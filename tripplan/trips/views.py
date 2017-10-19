@@ -3,9 +3,10 @@ import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
-    CreateView, DeleteView, DetailView, FormView
+    CreateView, DeleteView, DetailView, FormView, View
 from django.utils import timezone
 from django.contrib.auth import authenticate
+from django.http import JsonResponse
 
 from .models import Trip, TripLocation, TripMember
 
@@ -208,11 +209,35 @@ class TripMemberListView(LoginRequiredMixin, FormView):
             accept_reqd=False).order_by('email')
         return context
 
-    # def post(self, request, *args, **kwargs):
-    #
-    #     return super(LoginRequiredMixin, self).post(
-    #             self, request, *args, **kwargs)
 
 def notifications(request):
     #placeholder
     return render(request, 'trips/notifications.html')
+
+class CheckUserExistsView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email')
+        data = {
+            'user_exists': User.objects.filter(email__iexact=email).exists()
+        }
+        return JsonResponse(data)
+
+# class AddTripMemberView(LoginRequiredMixin, CreateView):
+#     model = TripMember
+#     fields = ['member', 'trip', 'organizer', 'accept_reqd', 'email']
+#     form_class = SearchForm
+#
+#     def form_invalid(self, form):
+#         response = super(AddTripMemberView, self).form_invalid(form)
+#         if self.request.is_ajax():
+#             return JsonResponse(form.errors, status=400)
+#         else:
+#             return response
+#
+#     def form_valid(self, form):
+#         import pdb; pdb.set_trace()
+#         response = super(AddTripMemberView, self).form_valid(form)
+#         if self.request.is_ajax():
+#             return JsonResponse()
+#         else:
+#             return response

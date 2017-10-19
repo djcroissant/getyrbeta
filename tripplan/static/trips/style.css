@@ -125,3 +125,20 @@ li.hidden_bullet {
 .trip-forms .form-control-label {
   font-size: 1.1em;
 }
+
+#confirm-add-member {
+  display: none;
+}
+
+#confirm-add-member p{
+  display: inline-block;
+  margin-right: 15px;
+}
+
+#confirm-add-member button{
+  margin: 2px;
+}
+
+#new-member-added {
+  display: none;
+}

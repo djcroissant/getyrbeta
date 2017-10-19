@@ -6,6 +6,49 @@
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
 {% endblock stylesheet %}
 
+{% block javascript %}
+  <script>
+    function ajax_user_exists() {
+      var email = $("#id_email_search").val();
+
+      $.ajax({
+        url: "{% url 'trips:user_exists' %}",
+        data: {
+          "email": email
+        },
+        dataType: "json",
+        type: "GET",
+        success: function(data) {
+          if (data.user_exists) {
+            $("#id_email_search").prop('disabled',true);
+            $("#confirm-add-member").find("p").text("Add " + email + " to the trip?");
+            $("#confirm-add-member").slideDown('fast');
+            $("#confirm-button").focus();
+          }
+        }
+      });
+    }
+
+    $("#email-search-button").on('click', function(){
+      ajax_user_exists();
+    });
+
+    $("#trip-member-search").on('submit', function(event){
+      event.preventDefault();
+      ajax_user_exists();
+    });
+
+
+
+    $("#confirm-add-member").on('click', '#cancel-button', function() {
+      $("#confirm-add-member").slideUp('fast');
+      $("#id_email_search").focus();
+      $("#id_email_search").prop('disabled',false);
+    });
+
+  </script>
+{% endblock javascript %}
+
 {% block content %}
   <div class="wrapper">
     {% include "./menu.html" %}
@@ -20,6 +63,14 @@
           </div>
           {% load crispy_forms_tags %}
           {% crispy form form.helper %}
+          <div id="confirm-add-member" class="trip-info">
+            <p>Add email-address to trip?</p>
+            <button type="button" id="confirm-button" class="btn btn-success btn-lg">Confirm</button>
+            <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
+          </div>
+          <div id="new-member-added" class="trip-info">
+            <p>email address added successfully</p>
+          </div>
         </div>
         <div class="trip-list" id="trip-list">
           <div class="header">

@@ -3,7 +3,7 @@ import floppyforms.__future__ as forms
 
 from account_info.models import User
 
-from .models import Trip, TripLocation
+from .models import Trip, TripLocation, TripMember
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field
@@ -72,6 +72,7 @@ class LocationForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     class Meta:
+        # model = TripMember
         fields = ['email_search']
 
     def __init__(self, *args, **kwargs):
@@ -83,7 +84,7 @@ class SearchForm(forms.Form):
         self.helper.form_action = ''
         self.helper.field_class = 'search-field trip-info'
         self.helper.layout = Layout (
-            FieldWithButtons('email_search', StrictButton("Search", css_class="btn-success"))
+            FieldWithButtons('email_search', StrictButton("Search", css_class="btn-success", css_id="email-search-button"))
         )
 
     email_search = forms.EmailField(
