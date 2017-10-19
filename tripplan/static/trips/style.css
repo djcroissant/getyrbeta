@@ -115,3 +115,13 @@ li.hidden_bullet {
   margin-top: 10pt;
   margin-bottom: 10pt;
 }
+
+/*Member search field*/
+#id_email_search {
+  width: 80%;
+  margin: 8px;
+}
+
+.trip-forms .form-control-label {
+  font-size: 1.1em;
+}

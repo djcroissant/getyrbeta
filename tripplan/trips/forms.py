@@ -7,7 +7,7 @@ from .models import Trip, TripLocation
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 
 
 class TripForm(forms.ModelForm):
@@ -44,7 +44,6 @@ class LocationForm(forms.ModelForm):
             'latitude', 'longitude']
 
     def __init__(self, *args, **kwargs):
-        # import pdb; pdb.set_trace()
         choices = kwargs.pop('choices')
         super(LocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -70,3 +69,25 @@ class LocationForm(forms.ModelForm):
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')
             )
         )
+
+class SearchForm(forms.Form):
+    class Meta:
+        fields = ['email_search']
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'trip-member-search'
+        self.helper.form_class = 'trip-forms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+        self.helper.field_class = 'search-field trip-info'
+        self.helper.layout = Layout (
+            FieldWithButtons('email_search', StrictButton("Search", css_class="btn-success"))
+        )
+
+    email_search = forms.EmailField(
+        label='Enter email address below:',
+        max_length=255,
+        required=False
+    )

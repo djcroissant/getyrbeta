@@ -89,11 +89,11 @@
                         {% if location.latitude and location.longitude %}
                           <li class="hidden_bullet trip-info">Coordinates: {{ location.latitude }}, {{ location.longitude }}</li>
                         {% endif %}
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                </div>
-              </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             {% endfor %}
           {% else %}
             {% for date, location_list in objective_dict.items %}

@@ -18,19 +18,50 @@
           <div class="header">
             <h3>Add Members</h3>
           </div>
-          <p>CODE HERE</p>
+          {% load crispy_forms_tags %}
+          {% crispy form form.helper %}
         </div>
         <div class="trip-list" id="trip-list">
           <div class="header">
             <h3>Pending Members</h3>
           </div>
-          <p>CODE HERE</p>
+          {% if pending_members|length > 0 %}
+            <ul>
+              {% for member in pending_members %}
+                <div class="list-padding">
+                  <li class="trip-info">{{ member.email }}</li>
+                  {% if member.member and member.member.preferred_name %}
+                    <li class="hidden_bullet trip-info">{{ member.member.preferred_name }}</li>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="trip-info">
+              <p>There are no pending members at this time</p>
+            </div>
+          {% endif %}
         </div>
         <div class="trip-list" id="trip-list">
           <div class="header">
             <h3>Current Members</h3>
           </div>
-          <p>CODE HERE</p>
+          {% if current_members|length > 0 %}
+            <ul>
+              {% for member in current_members %}
+                <div class="list-padding">
+                  <li class="trip-info">{{ member.email }}</li>
+                  {% if member.member and member.member.preferred_name %}
+                    <li class="hidden_bullet trip-info">{{ member.member.preferred_name }}</li>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="trip-info">
+              <p>There are no current members at this time</p>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>

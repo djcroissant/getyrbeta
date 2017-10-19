@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
-    CreateView, DeleteView, DetailView
+    CreateView, DeleteView, DetailView, FormView
 from django.utils import timezone
 from django.contrib.auth import authenticate
 
@@ -11,7 +11,7 @@ from .models import Trip, TripLocation, TripMember
 
 from account_info.models import User
 
-from .forms import TripForm, LocationForm
+from .forms import TripForm, LocationForm, SearchForm
 
 
 class LoginRequiredMixin:
@@ -193,19 +193,25 @@ class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
         else:
             raise ValueError('Invalid location type: ' + url_location_type)
 
-class TripMemberListView(LoginRequiredMixin, ListView):
+class TripMemberListView(LoginRequiredMixin, FormView):
     model = TripMember
     template_name = 'trips/members.html'
     queryset = TripMember.objects.all()
+    form_class = SearchForm
 
     def get_context_data(self, **kwargs):
         context = super(TripMemberListView, self).get_context_data(**kwargs)
         context['trip'] = Trip.objects.get(pk=self.kwargs['pk'])
-        # context['upcoming_trip_list'] = Trip.objects.filter(
-        #     start_date__gte=timezone.now()).order_by('start_date')
-        # context['past_trip_list'] = Trip.objects.filter(
-        #     start_date__lt=timezone.now()).order_by('start_date')
+        context['pending_members'] = self.queryset.filter(
+            accept_reqd=True).order_by('email')
+        context['current_members'] = self.queryset.filter(
+            accept_reqd=False).order_by('email')
         return context
+
+    # def post(self, request, *args, **kwargs):
+    #
+    #     return super(LoginRequiredMixin, self).post(
+    #             self, request, *args, **kwargs)
 
 def notifications(request):
     #placeholder
