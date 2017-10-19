@@ -1,0 +1,4 @@
+#top-line-wrap {overflow:hidden; width:100%; position:absolute; height:40px; z-index:3;margin:-5px -10px 0px -10px;}
+#top-line { position:absolute; width:2700px;}
+#top-line .chunk {  width:90px; height:40px; display:block; float:left; position:relative;}
+#top-line .filler {height:10px; position:absolute; width:100%; left:0; top:0;}
