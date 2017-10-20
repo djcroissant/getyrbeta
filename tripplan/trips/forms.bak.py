@@ -95,4 +95,4 @@ class SearchForm(forms.Form):
 class TripMemberForm(forms.ModelForm):
     class Meta:
         model = TripMember
-        fields = []
+        fields = ['member', 'trip', 'organizer', 'accept_reqd', 'email']

@@ -21,6 +21,6 @@ urlpatterns = [
         views.TripMemberListView.as_view(), name='trip_members'),
     url(r'^ajax/user_exists/$',
         views.CheckUserExistsView.as_view(), name='user_exists'),
-    # url(r'^ajax/add_trip_member/$',
-    #     views.AddTripMemberView.as_view(), name='add_trip_member'),
+    url(r'^ajax/add_trip_member/$',
+        views.AddTripMemberView.as_view(), name='add_trip_member'),
 ]

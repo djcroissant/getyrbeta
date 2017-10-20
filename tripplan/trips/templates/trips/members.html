@@ -7,6 +7,8 @@
 {% endblock stylesheet %}
 
 {% block javascript %}
+  <script src="{% static 'js/csrftoken.js' %}"></script>
+
   <script>
     function ajax_user_exists() {
       var email = $("#id_email_search").val();
@@ -19,7 +21,7 @@
         dataType: "json",
         type: "GET",
         success: function(data) {
-          if (data.user_exists) {
+          if (data.valid_add_member) {
             $("#id_email_search").prop('disabled',true);
             $("#confirm-add-member").find("p").text("Add " + email + " to the trip?");
             $("#confirm-add-member").slideDown('fast');
@@ -38,7 +40,24 @@
       ajax_user_exists();
     });
 
+    $("#confirm-add-member").on('click', '#confirm-button', function() {
+      var email = $("#id_email_search").val();
 
+      $.ajax({
+        url: "{% url 'trips:add_trip_member' %}",
+        data: {
+          "email": email,
+          "trip": "{{ trip.id }}"
+        },
+        dataType: "json",
+        type: "POST",
+        success: function() {
+          $("#id_email_search").focus();
+          $("#confirm-add-member").slideUp('fast');
+          $("#id_email_search").prop('disabled',false);
+        }
+      });
+    });
 
     $("#confirm-add-member").on('click', '#cancel-button', function() {
       $("#confirm-add-member").slideUp('fast');

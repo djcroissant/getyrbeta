@@ -1,5 +1,10 @@
 import datetime
 
+## WILL WANT TO REMOVE THIS LATER:
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
@@ -12,7 +17,7 @@ from .models import Trip, TripLocation, TripMember
 
 from account_info.models import User
 
-from .forms import TripForm, LocationForm, SearchForm
+from .forms import TripForm, LocationForm, SearchForm, TripMemberForm
 
 
 class LoginRequiredMixin:
@@ -134,7 +139,6 @@ class TripCreateView(LoginRequiredMixin, CreateView):
 
 class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
     LocationFormMixin, CreateView):
-    model = TripLocation
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type')
         if url_location_type == 'trailhead':
@@ -218,26 +222,50 @@ class CheckUserExistsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         data = {
-            'user_exists': User.objects.filter(email__iexact=email).exists()
+            'valid_add_member': \
+            User.objects.filter(email__iexact=email).exists() and not \
+            TripMember.objects.filter(email__iexact=email).exists()
         }
         return JsonResponse(data)
 
-# class AddTripMemberView(LoginRequiredMixin, CreateView):
-#     model = TripMember
-#     fields = ['member', 'trip', 'organizer', 'accept_reqd', 'email']
-#     form_class = SearchForm
-#
-#     def form_invalid(self, form):
-#         response = super(AddTripMemberView, self).form_invalid(form)
-#         if self.request.is_ajax():
-#             return JsonResponse(form.errors, status=400)
-#         else:
-#             return response
-#
-#     def form_valid(self, form):
-#         import pdb; pdb.set_trace()
-#         response = super(AddTripMemberView, self).form_valid(form)
-#         if self.request.is_ajax():
-#             return JsonResponse()
-#         else:
-#             return response
+
+## WILL WANT TO REMOVE THIS LATER
+@method_decorator(csrf_exempt, name='dispatch')
+class AddTripMemberView(LoginRequiredMixin, CreateView):
+    model = TripMember
+    form_class = TripMemberForm
+    success_url = "#"
+
+    def post(self, request, *args, **kwargs):
+        self.kwargs['trip'] = request.POST.get('trip')
+        self.kwargs['email'] = request.POST.get('email')
+        return super(AddTripMemberView, self).post(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        response = super(AddTripMemberView, self).form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
+
+    def form_valid(self, form):
+        """
+        Set values for the form based on data passed by AJAX request and
+        on intended functionality
+        """
+        f = form.save(commit=False)
+        f.trip_id = int(self.kwargs.get('trip'))
+        f.member_id = get_object_or_404(
+            User, email=self.kwargs.get('email')).id
+        f.organizer = True
+        f.accept_reqd = True
+        f.email = self.kwargs.get('email')
+        f.save()
+        response = super(AddTripMemberView, self).form_valid(form)
+        if self.request.is_ajax():
+            # NOTE: 'data' is not currently used by the template, but might
+            # be in the future.
+            data = {'trip_member_id': str(self.object.id)}
+            return JsonResponse(data)
+        else:
+            return response
