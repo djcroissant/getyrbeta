@@ -216,11 +216,15 @@ def notifications(request):
 class CheckUserExistsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
-        data = {
-            'valid_add_member': \
-            User.objects.filter(email__iexact=email).exists() and not \
-            TripMember.objects.filter(email__iexact=email).exists()
-        }
+        if User.objects.filter(email__iexact=email).exists() and not \
+        TripMember.objects.filter(email__iexact=email).exists():
+            status = 'valid'
+        elif TripMember.objects.filter(email__iexact=email).exists():
+            status = 'current_member'
+        else:
+            status = 'non_user'
+
+        data = {'status': status}
         return JsonResponse(data)
 
 class AddTripMemberView(LoginRequiredMixin, CreateView):

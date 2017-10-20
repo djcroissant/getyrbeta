@@ -130,6 +130,11 @@ li.hidden_bullet {
   display: none;
 }
 
+#current-member-alert {
+  display: none;
+  padding: 1px;
+}
+
 #confirm-add-member p{
   display: inline-block;
   margin-right: 15px;

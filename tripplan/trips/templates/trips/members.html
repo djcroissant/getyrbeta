@@ -24,11 +24,16 @@
         dataType: "json",
         type: "GET",
         success: function(data) {
-          if (data.valid_add_member) {
+          if (data.status == 'valid') {
             $("#id_email_search").prop('disabled',true);
+            $("#current-member-alert").slideUp("fast");
+            $("#confirm-add-member").slideDown("fast");
             $("#confirm-add-member").find("p").text("Add " + email + " to the trip?");
-            $("#confirm-add-member").slideDown('fast');
             $("#confirm-button").focus();
+          } else if (data.status == 'current_member') {
+            $("#current-member-alert").find("p").text(email + " is already a member");
+            $("#current-member-alert").slideDown("fast");
+            $("#id_email_search").focus();
           }
         }
       });
@@ -83,8 +88,8 @@
     // Cancel clears search box and re-focuses
     $("#confirm-add-member").on('click', '#cancel-button', function() {
       $("#confirm-add-member").slideUp('fast');
-      $("#id_email_search").focus();
       $("#id_email_search").prop('disabled',false);
+      $("#id_email_search").focus();
     });
 
   </script>
@@ -108,6 +113,9 @@
             <p>Add email-address to trip?</p>
             <button type="button" id="confirm-button" class="btn btn-success btn-lg">Confirm</button>
             <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
+          </div>
+          <div id="current-member-alert" class="trip-info">
+            <p>email-address is already a member</p>
           </div>
           <div id="new-member-added" class="trip-info">
             <p>email address added successfully</p>
