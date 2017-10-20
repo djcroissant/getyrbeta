@@ -1,10 +1,5 @@
 import datetime
 
-## WILL WANT TO REMOVE THIS LATER:
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
@@ -228,9 +223,6 @@ class CheckUserExistsView(LoginRequiredMixin, View):
         }
         return JsonResponse(data)
 
-
-## WILL WANT TO REMOVE THIS LATER
-@method_decorator(csrf_exempt, name='dispatch')
 class AddTripMemberView(LoginRequiredMixin, CreateView):
     model = TripMember
     form_class = TripMemberForm
@@ -263,9 +255,15 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
         f.save()
         response = super(AddTripMemberView, self).form_valid(form)
         if self.request.is_ajax():
-            # NOTE: 'data' is not currently used by the template, but might
-            # be in the future.
-            data = {'trip_member_id': str(self.object.id)}
+            data = {
+                # 'trip_member_id': str(self.object.id)
+                'email': self.object.member.email
+            }
+            if self.object.member.preferred_name:
+                data['preferred_name'] = self.object.member.preferred_name
+            else:
+                data['preferred_name'] = ''
+
             return JsonResponse(data)
         else:
             return response

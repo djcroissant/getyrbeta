@@ -7,9 +7,12 @@
 {% endblock stylesheet %}
 
 {% block javascript %}
+  {# Get csrf token from csrftoken cookie #}
   <script src="{% static 'js/csrftoken.js' %}"></script>
 
+  {# Search and add existing users to trips using AJAX #}
   <script>
+    // If email isn't already registered, a confirmation will be displayed
     function ajax_user_exists() {
       var email = $("#id_email_search").val();
 
@@ -31,15 +34,31 @@
       });
     }
 
+    // Calls on mouse click
     $("#email-search-button").on('click', function(){
       ajax_user_exists();
     });
 
+    // Calls on enter press
     $("#trip-member-search").on('submit', function(event){
       event.preventDefault();
       ajax_user_exists();
     });
 
+
+    // Adds TripMember to Pending Members section
+    function refresh_pending_members(data) {
+      var list = $("#pending-members-list").find("ul");
+      if (list.children().first().children().first().hasClass('empty-list')) {
+        list.find('div').remove();
+      }
+      var pending_member = $('<div class="list-padding"><li class="trip-info">' +
+        data.email + '</li><li class="hidden_bullet trip-info">' +
+        data.preferred_name + '</li></div>');
+      list.prepend(pending_member);
+    }
+
+    // If user confirms, a TripMember instance is created based on email
     $("#confirm-add-member").on('click', '#confirm-button', function() {
       var email = $("#id_email_search").val();
 
@@ -51,14 +70,17 @@
         },
         dataType: "json",
         type: "POST",
-        success: function() {
-          $("#id_email_search").focus();
+        success: function(data) {
+          refresh_pending_members(data);
           $("#confirm-add-member").slideUp('fast');
           $("#id_email_search").prop('disabled',false);
+          $("#id_email_search").val('');
+          $("#id_email_search").focus();
         }
       });
     });
 
+    // Cancel clears search box and re-focuses
     $("#confirm-add-member").on('click', '#cancel-button', function() {
       $("#confirm-add-member").slideUp('fast');
       $("#id_email_search").focus();
@@ -91,12 +113,12 @@
             <p>email address added successfully</p>
           </div>
         </div>
-        <div class="trip-list" id="trip-list">
+        <div class="trip-list" id="pending-members-list">
           <div class="header">
             <h3>Pending Members</h3>
           </div>
-          {% if pending_members|length > 0 %}
-            <ul>
+          <ul>
+            {% if pending_members|length > 0 %}
               {% for member in pending_members %}
                 <div class="list-padding">
                   <li class="trip-info">{{ member.email }}</li>
@@ -105,19 +127,19 @@
                   {% endif %}
                 </div>
               {% endfor %}
-            </ul>
-          {% else %}
-            <div class="trip-info">
-              <p>There are no pending members at this time</p>
-            </div>
-          {% endif %}
+            {% else %}
+              <div class="list-padding">
+                <li class="trip-info empty-list">There are no pending members at this time</li>
+              </div>
+            {% endif %}
+          </ul>
         </div>
-        <div class="trip-list" id="trip-list">
+        <div class="trip-list" id="current-members-list">
           <div class="header">
             <h3>Current Members</h3>
           </div>
-          {% if current_members|length > 0 %}
-            <ul>
+          <ul>
+            {% if current_members|length > 0 %}
               {% for member in current_members %}
                 <div class="list-padding">
                   <li class="trip-info">{{ member.email }}</li>
@@ -126,12 +148,12 @@
                   {% endif %}
                 </div>
               {% endfor %}
-            </ul>
-          {% else %}
-            <div class="trip-info">
-              <p>There are no current members at this time</p>
-            </div>
-          {% endif %}
+            {% else %}
+              <div class="list-padding">
+                <li class="trip-info empty-list">There are no current members at this time</li>
+              </div>
+            {% endif %}
+          </ul>
         </div>
       </div>
     </div>
