@@ -63,15 +63,17 @@
       list.prepend(pending_member);
     }
 
-    // If user confirms, a TripMember instance is created based on email
+    // If user confirms, TripMember and TripNotification
+    // instances are created based on email
     $("#confirm-add-member").on('click', '#confirm-button', function() {
       var email = $("#id_email_search").val();
 
+      // POST to TripMember
       $.ajax({
         url: "{% url 'trips:add_trip_member' %}",
         data: {
           "email": email,
-          "trip": "{{ trip.id }}"
+          "trip_id": "{{ trip.id }}"
         },
         dataType: "json",
         type: "POST",
@@ -81,6 +83,20 @@
           $("#id_email_search").prop('disabled',false);
           $("#id_email_search").val('');
           $("#id_email_search").focus();
+        }
+      });
+
+      // POST to TripNotification
+      $.ajax({
+        url: "{% url 'trips:add_trip_notification' %}",
+        data: {
+          "email": email,
+          "trip_id": "{{ trip.id }}"
+        },
+        dataType: "json",
+        type: "POST",
+        success: function() {
+          alert('hi, you just made a notification')
         }
       });
     });

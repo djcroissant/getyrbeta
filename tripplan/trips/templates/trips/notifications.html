@@ -1,7 +1,79 @@
 {% extends 'core/base.html' %}
 
-{% block title %}Notifications · Tripplan{% endblock %}
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
+{% endblock stylesheet %}
 
 {% block content %}
-  <h1>Notification of trip invitations</h1>
+  <div class="wrapper">
+    <div class="banner-logo" id="BannerLogo">
+      <h1>Notifications</h1>
+    </div>
+    <div class="trip-list" id="trip-list">
+      <div class="header">
+        <h2>Trip Notifications</h2>
+      </div>
+      {% if trip_notifications %}
+        <table id="trip-notifications" class="table table-hover trip-info">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th># Nights</th>
+              <th>{# blank column for buttons #}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for trip in trip_notifications %}
+              <tr>
+                <td>{{ trip.start_date }}</td>
+                <td>{{ trip.title }}</td>
+                <td>{{ trip.number_nights }}</td>
+                <td>
+                  <button type="button" class="btn btn-success btn-lg accept">Accept</button>
+                  <button type="button" class="btn btn-secondary decline">Decline</button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No trip notifications at this time</p>
+      {% endif %}
+    </div>
+    <div class="trip-list" id="trip-list">
+      <div class="header">
+        <h2>Item Notifications</h2>
+      </div>
+      {% if item_notifications %}
+        <table id="item-notifications" class="table table-hover trip-info">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Trip</th>
+              <th>{#blank column for buttons #}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in item_notifications %}
+              <tr>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.trip.title }}</td>
+                <td>
+                  <button type="button" class="btn btn-success btn-lg accept">Accept</button>
+                  <button type="button" class="btn btn-secondary decline">Decline</button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No item notifications at this time</p>
+      {% endif %}
+    </div>
+  </div>
 {% endblock content %}
