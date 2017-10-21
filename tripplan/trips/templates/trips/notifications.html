@@ -13,7 +13,7 @@
     </div>
     <div class="trip-list" id="trip-list">
       <div class="header">
-        <h2>Trip Notifications</h2>
+        <h2>You've been invited to join the following trips:</h2>
       </div>
       {% if trip_notifications %}
         <table id="trip-notifications" class="table table-hover trip-info">
@@ -28,9 +28,9 @@
           <tbody>
             {% for trip in trip_notifications %}
               <tr>
-                <td>{{ trip.start_date }}</td>
-                <td>{{ trip.title }}</td>
-                <td>{{ trip.number_nights }}</td>
+                <td>{{ trip.trip.start_date }}</td>
+                <td>{{ trip.trip.title }}</td>
+                <td>{{ trip.trip.number_nights }}</td>
                 <td>
                   <button type="button" class="btn btn-success btn-lg accept">Accept</button>
                   <button type="button" class="btn btn-secondary decline">Decline</button>
@@ -45,7 +45,7 @@
     </div>
     <div class="trip-list" id="trip-list">
       <div class="header">
-        <h2>Item Notifications</h2>
+        <h2>You've been asked to bring the following gear:</h2>
       </div>
       {% if item_notifications %}
         <table id="item-notifications" class="table table-hover trip-info">

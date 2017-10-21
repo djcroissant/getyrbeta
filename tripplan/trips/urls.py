@@ -26,4 +26,11 @@ urlpatterns = [
         views.AddTripMemberView.as_view(), name='add_trip_member'),
     url(r'^ajax/add_trip_notification/$',
         views.AddTripNotificationView.as_view(), name='add_trip_notification'),
+    url(r'^ajax/update_trip_member/$',
+        views.UpdateTripMemberView.as_view(), name='update_trip_member'),
+    url(r'^ajax/delete_trip_member/$',
+        views.DeleteTripMemberView.as_view(), name='delete_trip_member'),
+    url(r'^ajax/delete_trip_notification/$',
+        views.DeleteTripNotificationView.as_view(),
+        name='delete_trip_notification'),
 ]

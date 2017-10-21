@@ -15,11 +15,13 @@
     // If email isn't already registered, a confirmation will be displayed
     function ajax_user_exists() {
       var email = $("#id_email_search").val();
+      var trip_id = "{{ trip.id }}"
 
       $.ajax({
         url: "{% url 'trips:user_exists' %}",
         data: {
-          "email": email
+          "email": email,
+          "trip_id": trip_id
         },
         dataType: "json",
         type: "GET",
@@ -64,11 +66,8 @@
     }
 
     // If user confirms, TripMember and TripNotification
-    // instances are created based on email
     $("#confirm-add-member").on('click', '#confirm-button', function() {
       var email = $("#id_email_search").val();
-
-      // POST to TripMember
       $.ajax({
         url: "{% url 'trips:add_trip_member' %}",
         data: {
@@ -95,8 +94,7 @@
         },
         dataType: "json",
         type: "POST",
-        success: function() {
-          alert('hi, you just made a notification')
+        success: function(data) {
         }
       });
     });

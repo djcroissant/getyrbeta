@@ -203,18 +203,20 @@ class TripMemberListView(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(TripMemberListView, self).get_context_data(**kwargs)
-        context['trip'] = Trip.objects.get(pk=self.kwargs['pk'])
+        trip = Trip.objects.get(pk=self.kwargs['pk'])
+        context['trip'] = trip
         context['pending_members'] = self.queryset.filter(
-            accept_reqd=True).order_by('email')
+            trip=trip, accept_reqd=True).order_by('email')
         context['current_members'] = self.queryset.filter(
-            accept_reqd=False).order_by('email')
+            trip=trip, accept_reqd=False).order_by('email')
         return context
 
 class CheckUserExistsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
+        trip = Trip.objects.get(pk=int(request.GET.get('trip_id')))
         if User.objects.filter(email__iexact=email).exists() and not \
-        TripMember.objects.filter(email__iexact=email).exists():
+        TripMember.objects.filter(email__iexact=email, trip=trip).exists():
             status = 'valid'
         elif TripMember.objects.filter(email__iexact=email).exists():
             status = 'current_member'
@@ -224,23 +226,22 @@ class CheckUserExistsView(LoginRequiredMixin, View):
         data = {'status': status}
         return JsonResponse(data)
 
-class AjaxAddMixin:
+class AddTripMemberView(LoginRequiredMixin, CreateView):
+    model = TripMember
+    form_class = TripMemberForm
+    success_url = "#"
+
     def post(self, request, *args, **kwargs):
-        self.kwargs['trip_id'] = int(request.POST.get('trip_id'))
+        self.kwargs['trip_id'] = request.POST.get('trip_id')
         self.kwargs['email'] = request.POST.get('email')
-        return super(AjaxAddMixin, self).post(request, *args, **kwargs)
+        return super(AddTripMemberView, self).post(request, *args, **kwargs)
 
     def form_invalid(self, form):
-        response = super(AjaxAddMixin, self).form_invalid(form)
+        response = super(AddTripMemberView, self).form_invalid(form)
         if self.request.is_ajax():
             return JsonResponse(form.errors, status=400)
         else:
             return response
-
-class AddTripMemberView(LoginRequiredMixin, AjaxAddMixin, CreateView):
-    model = TripMember
-    form_class = TripMemberForm
-    success_url = "#"
 
     def form_valid(self, form):
         """
@@ -248,7 +249,7 @@ class AddTripMemberView(LoginRequiredMixin, AjaxAddMixin, CreateView):
         on intended functionality
         """
         f = form.save(commit=False)
-        f.trip_id = self.kwargs.get('trip_id')
+        f.trip_id = int(self.kwargs.get('trip_id'))
         f.member_id = get_object_or_404(
             User, email=self.kwargs.get('email')).id
         f.organizer = True
@@ -258,6 +259,7 @@ class AddTripMemberView(LoginRequiredMixin, AjaxAddMixin, CreateView):
         response = super(AddTripMemberView, self).form_valid(form)
         if self.request.is_ajax():
             data = {
+                # 'trip_member_id': str(self.object.id)
                 'email': self.object.member.email
             }
             if self.object.member.preferred_name:
@@ -269,10 +271,23 @@ class AddTripMemberView(LoginRequiredMixin, AjaxAddMixin, CreateView):
         else:
             return response
 
-class AddTripNotificationView(LoginRequiredMixin, AjaxAddMixin, CreateView):
+class AddTripNotificationView(LoginRequiredMixin, CreateView):
     model = TripNotification
     form_class = TripNotificationForm
     success_url = "#"
+
+    def post(self, request, *args, **kwargs):
+        self.kwargs['trip_id'] = request.POST.get('trip_id')
+        self.kwargs['email'] = request.POST.get('email')
+        self.kwargs['created_by_id'] = request.user.id
+        return super(AddTripNotificationView, self).post(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        response = super(AddTripNotificationView, self).form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
 
     def form_valid(self, form):
         """
@@ -280,13 +295,16 @@ class AddTripNotificationView(LoginRequiredMixin, AjaxAddMixin, CreateView):
         on intended functionality
         """
         f = form.save(commit=False)
-        f.trip_id = self.kwargs.get('trip_id')
+        f.trip_id = int(self.kwargs.get('trip_id'))
         f.member_id = get_object_or_404(
             User, email=self.kwargs.get('email')).id
-        f.created_by = request.user.id
+        f.created_by = self.kwargs.get('created_by_id')
         f.save()
         response = super(AddTripNotificationView, self).form_valid(form)
         if self.request.is_ajax():
+            data = {
+                'trip_notification_pk': self.object.id
+            }
             return JsonResponse(data)
         else:
             return response
@@ -294,11 +312,30 @@ class AddTripNotificationView(LoginRequiredMixin, AjaxAddMixin, CreateView):
 class NotificationListView(LoginRequiredMixin, ListView):
     model = TripNotification
     template_name = 'trips/notifications.html'
-    context_object_name = 'notifications'
+    context_object_name = 'trip_notifications'
     queryset = TripNotification.objects.all()
 
-    # NOTE: NEED TO REDUCE CONTEXT TO THIS USER ONLY!!
+    def get(self, request, *args, **kwargs):
+        self.kwargs['user'] = request.user
+        return super(NotificationListView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        # gets all trip notifications for logged in user
+        queryset = super(NotificationListView, self).get_queryset()
+        return queryset.filter(member=self.kwargs['user'])
+
     def get_context_data(self, **kwargs):
+        # context already has 'trip_notifications' through standard ListView
+        # add 'item_notifications' to context
         context = super(NotificationListView, self).get_context_data(**kwargs)
-        context['items'] = ItemNotification.objects.all()
+        context['item_notifications'] = ItemNotification.objects.filter(owner=self.kwargs['user'])
         return context
+
+class UpdateTripMemberView(LoginRequiredMixin, UpdateView):
+    pass
+
+class DeleteTripMemberView(LoginRequiredMixin, DeleteView):
+    pass
+
+class DeleteTripNotificationView(LoginRequiredMixin, DeleteView):
+    pass
