@@ -149,6 +149,6 @@ li.hidden_bullet {
 }
 
 /* =======Notifications======= */
-/*#trip-notifications .trip-id {
+#trip-notifications .trip-id {
   display: none;
-}*/
+}

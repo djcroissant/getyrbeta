@@ -238,10 +238,7 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         response = super(AddTripMemberView, self).form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
-        else:
-            return response
+        return JsonResponse(form.errors, status=400)
 
     def form_valid(self, form):
         """
@@ -257,19 +254,15 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
         f.email = self.kwargs.get('email')
         f.save()
         response = super(AddTripMemberView, self).form_valid(form)
-        if self.request.is_ajax():
-            data = {
-                # 'trip_member_id': str(self.object.id)
-                'email': self.object.member.email
-            }
-            if self.object.member.preferred_name:
-                data['preferred_name'] = self.object.member.preferred_name
-            else:
-                data['preferred_name'] = ''
-
-            return JsonResponse(data)
+        data = {
+            'email': self.object.member.email
+        }
+        if self.object.member.preferred_name:
+            data['preferred_name'] = self.object.member.preferred_name
         else:
-            return response
+            data['preferred_name'] = ''
+
+        return JsonResponse(data)
 
 class AddTripNotificationView(LoginRequiredMixin, CreateView):
     model = TripNotification
@@ -284,10 +277,7 @@ class AddTripNotificationView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         response = super(AddTripNotificationView, self).form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
-        else:
-            return response
+        return JsonResponse(form.errors, status=400)
 
     def form_valid(self, form):
         """
@@ -301,13 +291,10 @@ class AddTripNotificationView(LoginRequiredMixin, CreateView):
         f.created_by = self.kwargs.get('created_by_id')
         f.save()
         response = super(AddTripNotificationView, self).form_valid(form)
-        if self.request.is_ajax():
-            data = {
-                'trip_notification_pk': self.object.id
-            }
-            return JsonResponse(data)
-        else:
-            return response
+        data = {
+            'trip_notification_pk': self.object.id
+        }
+        return JsonResponse(data)
 
 class NotificationListView(LoginRequiredMixin, ListView):
     model = TripNotification
@@ -352,10 +339,7 @@ class UpdateTripMemberView(LoginRequiredMixin, UpdateView):
 
     def form_invalid(self, form):
         response = super(UpdateTripMemberView, self).form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
-        else:
-            return response
+        return JsonResponse(form.errors, status=400)
 
     def form_valid(self, form):
         """
@@ -363,21 +347,11 @@ class UpdateTripMemberView(LoginRequiredMixin, UpdateView):
         on intended functionality
         """
         f = form.save(commit=False)
-        f.trip_id = self.object.trip_id
-
-        ## NOTE: TRY REMOVING ALL BUT CHANGED ATTRIBUTE
-
-        f.member_id = self.object.member_id
-        f.organizer = self.object.organizer
         f.accept_reqd = False
-        f.email = self.object.email
         f.save()
-        response = super(UpdateTripMemberView, self).form_valid(form)
-        if self.request.is_ajax():
-            data = {}
-            return JsonResponse(data)
-        else:
-            return response
+        super(UpdateTripMemberView, self).form_valid(form)
+        data = {}
+        return JsonResponse(data)
 
 class DeleteTripMemberView(LoginRequiredMixin, DeleteView):
     pass
@@ -387,19 +361,13 @@ class DeleteTripNotificationView(LoginRequiredMixin, DeleteView):
     success_url = "#"
 
     def post(self, request, *args, **kwargs):
-        import pdb; pdb.set_trace()
         self.kwargs['trip_id'] = request.POST.get('trip_id')
         self.kwargs['user_id'] = request.POST.get('user_id')
-        response = super(DeleteTripNotificationView, self).post(
-            request, *args, **kwargs)
-        if self.request.is_ajax():
-            data = {}
-            return JsonResponse(data)
-        else:
-            return response
+        super(DeleteTripNotificationView, self).post(request, *args, **kwargs)
+        data = {}
+        return JsonResponse(data)
 
     def get_object(self):
-        import pdb; pdb.set_trace()
         obj = get_object_or_404(
             TripNotification,
             member_id=int(self.kwargs.get('user_id')),
@@ -408,5 +376,4 @@ class DeleteTripNotificationView(LoginRequiredMixin, DeleteView):
         return obj
 
     def get_queryset(self):
-        import pdb; pdb.set_trace()
         super(DeleteTripNotificationView, self).get_queryset()
