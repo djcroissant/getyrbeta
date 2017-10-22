@@ -116,7 +116,7 @@ li.hidden_bullet {
   margin-bottom: 10pt;
 }
 
-/*Member search field*/
+/* =======Member search field======= */
 #id_email_search {
   width: 80%;
   margin: 8px;
@@ -147,3 +147,8 @@ li.hidden_bullet {
 #new-member-added {
   display: none;
 }
+
+/* =======Notifications======= */
+/*#trip-notifications .trip-id {
+  display: none;
+}*/

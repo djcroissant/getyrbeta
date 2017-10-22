@@ -329,13 +329,84 @@ class NotificationListView(LoginRequiredMixin, ListView):
         # add 'item_notifications' to context
         context = super(NotificationListView, self).get_context_data(**kwargs)
         context['item_notifications'] = ItemNotification.objects.filter(owner=self.kwargs['user'])
+        context['user_id'] = self.kwargs['user'].id
         return context
 
 class UpdateTripMemberView(LoginRequiredMixin, UpdateView):
-    pass
+    model = TripMember
+    form_class = TripMemberForm
+    success_url = "#"
+
+    def post(self, request, *args, **kwargs):
+        self.kwargs['trip_id'] = request.POST.get('trip_id')
+        self.kwargs['user_id'] = request.POST.get('user_id')
+        return super(UpdateTripMemberView, self).post(request, *args, **kwargs)
+
+    def get_object(self):
+        obj = get_object_or_404(
+            TripMember,
+            member_id=int(self.kwargs.get('user_id')),
+            trip_id=int(self.kwargs.get('trip_id'))
+        )
+        return obj
+
+    def form_invalid(self, form):
+        response = super(UpdateTripMemberView, self).form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
+
+    def form_valid(self, form):
+        """
+        Set values for the form based on data passed by AJAX request and
+        on intended functionality
+        """
+        f = form.save(commit=False)
+        f.trip_id = self.object.trip_id
+
+        ## NOTE: TRY REMOVING ALL BUT CHANGED ATTRIBUTE
+
+        f.member_id = self.object.member_id
+        f.organizer = self.object.organizer
+        f.accept_reqd = False
+        f.email = self.object.email
+        f.save()
+        response = super(UpdateTripMemberView, self).form_valid(form)
+        if self.request.is_ajax():
+            data = {}
+            return JsonResponse(data)
+        else:
+            return response
 
 class DeleteTripMemberView(LoginRequiredMixin, DeleteView):
     pass
 
 class DeleteTripNotificationView(LoginRequiredMixin, DeleteView):
-    pass
+    model = TripNotification
+    success_url = "#"
+
+    def post(self, request, *args, **kwargs):
+        import pdb; pdb.set_trace()
+        self.kwargs['trip_id'] = request.POST.get('trip_id')
+        self.kwargs['user_id'] = request.POST.get('user_id')
+        response = super(DeleteTripNotificationView, self).post(
+            request, *args, **kwargs)
+        if self.request.is_ajax():
+            data = {}
+            return JsonResponse(data)
+        else:
+            return response
+
+    def get_object(self):
+        import pdb; pdb.set_trace()
+        obj = get_object_or_404(
+            TripNotification,
+            member_id=int(self.kwargs.get('user_id')),
+            trip_id=int(self.kwargs.get('trip_id'))
+        )
+        return obj
+
+    def get_queryset(self):
+        import pdb; pdb.set_trace()
+        super(DeleteTripNotificationView, self).get_queryset()

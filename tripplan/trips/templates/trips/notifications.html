@@ -6,6 +6,56 @@
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
 {% endblock stylesheet %}
 
+{% block javascript %}
+  {# Get csrf token from csrftoken cookie #}
+  <script src="{% static 'js/csrftoken.js' %}"></script>
+
+  {# POST to TripMember to set accept_reqd=False #}
+  <script>
+    function ajax_accept_trip(data) {
+      $.ajax({
+        url: "{% url 'trips:update_trip_member' %}",
+        data: data,
+        dataType: "json",
+        type: "POST",
+        success: function(data) {
+          alert('it updated trip_member')
+        }
+      });
+    }
+
+    function ajax_delete_trip_notification(data) {
+      $.ajax({
+        url: "{% url 'trips:delete_trip_notification' %}",
+        data: data,
+        dataType: "json",
+        type: "POST",
+        success: function(data) {
+          alert('it deleted trip notification')
+        }
+      });
+    }
+
+    //listener for accept click
+    //calls ajax_accept_trip
+    //calls ajax_delete_trip_notification
+    //removes buttons
+    //prints 'joined' in their place
+    $(".accept-btn").on('click', function() {
+      var data = {
+        "trip_id": $(this).parent().parent().find(".trip-id").text(),
+        "user_id": "{{ user_id }}"
+      };
+      ajax_accept_trip(data);
+      ajax_delete_trip_notification(data)
+      var td = $(this).parent();
+      td.find("button").remove();
+      td.append($('<p>Joined</p>'));
+    });
+  </script>
+
+{% endblock javascript %}
+
 {% block content %}
   <div class="wrapper">
     <div class="banner-logo" id="BannerLogo">
@@ -19,6 +69,7 @@
         <table id="trip-notifications" class="table table-hover trip-info">
           <thead>
             <tr>
+              <th class="trip-id">{# hidden column for trip_id #}</th>
               <th>Date</th>
               <th>Title</th>
               <th># Nights</th>
@@ -28,12 +79,13 @@
           <tbody>
             {% for trip in trip_notifications %}
               <tr>
-                <td>{{ trip.trip.start_date }}</td>
-                <td>{{ trip.trip.title }}</td>
-                <td>{{ trip.trip.number_nights }}</td>
-                <td>
-                  <button type="button" class="btn btn-success btn-lg accept">Accept</button>
-                  <button type="button" class="btn btn-secondary decline">Decline</button>
+                <td class="trip-id">{{ trip.trip.id }}</td>
+                <td class="start-date">{{ trip.trip.start_date }}</td>
+                <td class="trip-title">{{ trip.trip.title }}</td>
+                <td class="number_nights">{{ trip.trip.number_nights }}</td>
+                <td class="buttons">
+                  <button type="button" class="btn btn-success btn-lg accept-btn">Accept</button>
+                  <button type="button" class="btn btn-secondary decline-btn">Decline</button>
                 </td>
               </tr>
             {% endfor %}

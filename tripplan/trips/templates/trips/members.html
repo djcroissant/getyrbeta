@@ -42,12 +42,12 @@
     }
 
     // Calls on mouse click
-    $("#email-search-button").on('click', function(){
+    $("#email-search-button").on('click', function() {
       ajax_user_exists();
     });
 
     // Calls on enter press
-    $("#trip-member-search").on('submit', function(event){
+    $("#trip-member-search").on('submit', function(event) {
       event.preventDefault();
       ajax_user_exists();
     });
