@@ -65,7 +65,7 @@
       list.prepend(pending_member);
     }
 
-    // If user confirms, TripMember and TripNotification
+    // If user confirms, set accept_reqd=True in TripMember
     $("#confirm-add-member").on('click', '#confirm-button', function() {
       var email = $("#id_email_search").val();
       $.ajax({
@@ -82,19 +82,6 @@
           $("#id_email_search").prop('disabled',false);
           $("#id_email_search").val('');
           $("#id_email_search").focus();
-        }
-      });
-
-      // POST to TripNotification
-      $.ajax({
-        url: "{% url 'trips:add_trip_notification' %}",
-        data: {
-          "email": email,
-          "trip_id": "{{ trip.id }}"
-        },
-        dataType: "json",
-        type: "POST",
-        success: function(data) {
         }
       });
     });

@@ -10,8 +10,8 @@
   {# Get csrf token from csrftoken cookie #}
   <script src="{% static 'js/csrftoken.js' %}"></script>
 
-  {# POST to TripMember to set accept_reqd=False #}
   <script>
+    // POST to TripMember to set accept_reqd=False`
     function ajax_accept_trip(data) {
       $.ajax({
         url: "{% url 'trips:update_trip_member' %}",
@@ -23,9 +23,10 @@
       });
     }
 
-    function ajax_delete_trip_notification(data) {
+    // POST to TripMember to delete relevant instance
+    function ajax_decline_trip(data) {
       $.ajax({
-        url: "{% url 'trips:delete_trip_notification' %}",
+        url: "{% url 'trips:delete_trip_member' %}",
         data: data,
         dataType: "json",
         type: "POST",
@@ -36,19 +37,30 @@
 
     //listener for accept click
     //calls ajax_accept_trip
-    //calls ajax_delete_trip_notification
     //removes buttons
     //prints 'joined' in their place
     $(".accept-btn").on('click', function() {
       var data = {
-        "trip_id": $(this).parent().parent().find(".trip-id").text(),
-        "user_id": "{{ user_id }}"
+        "trip_id": $(this).parent().parent().find(".trip-id").text()
       };
       ajax_accept_trip(data);
-      ajax_delete_trip_notification(data)
       var td = $(this).parent();
       td.find("button").remove();
       td.append($('<p>Joined</p>'));
+    });
+
+    //listener for decline click
+    //calls ajax_decline_trip
+    //removes buttons
+    //prints 'declined' in their place
+    $(".decline-btn").on('click', function() {
+      var data = {
+        "trip_id": $(this).parent().parent().find(".trip-id").text()
+      };
+      ajax_decline_trip(data);
+      var td = $(this).parent();
+      td.find("button").remove();
+      td.append($('<p>Declined</p>'));
     });
   </script>
 

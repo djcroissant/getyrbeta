@@ -182,9 +182,3 @@ class ItemNotification(models.Model):
     owner = models.ForeignKey('account_info.User', on_delete=models.CASCADE, related_name='owners')
     date_created = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length = 255)
-
-class TripNotification(models.Model):
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    member = models.ForeignKey('account_info.User', on_delete=models.CASCADE, related_name='members')
-    date_created = models.DateTimeField(auto_now_add=True)
-    created_by = models.CharField(max_length = 255)

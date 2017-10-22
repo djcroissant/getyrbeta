@@ -3,7 +3,7 @@ import floppyforms.__future__ as forms
 
 from account_info.models import User
 
-from .models import Trip, TripLocation, TripMember, TripNotification
+from .models import Trip, TripLocation, TripMember
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field
@@ -95,9 +95,4 @@ class SearchForm(forms.Form):
 class TripMemberForm(forms.ModelForm):
     class Meta:
         model = TripMember
-        fields = []
-
-class TripNotificationForm(forms.ModelForm):
-    class Meta:
-        model = TripNotification
         fields = []
