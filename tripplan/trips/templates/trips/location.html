@@ -6,15 +6,111 @@
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
 {% endblock stylesheet %}
 
+{% block javascript %}
+  {% comment %}
+    The following javascript is based on the Google API example here:
+    https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete
+  {% endcomment %}
+  <script>
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 48.05788, lng: -121.79679},
+        zoom: 13,
+        backgroundColor: "gray",
+        scaleControl: "True",
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      });
+      var card = document.getElementById('pac-card');
+      var input = document.getElementById('pac-input');
+
+      var autocomplete = new google.maps.places.Autocomplete(input);
+      autocomplete.setTypes([]);
+
+      // Bind the map's bounds (viewport) property to the autocomplete object,
+      // so that the autocomplete requests use the current map bounds for the
+      // bounds option in the request.
+      autocomplete.bindTo('bounds', map);
+
+      var infowindow = new google.maps.InfoWindow();
+      var infowindowContent = document.getElementById('infowindow-content');
+      infowindow.setContent(infowindowContent);
+      var marker = new google.maps.Marker({
+        map: map,
+        anchorPoint: new google.maps.Point(0, -29)
+      });
+
+      autocomplete.addListener('place_changed', function() {
+        infowindow.close();
+        marker.setVisible(false);
+        var place = autocomplete.getPlace();
+        $("#id_title").val(place.address_components[0].short_name);
+        $("#id_latitude").val(place.geometry.location.lat());
+        $("#id_longitude").val(place.geometry.location.lng());
+        console.log(place.geometry.location.lng())
+        if (!place.geometry) {
+          // User entered the name of a Place that was not suggested and
+          // pressed the Enter key, or the Place Details request failed.
+          window.alert("No details available for input: '" + place.name + "'");
+          return;
+        }
+
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+          map.fitBounds(place.geometry.viewport);
+        } else {
+          map.setCenter(place.geometry.location);
+          map.setZoom(19);  // Why 17? Because it looks good.
+        }
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);
+
+        var address = '';
+        if (place.address_components) {
+          address = [
+            (place.address_components[0] && place.address_components[0].short_name || ''),
+            (place.address_components[1] && place.address_components[1].short_name || ''),
+            (place.address_components[2] && place.address_components[2].short_name || '')
+          ].join(' ');
+        }
+
+        infowindowContent.children['place-icon'].src = place.icon;
+        infowindowContent.children['place-name'].textContent = place.name;
+        infowindowContent.children['place-address'].textContent = address;
+        infowindow.open(map, marker);
+      });
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA14LT9E4I4V91qxDPFhc-7ohMca4stX70&libraries=places&callback=initMap"
+        async defer></script>
+{% endblock javascript %}
+
 {% block content %}
-    <div class="wrapper">
-      <div class="content-wrapper">
-        <div class="content">
-          <h1>{{ page_title }}</h1><br>
-          {% load crispy_forms_tags %}
-          {% crispy form form.helper %}
-        </div>
+  <div class="wrapper">
+    <div class="banner-logo">
+      <h1>{{ page_title }}</h1>
+    </div>
+    <div class="pac-card" id="pac-card">
+      <div id="title">
+        Location Search
+      </div>
+      <div id="pac-container">
+        <input id="pac-input" type="text"
+            placeholder="Enter a location">
       </div>
     </div>
+    <div class="row">
+      <div class="form-container col-md-6">
+        {% load crispy_forms_tags %}
+        {% crispy form form.helper %}
+      </div><!--  form-conatainer col-md-6 -->
+      <div class="map-container col-md-6">
+        <div id="map"></div>
+        <div id="infowindow-content">
+          <img src="" width="16" height="16" id="place-icon">
+          <span id="place-name"  class="title"></span><br>
+          <span id="place-address"></span>
+        </div>
+      </div><!--  map-container col-md-6 -->
+    </div><!--  row -->
   </div>
 {% endblock content %}
