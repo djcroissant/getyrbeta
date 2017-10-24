@@ -6,7 +6,7 @@ from account_info.models import User
 from .models import Trip, TripLocation, TripMember
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field
+from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field, Div
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 
 
@@ -51,7 +51,6 @@ class LocationForm(forms.ModelForm):
         self.helper.form_class = 'trip_forms'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
-        self.helper.field_class = 'col-md-9'
         self.fields['title'].label = 'Title for Trip Plan'
         self.fields['date'].label = 'Date'
         self.fields['date'] = forms.ChoiceField(choices=choices)
@@ -59,9 +58,12 @@ class LocationForm(forms.ModelForm):
             Fieldset(
                 '',
                 'title',
-                'date',
-                'latitude',
-                'longitude'),
+                Div(
+                    'latitude',
+                    'longitude',
+                    css_class='coordinate-fields'
+                ),
+                'date'),
             Field('trip', type='hidden'),
             Field('location_type', type='hidden'),
             FormActions(

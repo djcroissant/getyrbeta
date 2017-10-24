@@ -44,8 +44,8 @@
         marker.setVisible(false);
         var place = autocomplete.getPlace();
         $("#id_title").val(place.address_components[0].short_name);
-        $("#id_latitude").val(place.geometry.location.lat());
-        $("#id_longitude").val(place.geometry.location.lng());
+        $("#id_latitude").val(Number(place.geometry.location.lat().toFixed(6)));
+        $("#id_longitude").val(Number(place.geometry.location.lng().toFixed(6)));
         console.log(place.geometry.location.lng())
         if (!place.geometry) {
           // User entered the name of a Place that was not suggested and

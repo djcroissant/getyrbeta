@@ -64,6 +64,7 @@ To be implemented later*/
   }
 }*/
 
+/* =======General for all pages within Trips app======= */
 .banner-logo {
   margin-bottom: 20pt;
 }
@@ -114,6 +115,11 @@ li.hidden_bullet {
 .list-padding {
   margin-top: 5pt;
   margin-bottom: 10pt;
+}
+
+/* =======Location Form======= */
+#id_title {
+  width: 100%
 }
 
 /* =======Member search field======= */
