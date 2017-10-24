@@ -13,9 +13,24 @@
   {% endcomment %}
   <script>
     function initMap() {
+      {% if triplocation.latitude and triplocation.longitude %}
+        var center = {
+          lat: {{ triplocation.latitude }},
+          lng: {{triplocation.longitude }}
+        }
+        var zoom = 15;
+      {% else %}
+        var center = {
+          lat: 48.05788,
+          lng: -121.79679
+        }
+        var zoom = 3;
+      {% endif %}
+
+      console.log(center)
       var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 48.05788, lng: -121.79679},
-        zoom: 13,
+        center: center,
+        zoom: zoom,
         backgroundColor: "gray",
         scaleControl: "True",
         mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -59,7 +74,7 @@
           map.fitBounds(place.geometry.viewport);
         } else {
           map.setCenter(place.geometry.location);
-          map.setZoom(19);  // Why 17? Because it looks good.
+          map.setZoom(15);  // Why 15? Because it looks good.
         }
         marker.setPosition(place.geometry.location);
         marker.setVisible(true);
