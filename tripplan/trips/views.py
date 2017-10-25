@@ -83,6 +83,7 @@ class LocationFormMixin:
         for item in date_list:
             choices.append((item, item))
         kwargs['choices'] = tuple(choices)
+        kwargs['location_type'] = self.kwargs.get('location_type')
         return kwargs
 
 class TripListView(LoginRequiredMixin, ListView):
@@ -160,7 +161,8 @@ class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
         location_type = self.kwargs.get('location_type')
         return {
             'trip': trip,
-            'location_type': location_type
+            'location_type': location_type,
+            'date': 'Unassigned'
         }
 
 class LocationEditView(LoginRequiredMixin, LocationGeneralMixin,
@@ -168,12 +170,15 @@ class LocationEditView(LoginRequiredMixin, LocationGeneralMixin,
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type')
         if url_location_type == 'trailhead':
+            self.kwargs['location_type'] = TripLocation.BEGIN
             self.page_title = 'Edit trailhead details'
             self.submit_button_title = 'Save Trailhead'
         elif url_location_type == 'objective':
+            self.kwargs['location_type'] = TripLocation.OBJECTIVE
             self.page_title = 'Edit objective details'
             self.submit_button_title = 'Save Objective'
         elif url_location_type == 'camp':
+            self.kwargs['location_type'] = TripLocation.CAMP
             self.page_title = 'Edit camp details'
             self.submit_button_title = 'Save Camp'
         else:

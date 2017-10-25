@@ -122,6 +122,14 @@ li.hidden_bullet {
   width: 100%
 }
 
+#id_latitude {
+  width: 40%
+}
+
+#id_longitude {
+  width: 40%
+}
+
 /* =======Member search field======= */
 #id_email_search {
   width: 80%;

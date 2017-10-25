@@ -46,6 +46,7 @@ class LocationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         choices = kwargs.pop('choices')
+        location_type = kwargs.pop('location_type')
         super(LocationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-LocationForm'
@@ -56,25 +57,23 @@ class LocationForm(forms.ModelForm):
         self.fields['date'].label = 'Date'
         self.fields['date'] = forms.ChoiceField(choices=choices)
         self.fields['latitude'].widget = NumberInput(attrs={
-            "step": "any",
-            "max": 90,
-            "min": -90
+            'step': 'any',
+            'max': 90,
+            'min': -90
         })
         self.fields['longitude'].widget = NumberInput(attrs={
-            "step": "any",
-            "max": 180,
-            "min": -180
+            'step': 'any',
+            'max': 180,
+            'min': -180
         })
         self.helper.layout = Layout (
-            Fieldset(
-                '',
-                'title',
-                Div(
-                    'latitude',
-                    'longitude',
-                    css_class='coordinate-fields'
-                ),
-                'date'),
+            'title',
+            Div(
+                'latitude',
+                'longitude',
+                css_class='coordinate-fields'
+            ),
+            'date',
             Field('trip', type='hidden'),
             Field('location_type', type='hidden'),
             FormActions(
@@ -82,6 +81,8 @@ class LocationForm(forms.ModelForm):
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')
             )
         )
+        if location_type == TripLocation.BEGIN:
+            self.helper['date'].wrap(Field, type='hidden')
 
 class SearchForm(forms.Form):
     class Meta:
