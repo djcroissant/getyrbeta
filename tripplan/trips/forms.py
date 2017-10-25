@@ -1,5 +1,6 @@
-# from django import forms
 import floppyforms.__future__ as forms
+
+from django.forms.widgets import NumberInput
 
 from account_info.models import User
 
@@ -54,6 +55,16 @@ class LocationForm(forms.ModelForm):
         self.fields['title'].label = 'Title for Trip Plan'
         self.fields['date'].label = 'Date'
         self.fields['date'] = forms.ChoiceField(choices=choices)
+        self.fields['latitude'].widget = NumberInput(attrs={
+            "step": "any",
+            "max": 90,
+            "min": -90
+        })
+        self.fields['longitude'].widget = NumberInput(attrs={
+            "step": "any",
+            "max": 180,
+            "min": -180
+        })
         self.helper.layout = Layout (
             Fieldset(
                 '',
@@ -70,16 +81,6 @@ class LocationForm(forms.ModelForm):
                 Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')
             )
-        )
-
-        latitude = forms.DecimalField(
-            max_value=90,
-            min_value=-90
-        )
-
-        latitude = forms.DecimalField(
-            max_value=180,
-            min_value=-180
         )
 
 class SearchForm(forms.Form):
