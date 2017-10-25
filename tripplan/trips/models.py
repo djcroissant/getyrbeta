@@ -81,8 +81,8 @@ class SunTime(models.Model):
     sunrise = models.TimeField()
     sunset = models.TimeField()
     date = models.DateField()
-    latitude = models.CharField(max_length = 31, blank=True)
-    longitude = models.CharField(max_length = 31, blank=True)
+    latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
 class Item(models.Model):
@@ -125,8 +125,8 @@ class TripLocation(models.Model):
         max_length = 255,
         default='Unassigned',
     )
-    latitude = models.CharField(max_length = 31, blank=True)
-    longitude = models.CharField(max_length = 31, blank=True)
+    latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
     def date_assigned(self):

@@ -72,6 +72,16 @@ class LocationForm(forms.ModelForm):
             )
         )
 
+        latitude = forms.DecimalField(
+            max_value=90,
+            min_value=-90
+        )
+
+        latitude = forms.DecimalField(
+            max_value=180,
+            min_value=-180
+        )
+
 class SearchForm(forms.Form):
     class Meta:
         fields = ['email_search']
