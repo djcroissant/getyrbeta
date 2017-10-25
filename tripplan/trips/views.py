@@ -134,6 +134,21 @@ class TripCreateView(LoginRequiredMixin, CreateView):
         context['cancel_button_path'] = 'trips:trip_list'
         return context
 
+    def form_valid(self, form):
+        """
+        Set values for the form based on data passed by AJAX request and
+        on intended functionality
+        """
+        response = super(TripCreateView, self).form_valid(form)
+        TripMember.objects.create(
+            organizer=True,
+            accept_reqd=False,
+            trip=self.object,
+            member=self.request.user,
+            email=self.request.user.email
+        )
+        return response
+
     def get_success_url(self):
         return reverse('trips:trip_detail', args=(self.object.id,))
 
