@@ -135,7 +135,7 @@ class LocationCreateViewTests(TestCase):
         view = setup_view(view, request, **kwargs)
         view.get(request, **kwargs)
         self.assertEqual(view.kwargs['location_type'], TripLocation.OBJECTIVE)
-        self.assertEqual(view.page_title, 'Enter a new objective')
+        self.assertEqual(view.page_title, 'Enter a new objective location')
         self.assertEqual(view.submit_button_title, 'Save Objective')
 
     def test_value_of_instance_variables_set_through_get_camp(self):
@@ -164,7 +164,7 @@ class LocationCreateViewTests(TestCase):
         kwargs={'trip_id': self.trip.id, 'location_type': 'invalid'}
         view = setup_view(view, request, **kwargs)
         test = lambda: view.get(request, **kwargs)
-        self.assertRaises(ValueError, test)
+        self.assertRaises(Http404, test)
 
     def test_get_context_data_includes_key_page_title(self):
         '''
@@ -402,7 +402,7 @@ class LocationEditViewTests(TestCase):
             'pk': self.triplocation.id}
         view = setup_view(view, request, **kwargs)
         test = lambda: view.get(request, **kwargs)
-        self.assertRaises(ValueError, test)
+        self.assertRaises(Http404, test)
 
     def test_get_context_data_includes_key_page_title(self):
         '''
@@ -636,7 +636,7 @@ class LocationDeleteViewTests(TestCase):
             'pk': self.triplocation.id}
         view = setup_view(view, request, **kwargs)
         test = lambda: view.get(request, **kwargs)
-        self.assertRaises(ValueError, test)
+        self.assertRaises(Http404, test)
 
     def test_get_context_data_includes_key_page_title(self):
         '''

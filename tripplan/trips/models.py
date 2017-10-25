@@ -71,6 +71,11 @@ class Trip(models.Model):
     def is_in_the_past(self):
         return self.start_date < timezone.now().date()
 
+    def clean_fields(self, exclude=None):
+        super(Trip, self).clean_fields(exclude=None)
+        if self.is_in_the_past():
+            raise ValidationError('The start date may not be in the past')
+
     is_in_the_past.admin_order_field = 'start_date'
     is_in_the_past.boolean = True
     is_in_the_past.short_description = 'Past Trip?'

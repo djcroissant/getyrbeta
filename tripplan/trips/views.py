@@ -192,6 +192,8 @@ class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type').lower()
         try:
+            self.kwargs['location_type'] = TripLocation.LOCATION_TYPE[
+                url_location_type]
             self.page_title = 'Delete ' + url_location_type
             self.submit_button_title = 'Delete ' + url_location_type.capitalize()
         except KeyError:

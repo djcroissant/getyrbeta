@@ -67,49 +67,49 @@ class LocationFormTests(TestCase):
         )
 
     def test_title_field_label(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
-        self.assertEqual(form.fields['title'].label, 'Description')
+        self.assertEqual(form.fields['title'].label, 'Title for Trip Plan')
 
     def test_date_field_label(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.fields['date'].label, None)
 
     def test_latitude_field_label(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.fields['latitude'].label, 'Latitude')
 
     def test_longitude_field_label(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.fields['longitude'].label, 'Longitude')
 
     def test_form_id(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.helper.form_id, 'id-LocationForm')
 
     def test_form_class(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.helper.form_class, 'trip_forms')
 
     def test_form_method(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.helper.form_method, 'post')
 
     def test_form_action(self):
-        kwargs={'choices': 'fake'}
+        kwargs={'choices': 'fake', 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         self.assertEqual(form.helper.form_action, '')
 
     def test_form_field_class(self):
-        kwargs={'choices': 'fake'}
-        form = LocationForm(**kwargs)
-        self.assertEqual(form.helper.field_class, 'col-md-9')
+        # Future test. Recommend changing class from 'col-md-9'
+        # Since this class is not preceeded by a class='row'
+        pass
 
     def test_submit_cancel_form_actions(self):
         """
@@ -119,7 +119,7 @@ class LocationFormTests(TestCase):
         {% load crispy_forms_tags %}
             {% crispy form %}
         """)
-        kwargs={'choices': (('fake', 'fake'),)}
+        kwargs={'choices': (('fake', 'fake'),), 'location_type': 'fake'}
         form = LocationForm(**kwargs)
         context = {'form': form, 'cancel_button_path': 'trips:trip_detail', 'trip_id': self.trip.id}
         html = template.render(context)
