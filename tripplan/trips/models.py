@@ -116,6 +116,13 @@ class TripLocation(models.Model):
         (CAMP, 'Camp Location'),
     )
 
+    LOCATION_TYPE = {
+        'trailhead': BEGIN,
+        'endpoint': END,
+        'objective': OBJECTIVE,
+        'camp': CAMP
+    }
+
     location_type = models.CharField(
         max_length=2,
         choices=LOCATION_TYPE_CHOICES

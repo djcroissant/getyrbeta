@@ -6,7 +6,7 @@ from django.views.generic import UpdateView, ListView, \
     CreateView, DeleteView, DetailView, FormView, View
 from django.utils import timezone
 from django.contrib.auth import authenticate
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 
 from .models import Trip, TripLocation, TripMember, ItemNotification
 
@@ -140,21 +140,14 @@ class TripCreateView(LoginRequiredMixin, CreateView):
 class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
     LocationFormMixin, CreateView):
     def set_instance_variables(self, **kwargs):
-        url_location_type = self.kwargs.get('location_type')
-        if url_location_type == 'trailhead':
-            self.kwargs['location_type'] = TripLocation.BEGIN
-            self.page_title = 'Enter a new trailhead location'
-            self.submit_button_title = 'Save Trailhead'
-        elif url_location_type == 'objective':
-            self.kwargs['location_type'] = TripLocation.OBJECTIVE
-            self.page_title = 'Enter a new objective'
-            self.submit_button_title = 'Save Objective'
-        elif url_location_type == 'camp':
-            self.kwargs['location_type'] = TripLocation.CAMP
-            self.page_title = 'Enter a new camp location'
-            self.submit_button_title = 'Save Camp'
-        else:
-            raise ValueError('Invalid location type: ' + url_location_type)
+        url_location_type = self.kwargs.get('location_type').lower()
+        try:
+            self.kwargs['location_type'] = TripLocation.LOCATION_TYPE[
+                url_location_type]
+            self.page_title = 'Enter a new ' + url_location_type + ' location'
+            self.submit_button_title = 'Save ' + url_location_type.capitalize()
+        except KeyError:
+            raise Http404('Invalid location type: ' + url_location_type)
 
     def get_initial(self):
         trip = get_object_or_404(Trip, pk=self.kwargs.get('trip_id'))
@@ -168,39 +161,26 @@ class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
 class LocationEditView(LoginRequiredMixin, LocationGeneralMixin,
     LocationFormMixin, UpdateView):
     def set_instance_variables(self, **kwargs):
-        url_location_type = self.kwargs.get('location_type')
-        if url_location_type == 'trailhead':
-            self.kwargs['location_type'] = TripLocation.BEGIN
-            self.page_title = 'Edit trailhead details'
-            self.submit_button_title = 'Save Trailhead'
-        elif url_location_type == 'objective':
-            self.kwargs['location_type'] = TripLocation.OBJECTIVE
-            self.page_title = 'Edit objective details'
-            self.submit_button_title = 'Save Objective'
-        elif url_location_type == 'camp':
-            self.kwargs['location_type'] = TripLocation.CAMP
-            self.page_title = 'Edit camp details'
-            self.submit_button_title = 'Save Camp'
-        else:
-            raise ValueError('Invalid location type: ' + url_location_type)
+        url_location_type = self.kwargs.get('location_type').lower()
+        try:
+            self.kwargs['location_type'] = TripLocation.LOCATION_TYPE[
+                url_location_type]
+            self.page_title = 'Edit ' + url_location_type + ' details'
+            self.submit_button_title = 'Save ' + url_location_type.capitalize()
+        except KeyError:
+            raise Http404('Invalid location type: ' + url_location_type)
 
 class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
     template_name = 'trips/delete.html'
     context_object_name = 'triplocation'
 
     def set_instance_variables(self, **kwargs):
-        url_location_type = self.kwargs.get('location_type')
-        if url_location_type == 'trailhead':
-            self.page_title = 'Delete trailhead'
-            self.submit_button_title = 'Delete Trailhead'
-        elif url_location_type == 'objective':
-            self.page_title = 'Delete objective'
-            self.submit_button_title = 'Delete Objective'
-        elif url_location_type == 'camp':
-            self.page_title = 'Delete camp'
-            self.submit_button_title = 'Delete Camp'
-        else:
-            raise ValueError('Invalid location type: ' + url_location_type)
+        url_location_type = self.kwargs.get('location_type').lower()
+        try:
+            self.page_title = 'Delete ' + url_location_type
+            self.submit_button_title = 'Delete ' + url_location_type.capitalize()
+        except KeyError:
+            raise Http404('Invalid location type: ' + url_location_type)
 
 class TripMemberListView(LoginRequiredMixin, FormView):
     model = TripMember
