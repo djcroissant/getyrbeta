@@ -77,13 +77,18 @@ class LocationFormMixin:
         Adds a tuple of choices for the date field to the form kwargs.
         """
         kwargs = super(LocationFormMixin, self).get_form_kwargs()
+        kwargs['location_type'] = self.kwargs.get('location_type')
+        if kwargs['location_type'] == TripLocation.CAMP:
+            date_type = 'night'
+        else:
+            date_type = 'day'
         date_list = Trip.objects.get(pk=self.kwargs.get(
-            'trip_id')).get_date_choices()
+            'trip_id')).get_date_choices(date_type)
         choices = []
         for item in date_list:
             choices.append((item, item))
         kwargs['choices'] = tuple(choices)
-        kwargs['location_type'] = self.kwargs.get('location_type')
+
         return kwargs
 
 class TripListView(LoginRequiredMixin, ListView):

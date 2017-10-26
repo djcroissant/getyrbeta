@@ -39,17 +39,24 @@ class Trip(models.Model):
             ep = None
         return ep
 
-    def get_date_choices(self):
+    def get_date_choices(self, date_type='day'):
         """
         This function returns a list of choices for the date field.
         Example: [Day X - Month, DD YYYY", ...]
         TripLocation.date field will hold one of these choices as a string.
         """
         datelist = []
-        for i in range(0, self.number_nights + 1):
-            day_value = "Day " + str(i + 1)
-            date_value = self.start_date + datetime.timedelta(days=i)
-            datelist.append(day_value + ' - ' + str(date_value))
+        if date_type == 'night':
+            range_limit = self.number_nights
+            prefix = 'Night'
+        else:
+            range_limit = self.number_nights + 1
+            prefix = 'Day'
+
+        for i in range(0, range_limit):
+            text_half = prefix + " " + str(i + 1)
+            date_half = self.start_date + datetime.timedelta(days=i)
+            datelist.append(text_half + ' - ' + str(date_half))
         return datelist
 
     def get_location_context(self, location_type):
@@ -59,7 +66,10 @@ class Trip(models.Model):
         corresponding to the key.
         """
         context = {}
-        datelist = self.get_date_choices()
+        if location_type == TripLocation.CAMP:
+            datelist = self.get_date_choices(date_type='night')
+        else:
+            datelist = self.get_date_choices()
         for date in datelist:
             locations = self.triplocation_set.filter(
                 location_type=location_type,
@@ -155,11 +165,11 @@ class TripLocation(models.Model):
             raise ValueError('Could not parse date correctly: %s' % self.date)
         return date['date']
 
-    def get_date_choices(self):
+    def get_date_choices(self, date_type='day'):
         """
         This function returns a list of choices for the date field on forms
         """
-        return self.trip.get_date_choices()
+        return self.trip.get_date_choices(date_type)
 
     def clean_fields(self, exclude=None):
         """
@@ -167,7 +177,11 @@ class TripLocation(models.Model):
         Trip.get_date_choices() method
         """
         super(TripLocation, self).clean_fields(exclude=None)
-        if self.date not in self.get_date_choices():
+        if self.location_type == self.CAMP:
+            date_type = 'night'
+        else:
+            date_type = 'day'
+        if self.date not in self.get_date_choices(date_type):
             if exclude and 'date' in exclude:
                 raise ValidationError(
                     '%s is not a valid date format.' % self.date
