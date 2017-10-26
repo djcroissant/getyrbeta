@@ -1,0 +1,9 @@
+.banner-logo {
+  margin-bottom: 20pt;
+}
+.banner-logo h1{
+  color: #ff8000;
+  font-size: 42pt;
+  font-family: 'American Typewriter';
+  letter-spacing: -1px;
+}

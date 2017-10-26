@@ -11,7 +11,9 @@
     {% include "../account_info/menu.html" %}
     <div class="content-wrapper">
       <div class="content">
-        <h1>Delete Vehicle</h1><br>
+        <div class="banner-logo">
+          <h1>Delete Vehicle</h1>
+        </div>
         <form action="{% url 'account_info:vehicle_delete' vehicle.id %}" method="post">
           {% csrf_token %}
         <ul class="account_info_list">
