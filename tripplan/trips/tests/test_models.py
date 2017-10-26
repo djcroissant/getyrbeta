@@ -98,65 +98,32 @@ class TripModelTests(TestCase):
 
     def test_get_date_choices_method_for_number_nights_zero(self):
         """
-        Trip.get_date_choices() should return a list with 'Unassigned' as the
-        only element if number_nights == 0
+        Trip.get_date_choices() should return a list with 'Day 1 - YYYY-MM-DD'
+        as the only element if number_nights == 0
         """
         title = 'title'
         start_date = timezone.now().date()
         number_nights = 0
         trip = Trip.objects.create(
             title=title, start_date=start_date, number_nights=number_nights)
-        self.assertEqual(trip.get_date_choices(), ['Unassigned'])
+        self.assertEqual(trip.get_date_choices(), ['Day 1 - ' + str(start_date)])
 
     def test_get_date_choices_method_for_number_nights_greater_than_zero(self):
         """
-        Trip.get_date_choices() should return a list with 'Unassigned' and
+        Trip.get_date_choices() should return a list with
         'Day N = YY/MM/DD' for each day of the trip
         """
         title = 'title'
         start_date = timezone.now().date()
         number_nights = 2
         manual_date_list = [
-            'Unassigned',
             'Day 1 - ' + str(start_date),
             'Day 2 - ' + str(start_date + datetime.timedelta(days=1)),
+            'Day 3 - ' + str(start_date + datetime.timedelta(days=2)),
         ]
         trip = Trip.objects.create(
             title=title, start_date=start_date, number_nights=number_nights)
         self.assertEqual(trip.get_date_choices(), manual_date_list)
-
-    def test_get_date_choices_method_for_number_nights_equals_zero(self):
-        """
-        Trip.get_date_choices() should return a list with 'Unassigned' only.
-        NOTE: May want to change this behavior in the future.
-        """
-        title = 'title'
-        start_date = timezone.now().date()
-        number_nights = 0
-        manual_date_list = ['Unassigned']
-        trip = Trip.objects.create(
-            title=title, start_date=start_date, number_nights=number_nights)
-        self.assertEqual(trip.get_date_choices(), manual_date_list)
-
-    def test_get_location_context_with_two_locations_unassigned(self):
-        """
-        Testing two TripLocation objects, both with date=Unassigned
-        """
-        title = 'title'
-        start_date = timezone.now().date()
-        number_nights = 0
-        trip = Trip.objects.create(
-            title=title, start_date=start_date, number_nights=number_nights)
-        location_type = TripLocation.OBJECTIVE
-        for i in range(2):
-            TripLocation.objects.create(
-            title=str(i), location_type=location_type, trip=trip)
-        manual_location_context = {
-            'Unassigned': list(trip.triplocation_set.filter(
-                location_type=location_type, date='Unassigned'))
-        }
-        self.assertEqual(trip.get_location_context(location_type),
-            manual_location_context)
 
     def test_get_location_context_with_two_locations_and_dates(self):
         """
@@ -173,18 +140,17 @@ class TripModelTests(TestCase):
             TripLocation.objects.create(
             title=str(i), location_type=location_type, trip=trip, date=location_date)
         manual_location_context = {
-            'Unassigned': list(trip.triplocation_set.filter(
-            location_type=location_type, date='Unassigned')),
             location_date: list(trip.triplocation_set.filter(
-                location_type=location_type, date=location_date))
+                location_type=location_type, date=location_date)),
+            ('Day 2 - ' + str(start_date + datetime.timedelta(days=1))): []
         }
         self.assertEqual(trip.get_location_context(location_type),
             manual_location_context)
 
     def test_get_location_context_with_two_locations_and_two_dates(self):
         """
-        Testing two TripLocation objects for date='Unassigned and
-        two TripLocation objects with date="Day 1 - ..."
+        Testing four TripLocation objects: two with date="Day 1 - ..."
+        and two with date="Day 2 - ..."
         """
         title = 'title'
         start_date = timezone.now().date()
@@ -192,19 +158,19 @@ class TripModelTests(TestCase):
         trip = Trip.objects.create(
             title=title, start_date=start_date, number_nights=number_nights)
         location_type = TripLocation.OBJECTIVE
-        location_date = 'Unassigned'
-        for i in range(2):
-            TripLocation.objects.create(
-            title=str(i), location_type=location_type, trip=trip, date=location_date)
         location_date = "Day 1 - " + str(start_date)
         for i in range(2):
             TripLocation.objects.create(
             title=str(i), location_type=location_type, trip=trip, date=location_date)
+        location_date = "Day 2 - " + str(start_date + datetime.timedelta(days=1))
+        for i in range(2):
+            TripLocation.objects.create(
+            title=str(i), location_type=location_type, trip=trip, date=location_date)
         manual_location_context = {
-            'Unassigned': list(trip.triplocation_set.filter(
-            location_type=location_type, date='Unassigned')),
             ("Day 1 - " + str(start_date)): list(trip.triplocation_set.filter(
-                location_type=location_type, date=("Day 1 - " + str(start_date))))
+            location_type=location_type, date="Day 1 - " + str(start_date))),
+            ("Day 2 - " + str(start_date + datetime.timedelta(days=1))): list(trip.triplocation_set.filter(
+                location_type=location_type, date=("Day 2 - " + str(start_date + datetime.timedelta(days=1)))))
         }
         self.assertEqual(trip.get_location_context(location_type),
             manual_location_context)
@@ -255,7 +221,7 @@ class TripLocationTests(TestCase):
         self.assertRaises(ValidationError, lambda: test.full_clean())
 
     def test_invalid_without_location_type(self):
-        date = 'Unassigned'
+        date = 'fake'
         location_type = ''
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
@@ -266,7 +232,7 @@ class TripLocationTests(TestCase):
         No exception raised when TripLocation is created with only the required
         fields defined: date, trip_location, trip
         '''
-        date = 'Unassigned'
+        date = "Day 1 - " + str(self.trip.start_date)
         location_type = 'CM'
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
@@ -308,31 +274,17 @@ class TripLocationTests(TestCase):
         self.assertEqual(test.LOCATION_TYPE_CHOICES[3],
             (test.CAMP, 'Camp Location'))
 
-    def test_date_assigned_method_returns_false(self):
+    def test_get_date_method_raises_exception(self):
         """
-        date_assigned() method will return False if date="Unassigned"
-        """
-        test = TripLocation.objects.create(trip=self.trip)
-        self.assertEqual(test.date_assigned(), False)
-
-    def test_date_assigned_method_returns_true(self):
-        """
-        date_assigned() method will return true if date != "Unassigned"
-        NOTE: This is not a validation of acceptable date format
-        """
-        test = TripLocation.objects.create(date="Day 1", trip=self.trip)
-        self.assertEqual(test.date_assigned(), True)
-
-    def test_get_date_method_returns_unassigned(self):
-        """
-        The TripLocation.get_date() method will return "Unassigned" if
-        TripLocation.date="Unassigned"
+        The TripLocation.get_date() method will raise an exception if the
+        date is not in expected format: "Day X - YYYY-MM-DD"
         """
         date = 'Unassigned'
         location_type = 'CM'
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
-        self.assertEqual(test.get_date(), 'Unassigned')
+        # import pdb; pdb.set_trace()
+        self.assertRaises(ValueError, lambda: test.get_date())
 
     def test_get_date_method_returns_date(self):
         """
@@ -350,7 +302,7 @@ class TripLocationTests(TestCase):
         This method returns the same result as the Trip model method by
         the same name
         """
-        date = 'Unassigned'
+        date = 'Day 1 - ' + str(self.trip.start_date)
         location_type = 'CM'
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
@@ -365,19 +317,6 @@ class TripLocationTests(TestCase):
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
         self.assertRaises(ValidationError, lambda: test.full_clean())
-
-    def test_valid_for_valid_date_unassigned(self):
-        """
-        Tests the TripLocation.clean_fields() method
-        """
-        date = 'Unassigned'
-        location_type = 'CM'
-        test = TripLocation.objects.create(date=date,
-            trip=self.trip, location_type=location_type)
-        try:
-            test.full_clean()
-        except:
-            self.fail("full_clean() raised an error unexpectedly!")
 
     def test_valid_for_valid_date_with_day(self):
         """

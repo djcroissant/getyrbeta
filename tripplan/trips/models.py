@@ -42,11 +42,11 @@ class Trip(models.Model):
     def get_date_choices(self):
         """
         This function returns a list of choices for the date field.
-        Example: ["Unassigned", "Day X - Month, DD YYYY"]
+        Example: [Day X - Month, DD YYYY", ...]
         TripLocation.date field will hold one of these choices as a string.
         """
-        datelist = ["Unassigned"]
-        for i in range(0, self.number_nights):
+        datelist = []
+        for i in range(0, self.number_nights + 1):
             day_value = "Day " + str(i + 1)
             date_value = self.start_date + datetime.timedelta(days=i)
             datelist.append(day_value + ' - ' + str(date_value))
@@ -141,29 +141,19 @@ class TripLocation(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
-    def date_assigned(self):
-        """
-        This function returns false if date == "Unassigned"
-        else true (i.e. date field has a Date assigned)
-        """
-        if self.date == "Unassigned":
-            return False
-        else:
-            return True
-
     def get_date(self):
         """
         This function returns the date if it is assigned.
-        Else returns "Unassigned"
+        Else raises an ValueError exception
         """
-        if self.date_assigned():
+        try:
             date_components = self.date.split(' - ')
             date={}
             date['day'] = date_components[0]
             date['date'] = datetime.datetime.strptime(date_components[1], '%Y-%m-%d').date()
-            return date['date']
-        else:
-            return "Unassigned"
+        except:
+            raise ValueError('Could not parse date correctly: %s' % self.date)
+        return date['date']
 
     def get_date_choices(self):
         """

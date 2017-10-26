@@ -170,7 +170,7 @@ class LocationCreateView(LoginRequiredMixin, LocationGeneralMixin,
         return {
             'trip': trip,
             'location_type': location_type,
-            'date': 'Unassigned'
+            'date': trip.get_date_choices()[0]
         }
 
 class LocationEditView(LoginRequiredMixin, LocationGeneralMixin,
@@ -192,6 +192,7 @@ class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
     def set_instance_variables(self, **kwargs):
         url_location_type = self.kwargs.get('location_type').lower()
         try:
+            # setting 'location_type' ensures a valid URL is entered
             self.kwargs['location_type'] = TripLocation.LOCATION_TYPE[
                 url_location_type]
             self.page_title = 'Delete ' + url_location_type
