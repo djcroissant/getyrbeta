@@ -66,7 +66,12 @@ class LocationGeneralMixin:
 class LocationFormMixin:
     """
     This mixin is used by all views for the Location model that include a
-    form.
+    form. The view will receive a location_type in the url (trailhead,
+    objective, or camp). The view converts this to a two character code
+    through a model method. The get_form_kwargs receives the two character code
+    and calls another model method, passing the appropriate argument, and
+    receives a list of date choices (prefixed with either 'Day' or 'Night'
+    according to the location_type.)
     """
     model = TripLocation
     template_name = 'trips/location.html'
