@@ -229,7 +229,8 @@ class LocationCreateViewTests(TestCase):
         kwargs={'trip_id': self.trip.id, 'location_type': 'camp'}
         view = setup_view(view, request, **kwargs)
         view.get(request, **kwargs)
-        date_list = self.trip.get_date_choices()
+        #pass date_type='night' to simulate logic in view for location_type='camp'
+        date_list = self.trip.get_date_choices(date_type='night')
         choices = []
         for item in date_list:
             choices.append((item, item))
@@ -472,7 +473,8 @@ class LocationEditViewTests(TestCase):
             'pk': self.triplocation.id}
         view = setup_view(view, request, **kwargs)
         view.get(request, **kwargs)
-        date_list = self.trip.get_date_choices()
+        #pass date_type='night' to simulate logic in view for location_type='camp'
+        date_list = self.trip.get_date_choices(date_type='night')
         choices = []
         for item in date_list:
             choices.append((item, item))

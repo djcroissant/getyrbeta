@@ -232,7 +232,7 @@ class TripLocationTests(TestCase):
         No exception raised when TripLocation is created with only the required
         fields defined: date, trip_location, trip
         '''
-        date = "Day 1 - " + str(self.trip.start_date)
+        date = "Night 1 - " + str(self.trip.start_date)
         location_type = 'CM'
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
@@ -320,9 +320,22 @@ class TripLocationTests(TestCase):
 
     def test_valid_for_valid_date_with_day(self):
         """
-        Tests the TripLocation.clean_fields() method
+        Tests the TripLocation.clean_fields() method for location_type=objective
         """
         date = 'Day 1 - ' + str(self.trip.start_date)
+        location_type = 'OB'
+        test = TripLocation.objects.create(date=date,
+            trip=self.trip, location_type=location_type)
+        try:
+            test.full_clean()
+        except:
+            self.fail("full_clean() raised an error unexpectedly!")
+
+    def test_valid_for_valid_date_with_night(self):
+        """
+        Tests the TripLocation.clean_fields() method for location_type=camp
+        """
+        date = 'Night 1 - ' + str(self.trip.start_date)
         location_type = 'CM'
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
