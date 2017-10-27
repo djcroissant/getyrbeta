@@ -99,7 +99,7 @@ class TripModelTests(TestCase):
     def test_get_date_choices_method_for_number_nights_zero(self):
         """
         Trip.get_date_choices() should return a list with 'Day 1 - YYYY-MM-DD'
-        as the only element if number_nights == 0
+        as the only element if number_nights == 0 and date_type != 'night'
         """
         title = 'title'
         start_date = timezone.now().date()
@@ -111,7 +111,7 @@ class TripModelTests(TestCase):
     def test_get_date_choices_method_for_number_nights_greater_than_zero(self):
         """
         Trip.get_date_choices() should return a list with
-        'Day N = YY/MM/DD' for each day of the trip
+        'Day N = YY/MM/DD' for each day of the trip if date_type != 'night'
         """
         title = 'title'
         start_date = timezone.now().date()
@@ -124,6 +124,36 @@ class TripModelTests(TestCase):
         trip = Trip.objects.create(
             title=title, start_date=start_date, number_nights=number_nights)
         self.assertEqual(trip.get_date_choices(), manual_date_list)
+
+    def test_get_date_choices_method_for_number_nights_zero_night(self):
+        """
+        Trip.get_date_choices() should return an empty list
+        if number_nights == 0 and date_type == 'night'
+        """
+        title = 'title'
+        date_type = 'night'
+        start_date = timezone.now().date()
+        number_nights = 0
+        trip = Trip.objects.create(
+            title=title, start_date=start_date, number_nights=number_nights)
+        self.assertEqual(trip.get_date_choices(date_type), [])
+
+    def test_get_date_choices_method_for_number_nights_greater_than_zero_night(self):
+        """
+        Trip.get_date_choices() should return a list with
+        'Night N = YY/MM/DD' for each night of the trip if date_type == 'night'
+        """
+        title = 'title'
+        date_type = 'night'
+        start_date = timezone.now().date()
+        number_nights = 2
+        manual_date_list = [
+            'Night 1 - ' + str(start_date),
+            'Night 2 - ' + str(start_date + datetime.timedelta(days=1)),
+        ]
+        trip = Trip.objects.create(
+            title=title, start_date=start_date, number_nights=number_nights)
+        self.assertEqual(trip.get_date_choices(date_type), manual_date_list)
 
     def test_get_location_context_with_two_locations_and_dates(self):
         """
@@ -266,13 +296,13 @@ class TripLocationTests(TestCase):
         test = TripLocation.objects.create(trip=self.trip)
         self.assertEqual(len(test.LOCATION_TYPE_CHOICES), 4)
         self.assertEqual(test.LOCATION_TYPE_CHOICES[0],
-            (test.BEGIN, 'Start Location'))
+            (test.BEGIN, 'Trailhead'))
         self.assertEqual(test.LOCATION_TYPE_CHOICES[1],
-            (test.END, 'End Location'))
+            (test.END, 'Endpoint'))
         self.assertEqual(test.LOCATION_TYPE_CHOICES[2],
-            (test.OBJECTIVE, 'Objective Location'))
+            (test.OBJECTIVE, 'Objective'))
         self.assertEqual(test.LOCATION_TYPE_CHOICES[3],
-            (test.CAMP, 'Camp Location'))
+            (test.CAMP, 'Camp'))
 
     def test_get_date_method_raises_exception(self):
         """

@@ -125,10 +125,10 @@ class TripLocation(models.Model):
     CAMP = 'CM'
 
     LOCATION_TYPE_CHOICES = (
-        (BEGIN, 'Start Location'),
-        (END, 'End Location'),
-        (OBJECTIVE, 'Objective Location'),
-        (CAMP, 'Camp Location'),
+        (BEGIN, 'Trailhead'),
+        (END, 'Endpoint'),
+        (OBJECTIVE, 'Objective'),
+        (CAMP, 'Camp'),
     )
 
     LOCATION_TYPE = {
@@ -150,6 +150,16 @@ class TripLocation(models.Model):
     latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+
+    @property
+    def get_location_type_verbose(self):
+        location_type = {
+            self.BEGIN: 'trailhead',
+            self.END: 'endpoint',
+            self.OBJECTIVE: 'objective',
+            self.CAMP: 'camp'
+        }
+        return location_type[self.location_type]
 
     def get_date(self):
         """
