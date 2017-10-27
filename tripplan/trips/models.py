@@ -153,6 +153,10 @@ class TripLocation(models.Model):
 
     @property
     def get_location_type_verbose(self):
+        """
+        Uses @property decorator so it can be called from template.
+        This function will return the verbose form of the location_type
+        """
         location_type = {
             self.BEGIN: 'trailhead',
             self.END: 'endpoint',

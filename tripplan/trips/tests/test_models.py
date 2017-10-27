@@ -374,6 +374,34 @@ class TripLocationTests(TestCase):
         except:
             self.fail("full_clean() raised an error unexpectedly!")
 
+    def test_get_location_type_verbose_for_type_begin(self):
+        date = 'fake'
+        location_type = 'ST'
+        test = TripLocation.objects.create(date=date,
+            trip=self.trip, location_type=location_type)
+        self.assertEqual('trailhead', test.get_location_type_verbose)
+
+    def test_get_location_type_verbose_for_type_end(self):
+        date = 'fake'
+        location_type = 'EN'
+        test = TripLocation.objects.create(date=date,
+            trip=self.trip, location_type=location_type)
+        self.assertEqual('endpoint', test.get_location_type_verbose)
+
+    def test_get_location_type_verbose_for_type_objective(self):
+        date = 'fake'
+        location_type = 'OB'
+        test = TripLocation.objects.create(date=date,
+            trip=self.trip, location_type=location_type)
+        self.assertEqual('objective', test.get_location_type_verbose)
+
+    def test_get_location_type_verbose_for_type_camp(self):
+        date = 'fake'
+        location_type = 'CM'
+        test = TripLocation.objects.create(date=date,
+            trip=self.trip, location_type=location_type)
+        self.assertEqual('camp', test.get_location_type_verbose)
+
 class SunTimeModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):
