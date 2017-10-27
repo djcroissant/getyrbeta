@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views.generic import DetailView
 
 from trips.views import TripListView, TripDetailView, TripCreateView
-from trips.models import Trip
+from trips.models import Trip, TripMember
 
 
 User = get_user_model()
@@ -75,17 +75,96 @@ class TripListViewTests(TestCase):
         Function returns only trips for which the currently logged in user
         is a member (and has accepted membership).
         '''
-        #COMING SOON
-        pass
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripListView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        trip = Trip.objects.create(
+            title='title',
+            start_date=timezone.now().date()
+        )
+        trip_nonmember = Trip.objects.create(
+            title='title',
+            start_date=timezone.now().date()
+        )
+        TripMember.objects.create(
+            member=self.user,
+            trip=trip,
+            email="fake@fake.fake"
+        )
+        queryset = view.get_queryset()
+        self.assertEqual(list(self.user.trip_set.all()), list(queryset))
 
-    def test_get_context_data_returns_upcoming_and_past_trips(self):
+    def test_get_context_data_returns_upcoming_trips(self):
         '''
-        The get_context_data returns a 'upcoming_trip_list' and
-        'past_trip_list', including only trips for which the logged in user
-        is a member
+        The get_context_data returns an 'upcoming_trip_list', including
+        only trips for which the logged in user is a member
         '''
-        #COMING SOON
-        pass
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripListView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        trip_past = Trip.objects.create(
+            title='title',
+            start_date=timezone.now().date() + datetime.timedelta(days=-1)
+        )
+        trip_future = Trip.objects.create(
+            title='title',
+            start_date=timezone.now().date() + datetime.timedelta(days=1)
+        )
+        TripMember.objects.create(
+            member=self.user,
+            trip=trip_past,
+            email="fake@fake.fake"
+        )
+        TripMember.objects.create(
+            member=self.user,
+            trip=trip_future,
+            email="fake@fake.fake"
+        )
+        view.object_list = self.user.trip_set.all()
+        context = view.get_context_data()
+        self.assertEqual(
+            list(view.object_list.filter(start_date__gte=timezone.now())),
+            list(context['upcoming_trip_list'])
+        )
+
+    def test_get_context_data_returns_past_trips(self):
+        '''
+        The get_context_data returns an 'past_trip_list', including
+        only trips for which the logged in user is a member
+        '''
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripListView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        trip_past = Trip.objects.create(
+            title='title',
+            start_date=timezone.now().date() + datetime.timedelta(days=-1)
+        )
+        trip_future = Trip.objects.create(
+            title='title',
+            start_date=timezone.now().date() + datetime.timedelta(days=1)
+        )
+        TripMember.objects.create(
+            member=self.user,
+            trip=trip_past,
+            email="fake@fake.fake"
+        )
+        TripMember.objects.create(
+            member=self.user,
+            trip=trip_future,
+            email="fake@fake.fake"
+        )
+        view.object_list = self.user.trip_set.all()
+        context = view.get_context_data()
+        self.assertEqual(
+            list(view.object_list.filter(start_date__lt=timezone.now())),
+            list(context['past_trip_list'])
+        )
 
 
 class TripDetailViewTests(TestCase):
