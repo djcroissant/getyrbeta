@@ -362,6 +362,23 @@ class TripCreateViewTests(TestCase):
         context = view.get_context_data()
         self.assertIn('cancel_button_path', context)
 
+    def test_form_valid_adds_user_as_trip_member(self):
+        request = self.factory.get('/fake/')
+        request.user = self.user
+        view = TripCreateView()
+        kwargs={}
+        view = setup_view(view, request, **kwargs)
+        view.object = Trip()
+        form_data = {
+            'title': 'trip title',
+            'start_date': timezone.now().date(),
+        }
+        count = TripMember.objects.all().count()
+        form = view.get_form()
+        #######  START HERE!!!
+        view.form_valid(form)
+        self.assertEqual(TripMember.objects.all().count(), count + 1)
+
     def test_get_success_url_redirects_to_trip_detail(self):
         request = self.factory.get('/fake/')
         request.user = self.user
