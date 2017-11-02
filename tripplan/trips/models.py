@@ -3,13 +3,14 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
 class Trip(models.Model):
     title = models.CharField(max_length = 255)
     start_date = models.DateField()
     number_nights = models.PositiveSmallIntegerField(default=0)
-    trip_members = models.ManyToManyField('account_info.User',
+    trip_members = models.ManyToManyField(settings.AUTH_USER_MODEL,
         through='TripMember')
 
     def __str__(self):
@@ -104,15 +105,18 @@ class Item(models.Model):
     description = models.CharField(max_length = 255)
     quantity = models.PositiveSmallIntegerField(default=1)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    item_owners = models.ManyToManyField('account_info.User', through='ItemOwner')
+    item_owners = models.ManyToManyField(settings.AUTH_USER_MODEL,
+        through='ItemOwner')
 
 class ItemOwner(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    owner = models.ForeignKey('account_info.User', on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
     accept_reqd = models.BooleanField(default=False)
 
 class TripMember(models.Model):
-    member = models.ForeignKey('account_info.User', on_delete=models.CASCADE)
+    member = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     organizer = models.BooleanField(default=False)
     accept_reqd = models.BooleanField(default=False)
@@ -209,6 +213,7 @@ class TripLocation(models.Model):
 
 class ItemNotification(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    owner = models.ForeignKey('account_info.User', on_delete=models.CASCADE, related_name='owners')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, related_name='owners')
     date_created = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length = 255)

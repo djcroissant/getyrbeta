@@ -34,6 +34,7 @@ DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
@@ -47,6 +48,10 @@ THIRD_PARTY_APPS = [
     'crispy_forms',  # Form layouts
     'floppyforms', # HTML5 features in forms
     'authtools', # User registration
+    'allauth',  # registration
+    'allauth.account',  # registration
+    'allauth.socialaccount',  # registration
+    'allauth.socialaccount.providers.facebook',
 ]
 
 # Apps specific for this project go here.
@@ -120,7 +125,7 @@ TIME_ZONE = 'America/Los_Angeles'
 LANGUAGE_CODE = 'en-us'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-SITE_ID = 1
+SITE_ID = 2
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
@@ -240,10 +245,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.11/topics/auth/customizing/#specifying-authentication-backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# Custom user app defaults
-# Select the correct user model
+# Authentication settings
 AUTH_USER_MODEL = 'account_info.User'
 LOGIN_REDIRECT_URL = 'trips:trip_list'
 LOGIN_URL = 'authentication:signin'
@@ -257,3 +262,20 @@ ADMIN_URL = r'^admin/'
 
 # 3rd party library settings defined below this line
 # ------------------------------------------------------------------------------
+
+# django-allauth settings:
+# http://django-allauth.readthedocs.io/en/latest/overview.html
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# SOCIALACCOUNT_QUERY_EMAIL = True
+# SOCIALACCOUNT_PROVIDERS = {
+#     'facebook': {
+#         'SCOPE': ['email', 'publish_stream'],
+#         'METHOD': 'js_sdk'  # instead of 'oauth2'
+#     }
+# }
