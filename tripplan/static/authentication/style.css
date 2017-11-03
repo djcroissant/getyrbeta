@@ -13,14 +13,7 @@ body {
 }
 .auth-container {
   position: relative;
-  /*left: 0;*/
   top: 100px;
-  /*width: 100%;*/
-  /*z-index: 1;*/
-  /*color: rgba(130, 130, 130, 0.5);*/
-  /*font-size: 50px;*/
-  /*text-align: center;*/
-  /*line-height: 100px;*/
   background-color: white;
   opacity: .8;
   padding: 20px;
@@ -67,4 +60,9 @@ body {
 }
 #id_show_password {
   margin-right: 5px;
+}
+.align-center {
+  margin: 0 auto;
+  display: block;
+  text-align: center; 
 }
