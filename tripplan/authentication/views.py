@@ -7,13 +7,13 @@ from django.contrib.auth import authenticate, login, logout
 
 from allauth.account import views
 
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 
 User = get_user_model()
 
 class SignupView(views.SignupView):
-    # template_name = 'auth/signup.html'
-    # form_class = SignupForm
+    template_name = 'authentication/signup.html'
+    form_class = SignupForm
     # model = User
     success_url = reverse_lazy('trips:trip_list')
 

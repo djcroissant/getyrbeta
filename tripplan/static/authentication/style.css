@@ -26,21 +26,9 @@ body {
   padding: 20px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
-.auth-container .vl-top {
-    border-left: 6px solid green;
-    height: 30%;
-    position: absolute;
-    left: 50%;
-    margin-left: -3px;
-    top: 0;
-}
-.auth-container .vl-bottom {
-    border-left: 6px solid green;
-    height: 30%;
-    position: absolute;
-    left: 50%;
-    margin-left: -3px;
-    top: 0;
+#signup-container {
+  width: 420px;
+  margin: 0 auto;
 }
 .auth-container .heading {
   margin: 8px;
@@ -76,4 +64,7 @@ body {
 }
 .login-container h5{
   margin-bottom: 15px;
+}
+#id_show_password {
+  margin-right: 5px;
 }
