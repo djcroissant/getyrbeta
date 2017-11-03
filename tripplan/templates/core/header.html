@@ -22,13 +22,13 @@
           <a class="nav-link" href="{% url 'account_info:account_profile' %}">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'authentication:signout' %}">Sign out</a>
+          <a class="nav-link" href="{% url 'authentication:logout' %}">Sign out</a>
         </li>
       </ul>
       {% else %}
-        <div class="ml-auto authentication">
-          <a href="{% url 'authentication:signin' %}" title="Sign in" class="btn btn-default navbar-btn">Sign in</a>
-          <a href="{% url 'authentication:signup' %}" title="Sign up" class="btn btn-primary navbar-btn" style="margin-right: 5px;">Sign up</a>
+        <div class="ml-auto" id="navbar-links">
+          <a href="#" title="About" class="navbar-link">About</a>
+          <a href="#" title="Contact" class="navbar-link" style="margin-right: 5px;">Contact</a>
         </div>
       {% endif %}
     </div>

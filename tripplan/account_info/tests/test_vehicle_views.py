@@ -41,7 +41,7 @@ class VehicleListViewTests(TestCase):
         request.user = ''
         response = VehicleListView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template(self):
@@ -116,7 +116,7 @@ class VehicleEditViewTests(TestCase):
         request.user = ''
         response = VehicleEditView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -125,7 +125,7 @@ class VehicleEditViewTests(TestCase):
         request.user = ''
         response = VehicleEditView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template_with_get_request(self):
@@ -173,7 +173,7 @@ class VehicleCreateViewTests(TestCase):
         request.user = ''
         response = VehicleCreateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -182,7 +182,7 @@ class VehicleCreateViewTests(TestCase):
         request.user = ''
         response = VehicleCreateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template_with_get_request(self):
@@ -227,7 +227,7 @@ class VehicleDeleteViewTests(TestCase):
         request.user = ''
         response = VehicleDeleteView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -236,7 +236,7 @@ class VehicleDeleteViewTests(TestCase):
         request.user = ''
         response = VehicleDeleteView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template_with_get_request(self):

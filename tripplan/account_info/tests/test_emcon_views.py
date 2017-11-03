@@ -42,7 +42,7 @@ class EmergencyContactListViewTests(TestCase):
         request.user = ''
         response = EmergencyContactListView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template(self):
@@ -117,7 +117,7 @@ class EmergencyContactEditViewTests(TestCase):
         request.user = ''
         response = EmergencyContactEditView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -126,7 +126,7 @@ class EmergencyContactEditViewTests(TestCase):
         request.user = ''
         response = EmergencyContactEditView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template_with_get_request(self):
@@ -174,7 +174,7 @@ class EmergencyContactCreateViewTests(TestCase):
         request.user = ''
         response = EmergencyContactCreateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -183,7 +183,7 @@ class EmergencyContactCreateViewTests(TestCase):
         request.user = ''
         response = EmergencyContactCreateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template_with_get_request(self):
@@ -228,7 +228,7 @@ class EmergencyContactDeleteViewTests(TestCase):
         request.user = ''
         response = EmergencyContactDeleteView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -237,7 +237,7 @@ class EmergencyContactDeleteViewTests(TestCase):
         request.user = ''
         response = EmergencyContactDeleteView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template_with_get_request(self):

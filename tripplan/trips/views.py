@@ -21,7 +21,7 @@ class LoginRequiredMixin:
             return super(LoginRequiredMixin, self).get(
                 self, request, *args, **kwargs)
         else:
-            redirect_path = reverse('authentication:signin')
+            redirect_path = reverse('authentication:login')
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 
@@ -30,7 +30,7 @@ class LoginRequiredMixin:
             return super(LoginRequiredMixin, self).post(
                 self, request, *args, **kwargs)
         else:
-            redirect_path = reverse('authentication:signin')
+            redirect_path = reverse('authentication:login')
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 

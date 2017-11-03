@@ -1,0 +1,79 @@
+body {
+  background-color: #2d323b;
+  background-image: url("images/background.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: 0px 91px;
+}
+.banner-logo h1{
+    color: #ff8000;
+    font-size: 32pt;
+    font-family: 'American Typewriter';
+    letter-spacing: -1px;
+}
+.auth-container {
+  position: relative;
+  /*left: 0;*/
+  top: 100px;
+  /*width: 100%;*/
+  /*z-index: 1;*/
+  /*color: rgba(130, 130, 130, 0.5);*/
+  /*font-size: 50px;*/
+  /*text-align: center;*/
+  /*line-height: 100px;*/
+  background-color: white;
+  opacity: .8;
+  padding: 20px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+.auth-container .vl-top {
+    border-left: 6px solid green;
+    height: 30%;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: 0;
+}
+.auth-container .vl-bottom {
+    border-left: 6px solid green;
+    height: 30%;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: 0;
+}
+.auth-container .heading {
+  margin: 8px;
+}
+.auth-container hr{
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1.5px;
+}
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+.table-border {
+  border: 1px solid black;
+}
+.vertical-rule {
+  padding: 10px 0;
+  margin: 0 auto;
+  display: block;
+  height: 120px;
+  width: 2px;
+}
+.vertical-rule-word {
+  padding: 10px 0;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+.login-container h5{
+  margin-bottom: 15px;
+}

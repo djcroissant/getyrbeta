@@ -7,9 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from allauth.account import views
 
-# from authtools import views
-
-# from .forms import SignupForm
+from .forms import LoginForm
 
 User = get_user_model()
 
@@ -36,9 +34,9 @@ class SignupView(views.SignupView):
     #         messages.add_message(self.request, messages.ERROR, 'There was a problem creating your account.')
     #         return super(SignUpView, self).form_valid(form)
 
-class SignInView(views.LoginView):
-    disallow_authenticated = True
-    template_name = 'auth/signin.html'
+class LoginView(views.LoginView):
+    template_name = 'authentication/login.html'
+    form_class = LoginForm
 
-class SignOutView(views.LogoutView):
-    template_name = 'core/welcome.html'
+class LogoutView(views.LogoutView):
+    pass

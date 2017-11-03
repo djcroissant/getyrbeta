@@ -1,32 +1,22 @@
-# from django import forms
-# from django.core.exceptions import ValidationError
-from django.contrib.auth import get_user_model
-
 from allauth.account import forms
 
-User = get_user_model()
-
-# class SignupForm(forms.SignupForm):
-#
-#     class Meta:
-#         exclude = ['username']
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, HTML
+from crispy_forms.bootstrap import FormActions, PrependedText
 
 
-
-
-#### THE OLD WAY BELOW
-# class SignUpForm(forms.ModelForm):
-#     password = forms.CharField(widget=forms.PasswordInput())
-#     confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirm your password")
-#
-#     class Meta:
-#         model = User
-#         exclude = ['last_login', 'date_joined']
-#
-#     def clean(self):
-#         super(SignUpForm, self).clean()
-#         password = self.cleaned_data.get('password')
-#         confirm_password = self.cleaned_data.get('confirm_password')
-#         if password and password != confirm_password:
-#             self._errors['password'] = self.error_class(['Passwords don\'t match'])
-#         return self.cleaned_data
+class LoginForm(forms.LoginForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields['login'].label = ''
+        self.fields['password'].label = ''
+        self.helper.layout = Layout (
+            PrependedText('login', '<i class="fa fa-envelope-o" aria-hidden="true"></i>', placeholder="E-mail address"),
+            PrependedText('password', '<i class="fa fa-lock" aria-hidden="true"></i>', placeholder="Password"),
+            'remember',
+            FormActions(
+                Submit('submit', 'Sign In', css_class="btn btn-primary"),
+                HTML('<a class="button secondaryAction" href="/accounts/password/reset/">Forgot Password?</a>')
+            )
+        )

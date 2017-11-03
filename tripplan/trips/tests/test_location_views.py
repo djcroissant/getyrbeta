@@ -54,7 +54,7 @@ class LocationCreateViewTests(TestCase):
         request.user = ''
         response = LocationCreateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -62,7 +62,7 @@ class LocationCreateViewTests(TestCase):
         request.user = ''
         response = LocationCreateView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template(self):
@@ -290,7 +290,7 @@ class LocationEditViewTests(TestCase):
         request.user = ''
         response = LocationEditView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -298,7 +298,7 @@ class LocationEditViewTests(TestCase):
         request.user = ''
         response = LocationEditView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template(self):
@@ -525,7 +525,7 @@ class LocationDeleteViewTests(TestCase):
         request.user = ''
         response = LocationDeleteView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_post_request_redirects_to_login_if_user_not_logged_in(self):
@@ -533,7 +533,7 @@ class LocationDeleteViewTests(TestCase):
         request.user = ''
         response = LocationDeleteView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        redirect_url = reverse('authentication:signin') + '?next=' + '/fake/'
+        redirect_url = reverse('authentication:login') + '?next=' + '/fake/'
         self.assertEqual(response.url, redirect_url)
 
     def test_view_uses_correct_template(self):

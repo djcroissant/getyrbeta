@@ -10,10 +10,15 @@
 .navbar-nav .nav-item {
   font-size: 15pt;
 }
-.navbar-btn {
+#navbar-links {
+  margin-right: 20px;
+}
+.navbar-link {
   font-size: 20pt;
   font-family: 'Futura';
-  letter-spacing: .1pt;
+  margin-left: 10px;
+  margin-right: 10px;
+  letter-spacing: .4px;
 }
 body {
   padding-top: 100px;

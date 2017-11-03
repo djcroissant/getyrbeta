@@ -251,7 +251,7 @@ AUTHENTICATION_BACKENDS = [
 # Authentication settings
 AUTH_USER_MODEL = 'account_info.User'
 LOGIN_REDIRECT_URL = 'trips:trip_list'
-LOGIN_URL = 'authentication:signin'
+LOGIN_URL = 'authentication:login'
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'

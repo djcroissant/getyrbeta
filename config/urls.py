@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^account_info/', include('account_info.urls')),
     url(r'^$', TemplateView.as_view(template_name='core/welcome.html'), name='welcome'),
-    url(r'^auth/', include('authentication.urls')),
+    url(r'^accounts/', include('authentication.urls')),
     url(r'^trips/', include('trips.urls')),
 
     # User management
