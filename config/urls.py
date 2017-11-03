@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView
 
 
 urlpatterns = [
+    url(r'^$', RedirectView.as_view(pattern_name='authentication:login', permanent=False)),
     url(r'^account_info/', include('account_info.urls')),
-    url(r'^$', TemplateView.as_view(template_name='core/welcome.html'), name='welcome'),
     url(r'^trips/', include('trips.urls')),
 
     # User management. Allauth urls overwritten in authentication app
