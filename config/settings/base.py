@@ -166,7 +166,6 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                # Your stuff: custom template context processors go here
             ],
         },
     },
@@ -273,10 +272,10 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
 
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# SOCIALACCOUNT_QUERY_EMAIL = True
-# SOCIALACCOUNT_PROVIDERS = {
-#     'facebook': {
-#         'SCOPE': ['email', 'publish_stream'],
-#         'METHOD': 'js_sdk'  # instead of 'oauth2'
-#     }
-# }
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'SCOPE': ['email'],
+        'METHOD': 'js_sdk'  # instead of 'oauth2'
+    }
+}

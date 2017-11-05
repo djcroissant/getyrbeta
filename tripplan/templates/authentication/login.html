@@ -12,6 +12,7 @@
 {% endblock stylesheet %}
 
 {% block javascript1 %}
+  {# Facebook branded button #}
   <div id="fb-root"></div>
   <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -20,8 +21,32 @@
     js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=1974308959508610';
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
-{% endblock javascript1 %}
 
+  {# Facebook SDK for Javascript #}
+  {# Copied from Facebook Developers site #}
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1974308959508610',
+        cookie     : true,
+        xfbml      : true,
+        version    : '{latest-api-version}'
+      });
+
+      FB.AppEvents.logPageView();
+
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+{% endblock javascript1 %}
 
 {% block content %}
   <div class="auth-container">
@@ -37,7 +62,9 @@
       <div class="col-5 vertical-align">
         <div class="login-container">
           <h5>Use your Facebook account to log in:</h5>
-          <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false"></div>
+          <a href="{% provider_login_url "facebook" method="js_sdk" %}" class="btn btn-block btn-social btn-facebook btn-lg">
+            <i class="fa fa-facebook" aria-hidden="true"></i>Log in with Facebook</a>
+           {% include "socialaccount/snippets/login_extra.html" %}
         </div>
       </div>
 
