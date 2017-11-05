@@ -11,43 +11,6 @@
   <link rel="stylesheet" type="text/css" href="{% static 'authentication/style.css' %}" />
 {% endblock stylesheet %}
 
-{% block javascript1 %}
-  {# Facebook branded button #}
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=1974308959508610';
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-
-  {# Facebook SDK for Javascript #}
-  {# Copied from Facebook Developers site #}
-  <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '1974308959508610',
-        cookie     : true,
-        xfbml      : true,
-        version    : '{latest-api-version}'
-      });
-
-      FB.AppEvents.logPageView();
-
-    };
-
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "https://connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
-  </script>
-
-{% endblock javascript1 %}
-
 {% block content %}
   <div class="auth-container">
     <div class="heading">

@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 
 from allauth.account import views
+from allauth.socialaccount import views as socialviews
 
 from .forms import LoginForm, SignupForm
 
@@ -24,3 +25,8 @@ class LogoutView(views.LogoutView):
 
     def get_redirect_url(self):
         return reverse_lazy('authentication:login')
+
+class SocialSignupView(LoginView):
+    def get(self, request, *args, **kwargs):
+        messages.add_message(request, messages.INFO, 'A user with this email already exists. To link Facebook with your existing account, please log in first, then click "Profile" -> "Login Info".')
+        return super(SocialSignupView, self).get(request, *args, **kwargs)
