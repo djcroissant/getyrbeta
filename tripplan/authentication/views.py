@@ -28,5 +28,11 @@ class LogoutView(views.LogoutView):
 
 class SocialSignupView(LoginView):
     def get(self, request, *args, **kwargs):
-        messages.add_message(request, messages.INFO, 'A user with this email already exists. To link Facebook with your existing account, please log in first, then click "Profile" -> "Login Info".')
+        messages.add_message(request, messages.INFO,
+            '''A user with your email address already exists. To link
+            Facebook with your existing account, please log in,
+            then click "Profile" -> "Login Info".''')
         return super(SocialSignupView, self).get(request, *args, **kwargs)
+
+class SocialConnectionsView(socialviews.ConnectionsView):
+    template_name = 'authentication/social_connections.html'

@@ -7,16 +7,13 @@
       <a class="nav-link" href="{% url 'account_info:account_profile' %}">Profile</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="#">Picture</a>
-    </li>
-    <li class="nav-item">
       <a class="nav-link" href="{% url 'account_info:emerg_contact_list' %}">Emergency Contact</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'account_info:vehicle_list' %}">Vehicle Info</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="#">Login Info</a>
+      <a class="nav-link" href="{% url 'authentication:socialaccount_connections' %}">Login Info</a>
     </li>
   </ul>
 </div>
