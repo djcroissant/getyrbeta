@@ -36,3 +36,15 @@ class SocialSignupView(LoginView):
 
 class SocialConnectionsView(socialviews.ConnectionsView):
     template_name = 'authentication/social_connections.html'
+
+class PasswordResetView(views.PasswordResetView):
+    template_name = 'authentication/password_reset.html'
+
+class PasswordResetDoneView(views.PasswordResetDoneView):
+    template_name = 'authentication/password_reset_done.html'
+
+class PasswordResetFromKeyView(views.PasswordResetFromKeyView):
+    template_name = 'authentication/password_reset_from_key.html'
+
+class PasswordResetFromKeyDoneView(views.PasswordResetFromKeyDoneView):
+    template_name = 'authentication/password_reset_from_key_done.html'
