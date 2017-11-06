@@ -60,6 +60,7 @@ LOCAL_APPS = [
     'account_info.apps.AccountInfoConfig',
     'authentication.apps.AuthenticationConfig',
     'trips.apps.TripsConfig',
+    'site_info.apps.SiteInfoConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

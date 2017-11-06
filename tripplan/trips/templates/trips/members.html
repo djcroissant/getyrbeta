@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
 {% endblock stylesheet %}
 
-{% block javascript %}
+{% block javascript_bottom %}
   {# Get csrf token from csrftoken cookie #}
   <script src="{% static 'js/csrftoken.js' %}"></script>
 
@@ -94,7 +94,7 @@
     });
 
   </script>
-{% endblock javascript %}
+{% endblock javascript_bottom %}
 
 {% block content %}
   <div class="wrapper">

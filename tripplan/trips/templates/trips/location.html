@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
 {% endblock stylesheet %}
 
-{% block javascript %}
+{% block javascript_bottom %}
   {% comment %}
     The following javascript is based on the Google API example here:
     https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete
@@ -97,7 +97,7 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA14LT9E4I4V91qxDPFhc-7ohMca4stX70&libraries=places&callback=initMap"
         async defer></script>
-{% endblock javascript %}
+{% endblock javascript_bottom %}
 
 {% block content %}
   <div class="wrapper">
