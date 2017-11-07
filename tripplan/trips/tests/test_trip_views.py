@@ -107,11 +107,11 @@ class TripListViewTests(TestCase):
         kwargs={}
         view = setup_view(view, request, **kwargs)
         trip_past = Trip.objects.create(
-            title='title',
+            title='title1',
             start_date=timezone.now().date() + datetime.timedelta(days=-1)
         )
         trip_future = Trip.objects.create(
-            title='title',
+            title='title2',
             start_date=timezone.now().date() + datetime.timedelta(days=1)
         )
         TripMember.objects.create(
@@ -126,9 +126,11 @@ class TripListViewTests(TestCase):
         )
         view.object_list = self.user.trip_set.all()
         context = view.get_context_data()
+        for e in list(view.object_list.filter(start_date__gte=timezone.now())):
+            self.assertIn(e, list(context['upcoming_trip_list']))
         self.assertEqual(
-            list(view.object_list.filter(start_date__gte=timezone.now())),
-            list(context['upcoming_trip_list'])
+            len(list(view.object_list.filter(start_date__gte=timezone.now()))),
+            len(list(context['upcoming_trip_list']))
         )
 
     def test_get_context_data_returns_past_trips(self):
@@ -363,21 +365,23 @@ class TripCreateViewTests(TestCase):
         self.assertIn('cancel_button_path', context)
 
     def test_form_valid_adds_user_as_trip_member(self):
-        request = self.factory.get('/fake/')
-        request.user = self.user
-        view = TripCreateView()
-        kwargs={}
-        view = setup_view(view, request, **kwargs)
-        view.object = Trip()
-        form_data = {
-            'title': 'trip title',
-            'start_date': timezone.now().date(),
-        }
-        count = TripMember.objects.all().count()
-        form = view.get_form()
-        #######  START HERE!!!
-        view.form_valid(form)
-        self.assertEqual(TripMember.objects.all().count(), count + 1)
+        self.assertTrue(False)
+        #Test needs to be fixed....
+        # request = self.factory.get('/fake/')
+        # request.user = self.user
+        # view = TripCreateView()
+        # kwargs={}
+        # view = setup_view(view, request, **kwargs)
+        # view.object = Trip()
+        # form_data = {
+        #     'title': 'trip title',
+        #     'start_date': timezone.now().date(),
+        # }
+        # count = TripMember.objects.all().count()
+        # form = view.get_form()
+        # #######  START HERE!!!
+        # view.form_valid(form)
+        # self.assertEqual(TripMember.objects.all().count(), count + 1)
 
     def test_get_success_url_redirects_to_trip_detail(self):
         request = self.factory.get('/fake/')

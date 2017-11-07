@@ -52,7 +52,7 @@ class TripFormTests(TestCase):
             {% crispy form %}
         """)
         form = TripForm()
-        context = {'form': form, 'cancel_button_path': 'welcome'}
+        context = {'form': form, 'cancel_button_path': 'trips:trip_list'}
         html = template.render(context)
         self.assertEqual(html.count('input type="submit"'), 1)
         self.assertEqual(html.count('name="cancel">Cancel</a>'), 1)
