@@ -79,3 +79,8 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # Google Maps API key can be acquired here:
 # https://developers.google.com/maps/documentation/javascript/get-api-key
 GOOGLE_MAPS_API = env('GOOGLE_MAPS_API', default='AIzaSyDWhowSelvksmtGM7SOllzIuuzaNq-rI7E')
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+# Different for local and production because sites were created/deleted and
+# the id auto-incremented.
+SITE_ID = 4

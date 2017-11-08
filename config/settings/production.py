@@ -97,11 +97,13 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
 # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
 DATABASES['default'] = env.db('DATABASE_URL')
 
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+# Different for local and production because sites were created/deleted and
+# the id auto-incremented.
+SITE_ID = 1
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
-
-
 
 # DELETE THIS LINE AFTER IT WORKS!
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
