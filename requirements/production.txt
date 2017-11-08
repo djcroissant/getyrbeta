@@ -1,13 +1,1 @@
--r base.txt
-
-
-
-# WSGI Handler
-# ------------------------------------------------
-gevent==1.2.2
-gunicorn==19.7.1
-
-
-# Email backends for Mailgun, Postmark, SendGrid and more
-# -------------------------------------------------------
-django-anymail==0.11.1
+located in ROOT_DIR/requirements.txt
