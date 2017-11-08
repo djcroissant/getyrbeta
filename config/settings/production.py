@@ -100,3 +100,8 @@ DATABASES['default'] = env.db('DATABASE_URL')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+
+
+# DELETE THIS LINE AFTER IT WORKS!
+DEBUG = env.bool('DJANGO_DEBUG', default=True)
