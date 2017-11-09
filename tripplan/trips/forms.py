@@ -42,7 +42,7 @@ class TripForm(forms.ModelForm):
             '''),
             'number_nights',
             FormActions(
-                Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
+                Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg click-disable'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel</a>')
             )
         )
@@ -86,7 +86,7 @@ class LocationForm(forms.ModelForm):
             Field('trip', type='hidden'),
             Field('location_type', type='hidden'),
             FormActions(
-                Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
+                Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg click-disable'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path trip_id %}" name="cancel">Cancel</a>')
             )
         )

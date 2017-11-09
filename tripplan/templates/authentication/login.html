@@ -11,6 +11,20 @@
   <link rel="stylesheet" type="text/css" href="{% static 'authentication/style.css' %}" />
 {% endblock stylesheet %}
 
+{% block javascript_bottom %}
+  <script>
+    $(document).ready(setup);
+    function setup() {
+      $('a').click(function(e) {
+        if ($(this).hasClass("disabled")) {
+          event.preventDefault();
+        }
+        $(this).addClass("disabled");
+      });
+    }
+  </script>
+{% endblock javascript_bottom %}
+
 {% block content %}
   <div class="auth-container">
     <div class="heading">

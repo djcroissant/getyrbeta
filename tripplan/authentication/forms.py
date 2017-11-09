@@ -16,7 +16,7 @@ class LoginForm(forms.LoginForm):
             PrependedText('password', '<i class="fa fa-lock" aria-hidden="true"></i>', placeholder="Password"),
             'remember',
             FormActions(
-                Submit('submit', 'Sign In', css_class="btn btn-primary"),
+                Submit('submit', 'Sign In', css_class="btn btn-primary click-disable"),
                 HTML('<a class="button secondaryAction" href="/accounts/password/reset/">Forgot Password?</a>')
             )
         )
@@ -33,6 +33,6 @@ class SignupForm(forms.SignupForm):
             HTML('<input type="checkbox" id="id_show_password" onchange=\'document.getElementById("id_password1").type = this.checked ? "text" : "password"\'>'),
             HTML('<label for="id_show_password">Show password</label>'),
             FormActions(
-                Submit('submit', 'Sign Up', css_class="btn btn-primary"),
+                Submit('submit', 'Sign Up', css_class="btn btn-primary click-disable"),
             ),
         )

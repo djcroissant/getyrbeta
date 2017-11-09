@@ -59,7 +59,7 @@ class EmergencyContactForm(forms.ModelForm):
                 'state',
                 'zip_code'),
             FormActions(
-                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
+                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg click-disable'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel</a>')
             )
         )
@@ -91,7 +91,7 @@ class VehicleForm(forms.ModelForm):
                 'lic_plate_num',
                 'lic_plate_st'),
             FormActions(
-                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg'),
+                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg click-disable'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel</a>')
             )
         )
