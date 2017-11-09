@@ -7,9 +7,6 @@
 {% endblock stylesheet %}
 
 {% block javascript_bottom %}
-  {# Get csrf token from csrftoken cookie #}
-  <script src="{% static 'js/csrftoken.js' %}"></script>
-
   {# Search and add existing users to trips using AJAX #}
   <script>
     // If email isn't already registered, a confirmation will be displayed
@@ -66,6 +63,7 @@
     }
 
     // If user confirms, set accept_reqd=True in TripMember
+    // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
     $("#confirm-add-member").on('click', '#confirm-button', function() {
       var email = $("#id_email_search").val();
       $.ajax({

@@ -7,9 +7,6 @@
 {% endblock stylesheet %}
 
 {% block javascript_bottom %}
-  {# Get csrf token from csrftoken cookie #}
-  <script src="{% static 'js/csrftoken.js' %}"></script>
-
   <script>
     // POST to TripMember to set accept_reqd=False`
     function ajax_accept_trip(data) {
@@ -39,9 +36,11 @@
     //calls ajax_accept_trip
     //removes buttons
     //prints 'joined' in their place
+    // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
     $(".accept-btn").on('click', function() {
       var data = {
-        "trip_id": $(this).parent().parent().find(".trip-id").text()
+        "trip_id": $(this).parent().parent().find(".trip-id").text(),
+        "csrfmiddlewaretoken": "{{ csrf_token }}",
       };
       ajax_accept_trip(data);
       var td = $(this).parent();
@@ -53,9 +52,11 @@
     //calls ajax_decline_trip
     //removes buttons
     //prints 'declined' in their place
+    // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
     $(".decline-btn").on('click', function() {
       var data = {
-        "trip_id": $(this).parent().parent().find(".trip-id").text()
+        "trip_id": $(this).parent().parent().find(".trip-id").text(),
+        "csrfmiddlewaretoken": "{{ csrf_token }}"
       };
       ajax_decline_trip(data);
       var td = $(this).parent();

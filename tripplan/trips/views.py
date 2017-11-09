@@ -7,8 +7,6 @@ from django.views.generic import UpdateView, ListView, \
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from django.http import JsonResponse, Http404
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import Trip, TripLocation, TripMember, ItemNotification
 
@@ -217,10 +215,6 @@ class TripMemberListView(LoginRequiredMixin, FormView):
     template_name = 'trips/members.html'
     queryset = TripMember.objects.all()
     form_class = SearchForm
-
-    @method_decorator(ensure_csrf_cookie)
-    def get(self, request, *args, **kwargs):
-        return super(TripMemberListView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(TripMemberListView, self).get_context_data(**kwargs)
