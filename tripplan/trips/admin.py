@@ -10,8 +10,7 @@ class TripAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['title']}),
         ('Date information', {'fields': ['start_date']}),
-        ('Location information', {'fields': ['trailhead_latitude',
-            'trailhead_longitude'], 'classes': ['collapse']}),
+        ('Number of nights', {'fields': ['number_nights']}),
     ]
     list_display = ('title', 'start_date', 'is_in_the_past')
     list_filter = ['start_date']
