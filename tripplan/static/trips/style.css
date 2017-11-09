@@ -230,3 +230,9 @@ li.hidden_bullet {
   font-weight: 500;
   padding: 6px 12px;
 }
+#start_date {
+  display: none;
+}
+#div_id_start_date {
+  margin-bottom: 0;
+}

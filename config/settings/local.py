@@ -56,7 +56,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'SKIP_TEMPLATE_PREFIXES': (
         'django/forms/widgets/',
         'admin/widgets/',
-        'floppyforms/'
     ),
     'DISABLE_PANELS': [
         'debug_toolbar.panels.redirects.RedirectsPanel',

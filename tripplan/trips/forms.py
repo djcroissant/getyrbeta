@@ -1,4 +1,4 @@
-import floppyforms.__future__ as forms
+from django import forms
 
 from django.forms.widgets import NumberInput
 
@@ -27,11 +27,20 @@ class TripForm(forms.ModelForm):
         self.fields['number_nights'].label = 'Number of Nights'
         self.fields['title'].label = 'Trip Title'
         self.helper.layout = Layout (
-            Fieldset(
-                '',
-                'title',
-                'start_date',
-                'number_nights'),
+            'title',
+            Field('start_date', id='start_date'),
+            HTML('''
+                <div class="col-md-9">
+                    <div class="date-picker">
+                    	<div class="input">
+                    		<div class="result">Select Date: <span></span></div>
+                    		<button type=button><i class="fa fa-calendar"></i></button>
+                    	</div>
+                    	<div class="calendar"></div>
+                    </div>
+                </div>
+            '''),
+            'number_nights',
             FormActions(
                 Submit('submit', '{{ submit_button_title }}', css_class='btn btn-success btn-lg'),
                 HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel</a>')

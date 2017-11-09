@@ -46,7 +46,6 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'crispy_forms',  # Form layouts
-    'floppyforms', # HTML5 features in forms
     'authtools', # User registration
     'allauth',  # registration
     'allauth.account',  # registration
