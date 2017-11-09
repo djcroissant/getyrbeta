@@ -218,6 +218,10 @@ class TripMemberListView(LoginRequiredMixin, FormView):
     queryset = TripMember.objects.all()
     form_class = SearchForm
 
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        return super(TripMemberListView, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(TripMemberListView, self).get_context_data(**kwargs)
         trip = Trip.objects.get(pk=self.kwargs['pk'])
@@ -285,10 +289,6 @@ class NotificationListView(LoginRequiredMixin, ListView):
     model = TripMember
     template_name = 'trips/notifications.html'
     context_object_name = 'trip_notifications'
-
-    @method_decorator(ensure_csrf_cookie)
-    def get(self, request, *args, **kwargs):
-        super(NotificationListView, self).get(request, *args, **kwargs)
 
     def get_queryset(self):
         # gets all trip notifications for logged in user
