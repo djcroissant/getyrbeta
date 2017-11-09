@@ -7,6 +7,8 @@ from django.views.generic import UpdateView, ListView, \
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from django.http import JsonResponse, Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import Trip, TripLocation, TripMember, ItemNotification
 
@@ -283,6 +285,10 @@ class NotificationListView(LoginRequiredMixin, ListView):
     model = TripMember
     template_name = 'trips/notifications.html'
     context_object_name = 'trip_notifications'
+
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        super(NotificationListView, self).get(request, *args, **kwargs)
 
     def get_queryset(self):
         # gets all trip notifications for logged in user
