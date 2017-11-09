@@ -39,15 +39,19 @@
 </head>
 <body>
   {% block javascript_top %}{% endblock javascript_top%}
-  <div class="wrapper">
+
     {% include 'core/header.html' %}
+
+    {% if messages %}
+      <div id="message-container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <main>
       <div class="container">
-        {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
         {% block content %}{% endblock content %}
       </div>
     </main>
@@ -56,7 +60,7 @@
       {% include 'core/footer_color_bar.html' %}
       {% endcomment %}
     </footer>
-  </div>
+
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="{% static 'js/jquery-3.2.1.js' %}"></script>

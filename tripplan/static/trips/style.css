@@ -1,8 +1,3 @@
-/*Pad the entire page down so the fixed navbar doesn't overlap*/
-.wrapper {
-  margin-top: 100px;
-}
-
 /*The content-wrapper uses float:right so that it exists inline
 with the sidebar. Neither is cleared, so they will float on
 top of each other. The content-wrapper sets width:100% so that it

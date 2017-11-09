@@ -20,6 +20,11 @@
   margin-right: 10px;
   letter-spacing: .4px;
 }
-body {
-  padding-top: 100px;
+/*Drop the messages container down to avoid overlap with navbar*/
+#navbar-spacer {
+  padding-top: 91px;
+}
+/*Drop the main content to look nice.*/
+main {
+  margin-top: 60px;
 }
