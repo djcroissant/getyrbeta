@@ -72,7 +72,8 @@
         url: "{% url 'trips:add_trip_member' %}",
         data: {
           "email": email,
-          "trip_id": "{{ trip.id }}"
+          "trip_id": "{{ trip.id }}",
+          "csrfmiddlewaretoken": "{{ csrf_token }}",
         },
         dataType: "json",
         type: "POST",
