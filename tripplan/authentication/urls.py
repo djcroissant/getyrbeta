@@ -24,4 +24,6 @@ urlpatterns = [
     url(r"^password/reset/key/done/$",
         views.PasswordResetFromKeyDoneView.as_view(),
         name="account_reset_password_from_key_done"),
+    url(r"^confirm-email/(?P<key>[-:\w]+)/$", views.ConfirmEmailView.as_view(),
+        name="account_confirm_email"),
 ]

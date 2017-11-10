@@ -48,3 +48,6 @@ class PasswordResetFromKeyView(views.PasswordResetFromKeyView):
 
 class PasswordResetFromKeyDoneView(views.PasswordResetFromKeyDoneView):
     template_name = 'authentication/password_reset_from_key_done.html'
+
+class ConfirmEmailView(views.ConfirmEmailView):
+    template_name = 'authentication/email_confirm.html'
