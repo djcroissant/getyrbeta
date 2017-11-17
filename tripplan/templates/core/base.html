@@ -32,7 +32,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'sitewide_css/footer_color_bar.css' %}" />
   <!-- Font Awesome CSS-->
   <script src="https://use.fontawesome.com/8a609c9c4b.js"></script>
-  <!-- Sitewide theme CSS -->
+  <!-- Sitewide CSS -->
   <link rel="stylesheet" type="text/css" href="{% static 'sitewide_css/theme.css' %}" />
   <!-- Addins from apps -->
   {% block stylesheet %}{% endblock %}
@@ -42,13 +42,13 @@
 
     {% include 'core/header.html' %}
 
-    {% if messages %}
-      <div id="message-container">
+    <ul id="message-container">
+      {% if messages %}
         {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+          <li class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</li>
         {% endfor %}
-      </div>
-    {% endif %}
+      {% endif %}
+    </ul>
 
     <main>
       <div class="container">

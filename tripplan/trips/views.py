@@ -277,6 +277,10 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
         else:
             data['preferred_name'] = ''
 
+        # Send text for success message to template
+        # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
+        msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('email'))
+        data['msg'] = msg
         return JsonResponse(data)
 
 class NotificationListView(LoginRequiredMixin, ListView):

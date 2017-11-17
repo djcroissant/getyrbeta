@@ -7,3 +7,10 @@
   font-family: 'American Typewriter';
   letter-spacing: -1px;
 }
+#message-container {
+  list-style: none;
+  padding-left: 0;
+}
+#message-container > li {
+  margin-bottom: 2px;
+}

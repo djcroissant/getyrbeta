@@ -81,9 +81,19 @@
           $("#id_email_search").prop('disabled',false);
           $("#id_email_search").val('');
           $("#id_email_search").focus();
+          if (data["msg"]) {
+            post_message(data["msg"]);
+          }
         }
       });
     });
+
+    // Posts message at top of page. Only called if msg exists
+    function post_message(msg) {
+      var message_container = $("#message-container");
+      message_container.empty();
+      message_container.append('<li class="alert alert-success">' + msg + '</li>');
+    }
 
     // Cancel clears search box and re-focuses
     $("#confirm-add-member").on('click', '#cancel-button', function() {
