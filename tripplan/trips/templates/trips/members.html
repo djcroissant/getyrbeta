@@ -23,16 +23,16 @@
         dataType: "json",
         type: "GET",
         success: function(data) {
-          if (data.status == 'valid') {
+          if (data.status == 'current_member') {
+            $("#current-member-alert").find("p").text(email + " is already a member");
+            $("#current-member-alert").slideDown("fast");
+            $("#id_email_search").focus();
+          } else {
             $("#id_email_search").prop('disabled',true);
             $("#current-member-alert").slideUp("fast");
             $("#confirm-add-member").slideDown("fast");
             $("#confirm-add-member").find("p").text("Add " + email + " to the trip?");
             $("#confirm-button").focus();
-          } else if (data.status == 'current_member') {
-            $("#current-member-alert").find("p").text(email + " is already a member");
-            $("#current-member-alert").slideDown("fast");
-            $("#id_email_search").focus();
           }
         }
       });
