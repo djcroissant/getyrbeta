@@ -155,7 +155,6 @@ class TripCreateView(LoginRequiredMixin, CreateView):
             accept_reqd=False,
             trip=self.object,
             member=self.request.user,
-            email=self.request.user.email
         )
         return response
 
@@ -220,8 +219,30 @@ class TripMemberListView(LoginRequiredMixin, FormView):
         context = super(TripMemberListView, self).get_context_data(**kwargs)
         trip = Trip.objects.get(pk=self.kwargs['pk'])
         context['trip'] = trip
+        pending_user_emails = self.queryset.filter(
+            trip=trip,
+            accept_reqd=True
+        ).values_list(
+            'member__email',
+            flat=True
+        )
+
+        pending_guest_emails = TripGuest.objects.filter(
+            trip=trip
+        ).values_list(
+            'email',
+            flat=True
+        )
+
+        context['pending_members'] = sorted(
+            pending_user_emails + pending_guest_emails)
+
+        # context['pending_members'] = (
+        #     pending_users + pending_guests).order_by('email')
+        # )
+        
         context['pending_members'] = self.queryset.filter(
-            trip=trip, accept_reqd=True).order_by('email')
+            trip=trip, accept_reqd=True).order_by('email')  #order by
         context['current_members'] = self.queryset.filter(
             trip=trip, accept_reqd=False).order_by('email')
         return context
