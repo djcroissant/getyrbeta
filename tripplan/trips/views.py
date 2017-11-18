@@ -235,12 +235,12 @@ class TripMemberListView(LoginRequiredMixin, FormView):
         )
 
         context['pending_members'] = sorted(
-            pending_user_emails + pending_guest_emails)
+            list(pending_user_emails) + list(pending_guest_emails))
 
         # context['pending_members'] = (
         #     pending_users + pending_guests).order_by('email')
         # )
-        
+
         context['pending_members'] = self.queryset.filter(
             trip=trip, accept_reqd=True).order_by('email')  #order by
         context['current_members'] = self.queryset.filter(
@@ -251,13 +251,13 @@ class CheckUserExistsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         trip = Trip.objects.get(pk=int(request.GET.get('trip_id')))
-        if User.objects.filter(email__iexact=email).exists() and not \
-        TripMember.objects.filter(email__iexact=email, trip=trip).exists():
-            status = 'valid'
-        elif TripMember.objects.filter(email__iexact=email).exists():
+        if TripMember.objects.filter(member__email__iexact=email).exists() or \
+        TripGuest.objects.filter(email__iexact=email.exists():
             status = 'current_member'
+        elif User.objects.filter(email__iexact=email).exists():
+            status = 'nonmember_user'
         else:
-            status = 'non_user'
+            status = 'nonmember_guest'
 
         data = {'status': status}
         return JsonResponse(data)
