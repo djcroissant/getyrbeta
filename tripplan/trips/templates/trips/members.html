@@ -92,7 +92,8 @@
     function post_message(msg) {
       var message_container = $("#message-container");
       message_container.empty();
-      message_container.append('<li class="alert alert-success">' + msg + '</li>');
+      message_container.append('<li class="alert alert-success ajax-alert">' + msg + '</li>');
+      $(".ajax-alert").slideDown("fast");
     }
 
     // Cancel clears search box and re-focuses
