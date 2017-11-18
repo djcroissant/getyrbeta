@@ -24,6 +24,8 @@ urlpatterns = [
         views.CheckUserExistsView.as_view(), name='user_exists'),
     url(r'^ajax/add_trip_member/$',
         views.AddTripMemberView.as_view(), name='add_trip_member'),
+    url(r'^ajax/add_trip_guest/$',
+        views.AddTripGuestView.as_view(), name='add_trip_guest'),
     url(r'^ajax/update_trip_member/$',
         views.UpdateTripMemberView.as_view(), name='update_trip_member'),
     url(r'^ajax/delete_trip_member/$',

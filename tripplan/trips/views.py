@@ -7,6 +7,7 @@ from django.views.generic import UpdateView, ListView, \
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from django.http import JsonResponse, Http404
+from django.core.mail import send_mail
 
 from .models import Trip, TripLocation, TripMember, ItemNotification
 
@@ -287,22 +288,80 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
             User, email=self.kwargs.get('email')).id
         f.organizer = True
         f.accept_reqd = True
-        f.email = self.kwargs.get('email')
         f.save()
         response = super(AddTripMemberView, self).form_valid(form)
         data = {
             'email': self.object.member.email
         }
-        if self.object.member.preferred_name:
-            data['preferred_name'] = self.object.member.preferred_name
-        else:
-            data['preferred_name'] = ''
 
         # Send text for success message to template
         # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
         msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('email'))
         data['msg'] = msg
+
         return JsonResponse(data)
+
+class AddTripGuestView(LoginRequiredMixin, CreateView):
+    model = TripGuest
+    form_class = TripMemberForm
+    success_url = "#"
+
+    def post(self, request, *args, **kwargs):
+        self.kwargs['trip_id'] = request.POST.get('trip_id')
+        self.kwargs['invite_email'] = request.POST.get('email')
+        self.kwargs['user_email'] = request.user.email
+        return super(AddTripGuestView, self).post(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        response = super(AddTripGuestView, self).form_invalid(form)
+        return JsonResponse(form.errors, status=400)
+
+    def form_valid(self, form):
+        """
+        Set values for the form based on data passed by AJAX request and
+        on intended functionality
+        """
+        f = form.save(commit=False)
+        f.trip_id = int(self.kwargs.get('trip_id'))
+        f.email = self.kwargs.get('invite_email')
+        f.save()
+        response = super(AddTripGuestView, self).form_valid(form)
+
+        self.email_invitation()
+
+        # Send text for success message to template
+        # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
+        msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('email'))
+        data = {
+            'msg': msg
+        }
+
+        return JsonResponse(data)
+
+    def email_invitation(self):
+        trip = get_object_or_404(
+            Trip,
+            trip_id=int(self.kwargs.get('trip_id'))
+        )
+        subject = ("Get Yr Beta - Invitation to %s" % trip.title)
+        message = render_to_string(
+            "trips/email/trip_invite_guest.txt",
+            context = {
+                'inviter_email': self.kwargs.get('invite_email'),
+                'trip_title': trip.title
+                'signup_link': reverse('authentication:signup') + '?next=' + reverse('trips:notifications'),
+            }
+        )
+        from_email = 'noreply@getyrbeta.com'
+        to_email = [self.kwargs.get('invite_email')]
+
+        send_mail(
+            subject,
+            message,
+            from_email,
+            to_email,
+            fail_silently=False,
+        )
 
 class NotificationListView(LoginRequiredMixin, ListView):
     model = TripMember

@@ -1,0 +1,14 @@
+Hello from Get Yr Beta,
+
+You've been invited by {{ inviter_email }} to join the trip {{ trip_title }}.
+
+Steps to join:
+  1. Click the link below to create your account at Get Yr Beta
+     {{ signup_link }}
+
+  2. After creating your account, check your notifications tab.
+
+  3. Accept your invitation to {{ trip_title }}
+
+Enjoy!
+/GYB/
