@@ -4,7 +4,7 @@ from django.forms.widgets import NumberInput
 
 from account_info.models import User
 
-from .models import Trip, TripLocation, TripMember
+from .models import Trip, TripLocation, TripMember, TripGuest
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field, Div
@@ -118,4 +118,9 @@ class SearchForm(forms.Form):
 class TripMemberForm(forms.ModelForm):
     class Meta:
         model = TripMember
+        fields = []
+
+class TripGuestForm(forms.ModelForm):
+    class Meta:
+        model = TripGuest
         fields = []

@@ -14,8 +14,7 @@
     var ajax_request = (function() {
       var status = "";
       var trip_id = {{ trip.id }};
-      var email = $("#id_email_search").val();
-
+      var email = "";
       function post_message(msg) {
         var message_container = $("#message-container");
         message_container.empty();
@@ -23,8 +22,20 @@
         $(".ajax-alert").slideDown("fast");
       }
 
+      // Adds TripMember to Pending Members section
+      function refresh_pending_members(data) {
+        var list = $("#pending-members-list").find("ul");
+        if (list.children().first().children().first().hasClass('empty-list')) {
+          list.find('div').remove();
+        }
+        var pending_member = $('<div class="list-padding"><li class="trip-info">' +
+          data.new_member + '</li></div>');
+        list.prepend(pending_member);
+      }
+
       return {
         check_email_status: function() {
+          email = $("#id_email_search").val();
           $.ajax({
             url: "{% url 'trips:user_exists' %}",
             data: {
@@ -55,9 +66,8 @@
           if (status === 'nonmember_user') {
             url = "{% url 'trips:add_trip_member' %}";
           } else {
-            url: "{% url 'trips:add_trip_guest' %}";
+            url = "{% url 'trips:add_trip_guest' %}";
           }
-
           $.ajax({
             url: url,
             data: {
@@ -97,7 +107,7 @@
     // Calls confirm on click
     $("#confirm-add-member").on('click', '#confirm-button', function() {
       ajax_request.confirm_add_member();
-    }
+    });
 
     // Cancel clears search box and re-focuses
     $("#confirm-add-member").on('click', '#cancel-button', function() {
@@ -110,7 +120,7 @@
 
 
 
-    // 
+    //
     // // If email isn't already registered, a confirmation will be displayed
     // function ajax_user_exists() {
     //   var email = $("#id_email_search").val();
@@ -242,10 +252,7 @@
             {% if pending_members|length > 0 %}
               {% for member in pending_members %}
                 <div class="list-padding">
-                  <li class="trip-info">{{ member.email }}</li>
-                  {% if member.member and member.member.preferred_name %}
-                    <li class="hidden_bullet trip-info">{{ member.member.preferred_name }}</li>
-                  {% endif %}
+                  <li class="trip-info">{{ member }}</li>
                 </div>
               {% endfor %}
             {% else %}
@@ -263,10 +270,7 @@
             {% if current_members|length > 0 %}
               {% for member in current_members %}
                 <div class="list-padding">
-                  <li class="trip-info">{{ member.email }}</li>
-                  {% if member.member and member.member.preferred_name %}
-                    <li class="hidden_bullet trip-info">{{ member.member.preferred_name }}</li>
-                  {% endif %}
+                  <li class="trip-info">{{ member }}</li>
                 </div>
               {% endfor %}
             {% else %}

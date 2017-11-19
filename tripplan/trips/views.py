@@ -8,12 +8,14 @@ from django.utils import timezone
 from django.contrib.auth import authenticate
 from django.http import JsonResponse, Http404
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
-from .models import Trip, TripLocation, TripMember, ItemNotification
+from .models import Trip, TripLocation, TripMember, ItemNotification, TripGuest
 
 from account_info.models import User
 
-from .forms import TripForm, LocationForm, SearchForm, TripMemberForm
+from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
+    TripGuestForm
 
 
 class LoginRequiredMixin:
@@ -35,6 +37,25 @@ class LoginRequiredMixin:
             redirect_next = '?next=' + request.path
             return redirect(redirect_path + redirect_next)
 
+class FlattenTripMemberMixin:
+    def flatten_tripmember_queryset(self, queryset):
+        '''
+        Input a TripMember queryset. Output a list in the form:
+        if preferred_name exists:
+            "<preferred_name> - <email>"
+        else:
+            "<email>"
+        '''
+        flat_list = []
+        for tripmember in queryset:
+            if tripmember.member.preferred_name:
+                name = (tripmember.member.preferred_name + " - ")
+            elif tripmember.member.full_name:
+                name = (tripmember.member.full_name + " - ")
+            else:
+                name = ""
+            flat_list.append(name + tripmember.member.email)
+        return flat_list
 
 class LocationGeneralMixin:
     """
@@ -210,50 +231,69 @@ class LocationDeleteView(LoginRequiredMixin, LocationGeneralMixin, DeleteView):
         except KeyError:
             raise Http404('Invalid location type: ' + url_location_type)
 
-class TripMemberListView(LoginRequiredMixin, FormView):
+class TripMemberListView(LoginRequiredMixin, FormView, FlattenTripMemberMixin):
     model = TripMember
     template_name = 'trips/members.html'
     queryset = TripMember.objects.all()
     form_class = SearchForm
+    success_url = "#"
 
     def get_context_data(self, **kwargs):
         context = super(TripMemberListView, self).get_context_data(**kwargs)
         trip = Trip.objects.get(pk=self.kwargs['pk'])
         context['trip'] = trip
-        pending_user_emails = self.queryset.filter(
+
+        # Check for registered users that still need to accept trip invite
+        # Then flatten queryset into a list
+        pending_member_query = self.queryset.filter(
             trip=trip,
             accept_reqd=True
-        ).values_list(
-            'member__email',
-            flat=True
         )
+        pending_user_list = self.flatten_tripmember_queryset(
+            pending_member_query)
 
-        pending_guest_emails = TripGuest.objects.filter(
+        # Check for non-registered users that still need to accept trip invite.
+        # Output as a list with form: "<email>"
+        pending_guest_list = list(TripGuest.objects.filter(
             trip=trip
         ).values_list(
             'email',
             flat=True
+        ))
+
+        # Combine lists of registered and non-registered users that need to
+        # accept invite
+        context['pending_members'] = sorted(
+            (pending_user_list + pending_guest_list),
+            key=lambda s: s.lower()
         )
 
-        context['pending_members'] = sorted(
-            list(pending_user_emails) + list(pending_guest_emails))
+        # Find users that are registered and have accepted trip invitation.
+        # Then flatten queryset into a list and add to context
+        current_member_query = self.queryset.filter(
+            trip=trip,
+            accept_reqd=False
+        )
+        current_member_list = self.flatten_tripmember_queryset(current_member_query)
+        context['current_members'] = sorted(
+            current_member_list,
+            key=lambda s: s.lower()
+        )
 
-        # context['pending_members'] = (
-        #     pending_users + pending_guests).order_by('email')
-        # )
-
-        context['pending_members'] = self.queryset.filter(
-            trip=trip, accept_reqd=True).order_by('email')  #order by
-        context['current_members'] = self.queryset.filter(
-            trip=trip, accept_reqd=False).order_by('email')
         return context
 
 class CheckUserExistsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email')
         trip = Trip.objects.get(pk=int(request.GET.get('trip_id')))
-        if TripMember.objects.filter(member__email__iexact=email).exists() or \
-        TripGuest.objects.filter(email__iexact=email.exists():
+
+        if TripMember.objects.filter(
+            member__email__iexact=email,
+            trip=trip
+        ).exists() or TripGuest.objects.filter(
+            email__iexact=email,
+            trip=trip
+        ).exists():
             status = 'current_member'
         elif User.objects.filter(email__iexact=email).exists():
             status = 'nonmember_user'
@@ -263,7 +303,7 @@ class CheckUserExistsView(LoginRequiredMixin, View):
         data = {'status': status}
         return JsonResponse(data)
 
-class AddTripMemberView(LoginRequiredMixin, CreateView):
+class AddTripMemberView(LoginRequiredMixin, CreateView, FlattenTripMemberMixin):
     model = TripMember
     form_class = TripMemberForm
     success_url = "#"
@@ -290,10 +330,12 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
         f.accept_reqd = True
         f.save()
         response = super(AddTripMemberView, self).form_valid(form)
-        data = {
-            'email': self.object.member.email
-        }
 
+        # The flatten_tripmember_queryset requires input to be an iterable
+        # and outputs a list.
+        data = {
+            'new_member': self.flatten_tripmember_queryset((self.object,))[0]
+        }
         # Send text for success message to template
         # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
         msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('email'))
@@ -303,12 +345,14 @@ class AddTripMemberView(LoginRequiredMixin, CreateView):
 
 class AddTripGuestView(LoginRequiredMixin, CreateView):
     model = TripGuest
-    form_class = TripMemberForm
+    form_class = TripGuestForm
     success_url = "#"
 
     def post(self, request, *args, **kwargs):
         self.kwargs['trip_id'] = request.POST.get('trip_id')
+        # invite_email = email of the person being invited
         self.kwargs['invite_email'] = request.POST.get('email')
+        # user_email = email of the person sending the invitation
         self.kwargs['user_email'] = request.user.email
         return super(AddTripGuestView, self).post(request, *args, **kwargs)
 
@@ -326,30 +370,31 @@ class AddTripGuestView(LoginRequiredMixin, CreateView):
         f.email = self.kwargs.get('invite_email')
         f.save()
         response = super(AddTripGuestView, self).form_valid(form)
-
         self.email_invitation()
+        data = {
+            'new_member': self.object.email
+        }
 
         # Send text for success message to template
         # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
-        msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('email'))
-        data = {
-            'msg': msg
-        }
+        msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('invite_email'))
+        data['msg'] = msg
+
 
         return JsonResponse(data)
 
     def email_invitation(self):
         trip = get_object_or_404(
             Trip,
-            trip_id=int(self.kwargs.get('trip_id'))
+            id=int(self.kwargs.get('trip_id'))
         )
         subject = ("Get Yr Beta - Invitation to %s" % trip.title)
         message = render_to_string(
             "trips/email/trip_invite_guest.txt",
             context = {
-                'inviter_email': self.kwargs.get('invite_email'),
-                'trip_title': trip.title
-                'signup_link': reverse('authentication:signup') + '?next=' + reverse('trips:notifications'),
+                'inviter_email': self.kwargs.get('user_email'),
+                'trip_title': trip.title,
+                'signup_link': 'https://www.getyrbeta.com' + reverse('authentication:signup') + '?next=' + reverse('trips:notifications'),
             }
         )
         from_email = 'noreply@getyrbeta.com'
