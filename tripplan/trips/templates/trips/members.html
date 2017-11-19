@@ -55,6 +55,9 @@
                 $("#current-member-alert").slideUp("fast");
                 $("#confirm-add-member").slideDown("fast");
                 $("#confirm-add-member").find("p").text("Add " + email + " to the trip?");
+                if ($("#confirm-button").hasClass("disabled")) {
+                  $("#confirm-button").removeClass("disabled");
+                }
                 $("#confirm-button").focus();
               }
             }
@@ -106,7 +109,10 @@
 
     // Calls confirm on click
     $("#confirm-add-member").on('click', '#confirm-button', function() {
-      ajax_request.confirm_add_member();
+      if (!$(this).hasClass("disabled")) {
+        $(this).addClass("disabled");
+        ajax_request.confirm_add_member();
+      }
     });
 
     // Cancel clears search box and re-focuses
@@ -115,106 +121,6 @@
       $("#id_email_search").prop('disabled',false);
       $("#id_email_search").focus();
     });
-
-
-
-
-
-    //
-    // // If email isn't already registered, a confirmation will be displayed
-    // function ajax_user_exists() {
-    //   var email = $("#id_email_search").val();
-    //   var trip_id = "{{ trip.id }}"
-    //
-    //   $.ajax({
-    //     url: "{% url 'trips:user_exists' %}",
-    //     data: {
-    //       "email": email,
-    //       "trip_id": trip_id
-    //     },
-    //     dataType: "json",
-    //     type: "GET",
-    //     success: function(data) {
-    //       if (data.status == 'current_member') {
-    //         $("#current-member-alert").find("p").text(email + " is already a member");
-    //         $("#current-member-alert").slideDown("fast");
-    //         $("#id_email_search").focus();
-    //       } else {
-    //         $("#id_email_search").prop('disabled',true);
-    //         $("#current-member-alert").slideUp("fast");
-    //         $("#confirm-add-member").slideDown("fast");
-    //         $("#confirm-add-member").find("p").text("Add " + email + " to the trip?");
-    //         $("#confirm-button").focus();
-    //       }
-    //     }
-    //   });
-    // }
-    //
-    // // Calls on mouse click
-    // $("#email-search-button").on('click', function() {
-    //   ajax_user_exists();
-    // });
-    //
-    // // Calls on enter press
-    // $("#trip-member-search").on('submit', function(event) {
-    //   event.preventDefault();
-    //   ajax_user_exists();
-    // });
-    //
-    //
-    // // Adds TripMember to Pending Members section
-    // function refresh_pending_members(data) {
-    //   var list = $("#pending-members-list").find("ul");
-    //   if (list.children().first().children().first().hasClass('empty-list')) {
-    //     list.find('div').remove();
-    //   }
-    //   var pending_member = $('<div class="list-padding"><li class="trip-info">' +
-    //     data.email + '</li><li class="hidden_bullet trip-info">' +
-    //     data.preferred_name + '</li></div>');
-    //   list.prepend(pending_member);
-    // }
-    //
-    // // If user confirms, set accept_reqd=True in TripMember
-    // // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
-    // $("#confirm-add-member").on('click', '#confirm-button', function() {
-    //   var email = $("#id_email_search").val();
-    //   $.ajax({
-    //     url: "{% url 'trips:add_trip_member' %}",
-    //     data: {
-    //       "email": email,
-    //       "trip_id": "{{ trip.id }}",
-    //       "csrfmiddlewaretoken": "{{ csrf_token }}",
-    //     },
-    //     dataType: "json",
-    //     type: "POST",
-    //     success: function(data) {
-    //       refresh_pending_members(data);
-    //       $("#confirm-add-member").slideUp('fast');
-    //       $("#id_email_search").prop('disabled',false);
-    //       $("#id_email_search").val('');
-    //       $("#id_email_search").focus();
-    //       if (data["msg"]) {
-    //         post_message(data["msg"]);
-    //       }
-    //     }
-    //   });
-    // });
-    //
-    // // Posts message at top of page. Only called if msg exists
-    // function post_message(msg) {
-    //   var message_container = $("#message-container");
-    //   message_container.empty();
-    //   message_container.append('<li class="alert alert-success ajax-alert">' + msg + '</li>');
-    //   $(".ajax-alert").slideDown("fast");
-    // }
-    //
-    // // Cancel clears search box and re-focuses
-    // $("#confirm-add-member").on('click', '#cancel-button', function() {
-    //   $("#confirm-add-member").slideUp('fast');
-    //   $("#id_email_search").prop('disabled',false);
-    //   $("#id_email_search").focus();
-    // });
-
   </script>
 {% endblock javascript_bottom %}
 
