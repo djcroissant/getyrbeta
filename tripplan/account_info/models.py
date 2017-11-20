@@ -3,6 +3,8 @@ from django.db import models
 
 from authtools.models import AbstractEmailUser
 
+from trips.models import TripGuest, TripMember
+
 class User(AbstractEmailUser):
     full_name = models.CharField('full name', max_length=255, blank=True)
     preferred_name = models.CharField('preferred name',
@@ -15,6 +17,28 @@ class User(AbstractEmailUser):
     state = models.CharField(max_length=2, blank=True)
     zip_code = models.CharField(max_length=15, blank=True)
 
+    def save(self, *args, **kwargs):
+        '''
+        After saving a new user, check if any TripGuest instances exist
+        for the user's email. If so, create corresponding instances of
+        TripMember with 'accept_reqd' = True.
+        '''
+        # User instance will not have pk if it is being created
+        if not self.pk:
+            # save instance so it can be referenced by TripMember
+            response = super(User, self).save(*args, **kwargs)
+            trip_guests = TripGuest.objects.filter(email__iexact=self.email)
+            for trip_guest in trip_guests:
+                TripMember.objects.create(
+                    member=self,
+                    trip=trip_guest.trip,
+                    organizer=True,
+                    accept_reqd=True
+                )
+                trip_guest.delete()
+            return response
+        else:
+            super(User, self).save(*args, **kwargs)
 
     def get_full_name(self):
         if self.full_name:

@@ -84,7 +84,6 @@ class InviteEmailMixin:
         from_email = 'noreply@getyrbeta.com'
         to_email = [self.kwargs.get('invitee_email')]
 
-        import pdb; pdb.set_trace()
         send_mail(
             subject,
             message,

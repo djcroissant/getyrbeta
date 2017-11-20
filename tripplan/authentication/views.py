@@ -9,6 +9,8 @@ from allauth.socialaccount import views as socialviews
 
 from .forms import LoginForm, SignupForm
 
+from trips.models import TripGuest, TripMember
+
 User = get_user_model()
 
 class SignupView(views.SignupView):
@@ -27,6 +29,13 @@ class LogoutView(views.LogoutView):
         return reverse_lazy('authentication:login')
 
 class SocialSignupView(LoginView):
+    '''
+    This view interrupts a request to /social/signup. This url is requested
+    when a social log in is attempted with an email address that already
+    exists. This view overrides the allauth default, posts a message, and
+    maintains focus on the login page. It inherits from LoginView, which
+    inherits from allauth's LoginView.
+    '''
     def get(self, request, *args, **kwargs):
         messages.add_message(request, messages.INFO,
             '''A user with your email address already exists. To link
