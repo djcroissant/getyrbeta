@@ -96,15 +96,29 @@
 
     })();
 
+    // Validate email address is valid
+    function validateEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    }
+
     // Calls search on mouse click
     $("#email-search-button").on('click', function() {
-      ajax_request.check_email_status();
+      if (validateEmail($("#id_email_search").val())) {
+        ajax_request.check_email_status();
+      } else {
+        alert("Please enter a valid email address.")
+      }
     });
 
     // Calls search on enter press
     $("#trip-member-search").on('submit', function(event) {
       event.preventDefault();
-      ajax_request.check_email_status();
+      if (validateEmail($("#id_email_search").val())) {
+        ajax_request.check_email_status();
+      } else {
+        alert("Please enter a valid email address.")
+      }
     });
 
     // Calls confirm on click
