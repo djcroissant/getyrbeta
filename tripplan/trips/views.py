@@ -236,7 +236,6 @@ class TripMemberListView(LoginRequiredMixin, FormView, FlattenTripMemberMixin):
     template_name = 'trips/members.html'
     queryset = TripMember.objects.all()
     form_class = SearchForm
-    success_url = "#"
 
     def get_context_data(self, **kwargs):
         context = super(TripMemberListView, self).get_context_data(**kwargs)

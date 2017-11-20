@@ -132,24 +132,26 @@
         <div class="banner-logo">
           <h1>{{ trip.title }}</h1>
         </div>
-        <div class="trip-list" id="trip-list">
-          <div class="header">
-            <h3>Add Members</h3>
+        {% if not trip.is_in_the_past %}
+          <div class="trip-list" id="trip-list">
+            <div class="header">
+              <h3>Add Members</h3>
+            </div>
+            {% load crispy_forms_tags %}
+            {% crispy form form.helper %}
+            <div id="confirm-add-member" class="trip-info">
+              <p>Add email-address to trip?</p>
+              <button type="button" id="confirm-button" class="btn btn-success btn-lg">Confirm</button>
+              <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
+            </div>
+            <div id="current-member-alert" class="trip-info">
+              <p>email-address is already a member</p>
+            </div>
+            <div id="new-member-added" class="trip-info">
+              <p>email address added successfully</p>
+            </div>
           </div>
-          {% load crispy_forms_tags %}
-          {% crispy form form.helper %}
-          <div id="confirm-add-member" class="trip-info">
-            <p>Add email-address to trip?</p>
-            <button type="button" id="confirm-button" class="btn btn-success btn-lg">Confirm</button>
-            <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
-          </div>
-          <div id="current-member-alert" class="trip-info">
-            <p>email-address is already a member</p>
-          </div>
-          <div id="new-member-added" class="trip-info">
-            <p>email address added successfully</p>
-          </div>
-        </div>
+        {% endif %}
         <div class="trip-list" id="pending-members-list">
           <div class="header">
             <h3>Pending Members</h3>
