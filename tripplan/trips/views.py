@@ -336,7 +336,6 @@ class AddTripMemberView(LoginRequiredMixin, CreateView, FlattenTripMemberMixin):
             'new_member': self.flatten_tripmember_queryset((self.object,))[0]
         }
         # Send text for success message to template
-        # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
         msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('email'))
         data['msg'] = msg
 
@@ -349,10 +348,10 @@ class AddTripGuestView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         self.kwargs['trip_id'] = request.POST.get('trip_id')
-        # invite_email = email of the person being invited
-        self.kwargs['invite_email'] = request.POST.get('email')
-        # user_email = email of the person sending the invitation
-        self.kwargs['user_email'] = request.user.email
+        # invitee_email = email of the person being invited
+        self.kwargs['invitee_email'] = request.POST.get('email')
+        # inviter_email = email of the person sending the invitation
+        self.kwargs['inviter_email'] = request.user.email
         return super(AddTripGuestView, self).post(request, *args, **kwargs)
 
     def form_invalid(self, form):
@@ -366,7 +365,7 @@ class AddTripGuestView(LoginRequiredMixin, CreateView):
         """
         f = form.save(commit=False)
         f.trip_id = int(self.kwargs.get('trip_id'))
-        f.email = self.kwargs.get('invite_email')
+        f.email = self.kwargs.get('invitee_email')
         f.save()
         response = super(AddTripGuestView, self).form_valid(form)
         self.email_invitation()
@@ -375,8 +374,7 @@ class AddTripGuestView(LoginRequiredMixin, CreateView):
         }
 
         # Send text for success message to template
-        # NOTE: may want to add msg-tag in the future (e.g. success, info, etc)
-        msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('invite_email'))
+        msg = ("An invitation has been sent to %s to join the trip." % self.kwargs.get('invitee_email'))
         data['msg'] = msg
 
 
@@ -391,13 +389,13 @@ class AddTripGuestView(LoginRequiredMixin, CreateView):
         message = render_to_string(
             "trips/email/trip_invite_guest.txt",
             context = {
-                'inviter_email': self.kwargs.get('user_email'),
+                'inviter_email': self.kwargs.get('inviter_email'),
                 'trip_title': trip.title,
                 'signup_link': 'https://www.getyrbeta.com' + reverse('authentication:signup') + '?next=' + reverse('trips:notifications'),
             }
         )
         from_email = 'noreply@getyrbeta.com'
-        to_email = [self.kwargs.get('invite_email')]
+        to_email = [self.kwargs.get('invitee_email')]
 
         send_mail(
             subject,
