@@ -32,12 +32,24 @@ class LoginRequiredMixin:
 
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
-    template_name = 'account_info/profile.html'
+    template_name = 'account_info/form.html'
     form_class = ProfileForm
     success_url = reverse_lazy('account_info:account_profile')
 
     def get_object(self):
         return get_object_or_404(User, pk=self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Edit Profile'
+        context['save_button_title'] = 'Save Profile'
+        context['cancel_button_path'] = 'account_info:account_profile'
+        return context
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS,
+            'Your profile information was updated successfully')
+        return super(ProfileView, self).form_valid(form)
 
 class EmergencyContactListView(LoginRequiredMixin, ListView):
     model = EmergencyContact

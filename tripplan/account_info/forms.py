@@ -19,12 +19,33 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-ProfileForm'
+        self.helper.form_class = 'account_info_forms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+        self.helper.field_class = 'col-md-9'
         self.fields['primary_phone'].label = "Phone (primary)"
         self.fields['secondary_phone'].label = "Phone (secondary)"
         self.fields['street_address_line1'].label = "Address 1"
         self.fields['street_address_line2'].label = "Address 2"
         self.fields['zip_code'].label = "ZIP code"
-
+        self.helper.layout = Layout (
+            'full_name',
+            'preferred_name',
+            'relationship',
+            'primary_phone',
+            'secondary_phone',
+            'street_address_line1',
+            'street_address_line2',
+            'city',
+            'state',
+            'zip_code',
+            FormActions(
+                Submit('submit', '{{ save_button_title }}', css_class='btn btn-success btn-lg click-disable'),
+                HTML('<a class="btn btn-secondary" href="{% url cancel_button_path %}" name="cancel">Cancel Changes</a>')
+            )
+        )
 class EmergencyContactForm(forms.ModelForm):
     class Meta:
         model = EmergencyContact
