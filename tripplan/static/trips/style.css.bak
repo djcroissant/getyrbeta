@@ -1,75 +1,63 @@
+/*The content-wrapper uses float:right so that it exists inline
+with the sidebar. Neither is cleared, so they will float on
+top of each other. The content-wrapper sets width:100% so that it
+takes up the full screen width. The sidebar then has a fixed width
+from the left and the .content class has a fixed margin from the
+left.*/
+.content-wrapper {
+  float: right;
+  width: 100%;
+}
 
-#sidebar {
-  height: 100%;
-  width: 250px;
-  padding-right: 0;
-  padding-top: 20px;
+.content {
+  margin-left: 310px;
+  overflow: auto;
+}
+
+.sidebar {
+  position: fixed;
+  width: 280px;
+  overflow: hidden;
   background: #f5f5f5;
   color: #00021A;
   border-right: 1px solid black;
-  float: left;
+  min-height: 600px;
 }
-#content {
-  margin-left: 270px;
-}
-#sidebar .heading {
-  font-size: 1.2em;
+
+.sidebar-heading {
   margin-bottom: 20px
 }
-#sidebar .nav {
-  width: 95%;
-}
-#sidebar li {
+
+.nav-sidebar li{
   display: block;
   text-align: left;
   margin: 7px auto;
   width: 100%;
 }
-#sidebar a{
-  font-size: 1.1em;
+
+.nav-sidebar a{
+  font-size: 17pt;
   font-family: 'Futura';
   letter-spacing: .1pt;
   display: block;
   text-align: left;
   width: 100%;
 }
-#navbar-toggle {
-  visibility: hidden;
-}
-
-
-/* collapsed sidebar styles */
-@media screen and (max-width: 767px) {
-  #sidebar {
-    width: 0px;
-    border-right: 0px solid black;
-    display: none;
-  }
-  #sidebar.display-menu {
-    width: 250px;
-    border-right: 1px solid black;
-    display: block;
-  }
-  #content {
-    margin-left: 0px;
-  }
-  #content.display-menu {
-    margin-left: 270px;
-  }
-  #navbar-toggle {
-    visibility: visible;
-  }
-}
-
-
-
-
-
 
 .nav-sidebar > .nav-item > .active {
   color: #000099;
 }
 
+/*This eliminates the sidebar for small screens.
+To be implemented later*/
+/*@media only screen and (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .content {
+    margin-left: 0;
+  }
+}*/
 
 /* =======General for all pages within Trips app======= */
 .banner-logo {
