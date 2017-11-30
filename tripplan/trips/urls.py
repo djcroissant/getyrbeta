@@ -25,7 +25,7 @@ urlpatterns = [
         views.NotificationListView.as_view(), name='notifications'),
 
     # Emergency Info
-    url(r'^emergency_info/$',
+    url(r'^(?P<trip_id>[0-9]+)/emergency_info/$',
         views.EmergencyInfoListView.as_view(), name='emergency_info'),
 
     # Members

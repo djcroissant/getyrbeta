@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from .models import Trip, TripLocation, TripMember, ItemNotification, TripGuest
+from account_info.models import EmergencyContact
 
 from account_info.models import User
 
@@ -45,6 +46,8 @@ class FlattenTripMemberMixin:
             "<preferred_name> - <email>"
         else:
             "<email>"
+
+        Used to pre-process data before adding to context to template.
         '''
         flat_list = []
         for tripmember in queryset:
@@ -492,3 +495,16 @@ class DeleteTripMemberView(LoginRequiredMixin, DeleteView):
             trip_id=int(self.kwargs.get('trip_id'))
         )
         return obj
+
+class EmergencyInfoListView(LoginRequiredMixin, ListView):
+    model = TripMember
+    template_name = 'trips/emergency_info.html'
+    queryset = TripMember.objects.all()
+
+    def get_queryset(self):
+        # Returns TripMembers for current trip with accept_reqd = False
+        queryset = super(EmergencyInfoListView, self).get_queryset()
+        return queryset.filter(
+            trip_id = self.kwargs['pk'],
+            accept_reqd = False
+        )
