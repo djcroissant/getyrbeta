@@ -53,7 +53,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 class EmergencyContactListView(LoginRequiredMixin, ListView):
     model = EmergencyContact
-    template_name = 'emerg_contact/list.html'
+    template_name = 'account_info/emerg_contact/list.html'
 
     def get_queryset(self):
         queryset = super(EmergencyContactListView, self).get_queryset()
@@ -98,7 +98,7 @@ class EmergencyContactCreateView(LoginRequiredMixin, CreateView):
 
 class EmergencyContactDeleteView(LoginRequiredMixin, DeleteView):
     model = EmergencyContact
-    template_name = 'emerg_contact/delete.html'
+    template_name = 'account_info/emerg_contact/delete.html'
     success_url = reverse_lazy('account_info:emerg_contact_list')
 
     def get_object(self):
@@ -110,7 +110,7 @@ class EmergencyContactDeleteView(LoginRequiredMixin, DeleteView):
 
 class VehicleListView(LoginRequiredMixin, ListView):
     model = Vehicle
-    template_name = 'vehicle/list.html'
+    template_name = 'account_info/vehicle/list.html'
 
     def get_queryset(self):
         queryset = super(VehicleListView, self).get_queryset()
@@ -155,7 +155,7 @@ class VehicleCreateView(LoginRequiredMixin, CreateView):
 
 class VehicleDeleteView(LoginRequiredMixin, DeleteView):
     model = Vehicle
-    template_name = 'vehicle/delete.html'
+    template_name = 'account_info/vehicle/delete.html'
     success_url = reverse_lazy('account_info:vehicle_list')
 
     def get_object(self):
