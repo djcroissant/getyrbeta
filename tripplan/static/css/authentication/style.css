@@ -1,6 +1,6 @@
 body {
   background-color: #2d323b;
-  background-image: url("images/background.jpg");
+  background-image: url('../../images/authentication/background.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: 0px 91px;
@@ -64,5 +64,5 @@ body {
 .align-center {
   margin: 0 auto;
   display: block;
-  text-align: center; 
+  text-align: center;
 }
