@@ -1,0 +1,66 @@
+/*Menu style for screens wider than 767px*/
+#sidebar {
+  height: 100%;
+  width: 250px;
+  padding-right: 0;
+  padding-top: 20px;
+  background: #f5f5f5;
+  color: #00021A;
+  border-right: 1px solid black;
+  float: left;
+}
+#content {
+  margin-left: 270px;
+}
+#sidebar .heading {
+  font-size: 1.2em;
+  margin-bottom: 20px
+}
+#sidebar .nav {
+  width: 95%;
+}
+#sidebar li {
+  display: block;
+  text-align: left;
+  margin: 7px auto;
+  width: 100%;
+}
+#sidebar a{
+  font-size: 1.1em;
+  font-family: 'Futura';
+  letter-spacing: .1pt;
+  display: block;
+  text-align: left;
+  width: 100%;
+}
+#navbar-toggle {
+  visibility: hidden;
+}
+
+
+/* collapsed sidebar styles */
+@media screen and (max-width: 767px) {
+  /*By default, the sidebar will be invisible,
+  content will have no left margin,
+  and the slider button will be visible*/
+  #sidebar {
+    width: 0px;
+    border-right: 0px solid black;
+    display: none;
+  }
+  #content {
+    margin-left: 0px;
+  }
+  #navbar-toggle {
+    visibility: visible;
+  }
+  /*When the slider button is pressed, the display-menu class is toggled*/
+  #sidebar.display-menu {
+    width: 250px;
+    border-right: 1px solid black;
+    display: block;
+  }
+  #content.display-menu {
+    margin-left: 270px;
+  }
+}

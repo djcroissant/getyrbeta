@@ -4,6 +4,7 @@
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'trips/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
 {% endblock stylesheet %}
 
 {% block javascript_bottom %}
@@ -135,74 +136,86 @@
       $("#id_email_search").prop('disabled',false);
       $("#id_email_search").focus();
     });
+
+    // sidebar slider
   </script>
+
+  {# sidebar slider #}
+  <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
+
 {% endblock javascript_bottom %}
 
 {% block content %}
-  <div class="wrapper">
-    {% include "./menu.html" %}
-    <div class="content-wrapper">
-      <div class="content">
-        <div class="banner-logo">
-          <h1>{{ trip.title }}</h1>
+
+  {# sidebar #}
+  {% include "project/sidebar_menu.html" %}
+
+  {# main content #}
+  <div id="content">
+
+    {% include "project/sidebar_button.html" %}
+
+    <div class="banner-logo">
+      <h1>{{ trip.title }}</h1>
+    </div>
+
+    {% if not trip.is_in_the_past %}
+      <div class="trip-list" id="trip-list">
+        <div class="header">
+          <h3>Add Members</h3>
         </div>
-        {% if not trip.is_in_the_past %}
-          <div class="trip-list" id="trip-list">
-            <div class="header">
-              <h3>Add Members</h3>
-            </div>
-            {% load crispy_forms_tags %}
-            {% crispy form form.helper %}
-            <div id="confirm-add-member" class="trip-info">
-              <p>Add email-address to trip?</p>
-              <button type="button" id="confirm-button" class="btn btn-success btn-lg">Confirm</button>
-              <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
-            </div>
-            <div id="current-member-alert" class="trip-info">
-              <p>email-address is already a member</p>
-            </div>
-            <div id="new-member-added" class="trip-info">
-              <p>email address added successfully</p>
-            </div>
-          </div>
-        {% endif %}
-        <div class="trip-list" id="pending-members-list">
-          <div class="header">
-            <h3>Pending Members</h3>
-          </div>
-          <ul>
-            {% if pending_members|length > 0 %}
-              {% for member in pending_members %}
-                <div class="list-padding">
-                  <li class="trip-info">{{ member }}</li>
-                </div>
-              {% endfor %}
-            {% else %}
-              <div class="list-padding">
-                <li class="trip-info empty-list">There are no pending members at this time</li>
-              </div>
-            {% endif %}
-          </ul>
+        {% load crispy_forms_tags %}
+        {% crispy form form.helper %}
+        <div id="confirm-add-member" class="trip-info">
+          <p>Add email-address to trip?</p>
+          <button type="button" id="confirm-button" class="btn btn-success btn-lg">Confirm</button>
+          <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
         </div>
-        <div class="trip-list" id="current-members-list">
-          <div class="header">
-            <h3>Current Members</h3>
-          </div>
-          <ul>
-            {% if current_members|length > 0 %}
-              {% for member in current_members %}
-                <div class="list-padding">
-                  <li class="trip-info">{{ member }}</li>
-                </div>
-              {% endfor %}
-            {% else %}
-              <div class="list-padding">
-                <li class="trip-info empty-list">There are no current members at this time</li>
-              </div>
-            {% endif %}
-          </ul>
+        <div id="current-member-alert" class="trip-info">
+          <p>email-address is already a member</p>
+        </div>
+        <div id="new-member-added" class="trip-info">
+          <p>email address added successfully</p>
         </div>
       </div>
+    {% endif %}
+
+    <div class="trip-list" id="pending-members-list">
+      <div class="header">
+        <h3>Pending Members</h3>
+      </div>
+      <ul>
+        {% if pending_members|length > 0 %}
+          {% for member in pending_members %}
+            <div class="list-padding">
+              <li class="trip-info">{{ member }}</li>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="list-padding">
+            <li class="trip-info empty-list">There are no pending members at this time</li>
+          </div>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="trip-list" id="current-members-list">
+      <div class="header">
+        <h3>Current Members</h3>
+      </div>
+      <ul>
+        {% if current_members|length > 0 %}
+          {% for member in current_members %}
+            <div class="list-padding">
+              <li class="trip-info">{{ member }}</li>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="list-padding">
+            <li class="trip-info empty-list">There are no current members at this time</li>
+          </div>
+        {% endif %}
+      </ul>
     </div>
   </div>
 {% endblock content %}
