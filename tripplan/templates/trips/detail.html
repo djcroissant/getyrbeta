@@ -8,16 +8,14 @@
 {% endblock stylesheet %}
 
 {% block javascript_bottom %}
-
   {# sidebar slider #}
   <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
-
 {% endblock javascript_bottom %}
 
 {% block content %}
 
   {# sidebar #}
-  {% include "project/sidebar_menu.html" %}
+  {% include "trips/sidebar_menu.html" %}
 
   {# main content #}
   <div id="content">

@@ -4,81 +4,90 @@
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/account_info/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
 {% endblock stylesheet %}
 
+{% block javascript_bottom %}
+  {# sidebar slider #}
+  <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
+{% endblock javascript_bottom %}
+
 {% block content %}
-  <div class="wrapper">
-    {% include "account_info/menu.html" %}
-    <div class="content-wrapper">
-      <div class="content">
-        <div class="header banner-logo">
-          <h1>Emergency Contacts</h1>
-          <a href="{% url 'account_info:emerg_contact_create' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add emergency contact</a>
-        </div>
-        <ul class="account_info_list">
-          {% for emcon in object_list %}
-            <div class="row">
-              <div class="col-sm-auto">
-                <a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
-                <a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
-              </div>
-              <div class="col-sm">
-                <li class="list_item_title">{{ emcon.full_name }}</li>
-                {% if emcon.preferred_name %}
-                  <li class="list_item_label">Preferred name:</li>
-                  <li class="list_item_info">{{ emcon.preferred_name }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.relationship %}
-                  <li class="list_item_label">Relationsip:</li>
-                  <li class="list_item_info">{{ emcon.relationship }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.primary_phone %}
-                  <li class="list_item_label">Phone number:</li>
-                  <li class="list_item_info">{{ emcon.primary_phone }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.secondary_phone %}
-                  <li class="list_item_label">Secondary phone number:</li>
-                  <li class="list_item_info">{{ emcon.secondary_phone }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.email %}
-                  <li class="list_item_label">Email:</li>
-                  <li class="list_item_info">{{ emcon.email }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.street_address_line1 %}
-                  <li class="list_item_label">Address 1:</li>
-                  <li class="list_item_info">{{ emcon.street_address_line1 }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.street_address_line2 %}
-                  <li class="list_item_label">Address 2:</li>
-                  <li class="list_item_info">{{ emcon.street_address_line2 }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.city %}
-                  <li class="list_item_label">City:</li>
-                  <li class="list_item_info">{{ emcon.city }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.state %}
-                  <li class="list_item_label">State:</li>
-                  <li class="list_item_info">{{ emcon.state }}</li>
-                  <br>
-                {% endif %}
-                {% if emcon.zip_code %}
-                  <li class="list_item_label">ZIP code:</li>
-                  <li class="list_item_info">{{ emcon.zip_code }}</li>
-                {% endif %}
-                <br><br>
-              </div>
-            </div>
-          {% endfor %}
-        </ul>
-      </div>
+
+  {# sidebar #}
+  {% include "account_info/sidebar_menu.html" %}
+
+  {# main content #}
+  <div id="content">
+
+    {% include "project/sidebar_button.html" %}
+
+    <div class="header banner-logo">
+      <h1>Emergency Contacts</h1>
+      <a href="{% url 'account_info:emerg_contact_create' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add emergency contact</a>
     </div>
+    <ul class="account_info_list">
+      {% for emcon in object_list %}
+        <div class="row">
+          <div class="col-sm-auto">
+            <a href="{% url 'account_info:emerg_contact_edit' emcon.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+            <a href="{% url 'account_info:emerg_contact_delete' emcon.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
+          </div>
+          <div class="col-sm">
+            <li class="list_item_title">{{ emcon.full_name }}</li>
+            {% if emcon.preferred_name %}
+              <li class="list_item_label">Preferred name:</li>
+              <li class="list_item_info">{{ emcon.preferred_name }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.relationship %}
+              <li class="list_item_label">Relationsip:</li>
+              <li class="list_item_info">{{ emcon.relationship }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.primary_phone %}
+              <li class="list_item_label">Phone number:</li>
+              <li class="list_item_info">{{ emcon.primary_phone }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.secondary_phone %}
+              <li class="list_item_label">Secondary phone number:</li>
+              <li class="list_item_info">{{ emcon.secondary_phone }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.email %}
+              <li class="list_item_label">Email:</li>
+              <li class="list_item_info">{{ emcon.email }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.street_address_line1 %}
+              <li class="list_item_label">Address 1:</li>
+              <li class="list_item_info">{{ emcon.street_address_line1 }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.street_address_line2 %}
+              <li class="list_item_label">Address 2:</li>
+              <li class="list_item_info">{{ emcon.street_address_line2 }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.city %}
+              <li class="list_item_label">City:</li>
+              <li class="list_item_info">{{ emcon.city }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.state %}
+              <li class="list_item_label">State:</li>
+              <li class="list_item_info">{{ emcon.state }}</li>
+              <br>
+            {% endif %}
+            {% if emcon.zip_code %}
+              <li class="list_item_label">ZIP code:</li>
+              <li class="list_item_info">{{ emcon.zip_code }}</li>
+            {% endif %}
+            <br><br>
+          </div>
+        </div>
+      {% endfor %}
+    </ul>
   </div>
 {% endblock content %}

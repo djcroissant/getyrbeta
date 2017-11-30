@@ -4,19 +4,27 @@
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/account_info/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
 {% endblock stylesheet %}
 
+{% block javascript_bottom %}
+  {# sidebar slider #}
+  <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
+{% endblock javascript_bottom %}
+
 {% block content %}
-  <div class="wrapper">
-    {% include "account_info/menu.html" %}
-    <div class="content-wrapper">
-      <div class="content">
-        <div class="banner-logo">
-          <h1>{{ page_title }}</h1><br>
-        </div>
-        {% load crispy_forms_tags %}
-        {% crispy form form.helper %}
-      </div>
+
+  {# sidebar #}
+  {% include "account_info/sidebar_menu.html" %}
+
+  {# main content #}
+  <div id="content">
+
+    {% include "project/sidebar_button.html" %}
+    <div class="banner-logo">
+      <h1>{{ page_title }}</h1><br>
     </div>
+    {% load crispy_forms_tags %}
+    {% crispy form form.helper %}
   </div>
 {% endblock content %}
