@@ -46,7 +46,7 @@
     </div>
 
     {# Trailhead Location Section #}
-    <div class="trip-list" id="trip-list">
+    <div class="trip-list">
       <div class="header">
         <h3>Trailhead Location</h3>
         {% if trailhead %}
@@ -81,7 +81,7 @@
     </div>
 
     {# Objective Location Section #}
-    <div class="trip-list" id="trip-list">
+    <div class="trip-list">
       <div class="header">
         <h3>Objectives</h3>
         <a href="{% url 'trips:location_create' trip.id 'objective' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new objective</a>
@@ -117,7 +117,7 @@
 
     {# Camp Location Section #}
     {% if trip.number_nights > 0 %}
-      <div class="trip-list" id="trip-list">
+      <div class="trip-list">
         <div class="header">
           <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
           <a href="{% url 'trips:location_create' trip.id 'camp' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new camp</a>

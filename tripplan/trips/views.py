@@ -505,6 +505,11 @@ class EmergencyInfoListView(LoginRequiredMixin, ListView):
         # Returns TripMembers for current trip with accept_reqd = False
         queryset = super(EmergencyInfoListView, self).get_queryset()
         return queryset.filter(
-            trip_id = self.kwargs['pk'],
+            trip_id = self.kwargs['trip_id'],
             accept_reqd = False
         )
+
+    def get_context_data(self, **kwargs):
+        context = super(EmergencyInfoListView, self).get_context_data(**kwargs)
+        context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
+        return context

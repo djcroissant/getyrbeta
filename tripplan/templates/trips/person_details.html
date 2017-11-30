@@ -1,0 +1,33 @@
+{% if object.full_name %}
+  <p>{{ object.full_name }}</p>
+{% endif %}
+{% if object.preferred_name %}
+  <p>({{ object.preferred_name }})</p>
+{% endif %}
+{% if object.relationship %}
+  <p>{{ object.relationship }}</p>
+{% endif %}
+<p>{{ object.email }}</p>
+{% if object.primary_phone and object.secondary_phone %}
+  <p>1st: {{ object.primary_phone }}</p>
+  <p>2nd: {{ object.secondary_phone }}</p>
+{% elif object.primary_phone %}
+  <p>{{ object.primary_phone }}</p>
+{% elif object.secondary_phone %}
+  <p>{{ object.secondary_phone }}</p>
+{% endif %}
+{% if object.street_address_line1 %}
+  <p>{{ object.street_address_line1 }}</p>
+{% endif %}
+{% if object.street_address_line2 %}
+  <p>{{ object.street_address_line2 }}</p>
+{% endif %}
+{% if object.city %}
+  <p>{{ object.city }}</p>
+{% endif %}
+{% if object.state %}
+  <p>{{ object.state }}</p>
+{% endif %}
+{% if object.zip_code %}
+  <p>{{ object.zip_code }}</p>
+{% endif %}

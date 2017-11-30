@@ -1,0 +1,60 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
+{% endblock stylesheet %}
+
+{% block javascript_bottom %}
+  {# sidebar slider #}
+  <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
+{% endblock javascript_bottom %}
+
+{% block content %}
+
+  {# sidebar #}
+  {% include "trips/sidebar_menu.html" %}
+
+  {# main content #}
+  <div id="content">
+
+    {% include "project/sidebar_button.html" %}
+
+    <div class="banner-logo">
+      <h1>Emergency Info</h1>
+      <h5>To report a lost hiker, dial <span class="nineoneone">911</span></h5>
+    </div>
+
+    {# Table of users and emergency contacts #}
+    <div class="trip-list">
+      <div class="header">
+        <h3>Trip Members</h3>
+      </div>
+
+      <table id="emergency_info_table" class="alt_highlight">
+        <tr>
+          <th>Trip Member</th>
+          <th>Emergency Contact</th>
+        </tr>
+        {% for object in object_list %}
+          <tr>
+            {# user info #}
+            <td>
+              {% include "trips/person_details.html" with object=object %}
+            </td>
+
+            {# emergency contact info #}
+            <td>
+              {% for object in object.emergencycontact_set %}
+                {% include "trips/person_details.html" with object=object %}
+                <br>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock content %}
