@@ -42,12 +42,12 @@
           <tr>
             {# user info #}
             <td>
-              {% include "trips/person_details.html" with object=object %}
+              {% include "trips/person_details.html" with object=object.member %}
             </td>
 
             {# emergency contact info #}
             <td>
-              {% for object in object.emergencycontact_set %}
+              {% for object in object.member.emergencycontact_set.all %}
                 {% include "trips/person_details.html" with object=object %}
                 <br>
               {% endfor %}
