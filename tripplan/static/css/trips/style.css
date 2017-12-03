@@ -177,3 +177,11 @@ li.hidden_bullet {
   font-weight: bold;
   color: "red";
 }
+
+/* =======Trip's Emergency Info======= */
+#einfo p {
+  margin: 0;
+}
+.margin-sixteen {
+  margin-bottom: 16px;
+}
