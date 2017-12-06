@@ -29,14 +29,11 @@
 
     {# Table of users and emergency contacts #}
     <div class="trip-list">
-      <div class="header">
-        <h3>Trip Members</h3>
-      </div>
 
       <table id="emergency_info_table" class="alt_highlight">
         <tr>
-          <th>Trip Member</th>
-          <th>Emergency Contact</th>
+          <th class="header">Trip Member</th>
+          <th class="header">Emergency Contact</th>
         </tr>
         {% for object in object_list %}
           <tr>
@@ -47,10 +44,16 @@
 
             {# emergency contact info #}
             <td>
-              {% for object in object.member.emergencycontact_set.all %}
-                {% include "trips/person_details.html" with object=object %}
-                <br>
-              {% endfor %}
+              {% if object.member.emergencycontact_set.all %}
+                {% for object in object.member.emergencycontact_set.all %}
+                  {% include "trips/person_details.html" with object=object %}
+                  <br>
+                {% endfor %}
+              {% else %}
+                <div class="einfo">
+                  <p class="italic">None provided</p>
+                </div>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}

@@ -11,11 +11,13 @@
       <a class="nav-link" href="{% url 'trips:trip_members' trip.id %}">Members</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="#">Emergency Info</a>
+      <a class="nav-link" href="{% url 'trips:emergency_info' trip.id %}">Emergency Info</a>
     </li>
+    {% comment "Future functionality" %}
     <li class="nav-item">
       <a class="nav-link disabled" href="#">Vehicles</a>
     </li>
+    {% endcomment %}
     <li class="nav-item">
       <a class="nav-link disabled" href="#">Gear List</a>
     </li>

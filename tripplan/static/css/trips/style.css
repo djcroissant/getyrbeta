@@ -171,17 +171,34 @@ li.hidden_bullet {
   margin-bottom: 0;
 }
 
-/* =======Google Map API======= */
+/* =======Trip's Emergency Info======= */
 .nineoneone {
   font-size: 1.3em;
   font-weight: bold;
-  color: "red";
+  color: firebrick;
 }
-
-/* =======Trip's Emergency Info======= */
-#einfo p {
+.einfo p {
   margin: 0;
 }
 .margin-sixteen {
   margin-bottom: 16px;
+}
+.italic {
+  font-style: italic;
+}
+#emergency_info_table {
+  width: 100%;
+}
+#emergency_info_table td, #emergency_info_table th {
+  border: 1px solid black;
+  padding: 6px;
+}
+#emergency_info_table th {
+  background: #99ccff;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+#emergency_info_table tr:nth-child(even) {
+  background-color: white;
+}
 }
