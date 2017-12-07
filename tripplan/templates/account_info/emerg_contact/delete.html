@@ -12,15 +12,16 @@
   <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
 {% endblock javascript_bottom %}
 
-{% block content %}
+{% block below_nav %}
+  {% include "project/sidebar_button.html" %}
+{% endblock below_nav %}
 
+{% block content %}
   {# sidebar #}
   {% include "account_info/sidebar_menu.html" %}
 
   {# main content #}
   <div id="content">
-
-    {% include "project/sidebar_button.html" %}
 
     <div class="banner-logo">
       <h1>Delete Emergency Contact</h1>
