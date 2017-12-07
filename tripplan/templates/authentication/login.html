@@ -34,9 +34,9 @@
       </h1>
     </div>
     <hr>
-    <div class="row">
+    <div id="login-methods" class="row">
 
-      <div class="col-5 vertical-align">
+      <div class="col-md-5 vertical-align">
         <div class="login-container">
           <h5>Use your Facebook account to log in:</h5>
           <a href="{% provider_login_url "facebook" method="js_sdk" %}" class="btn btn-block btn-social btn-facebook btn-lg">
@@ -45,12 +45,19 @@
         </div>
       </div>
 
-      <div class="col-2">
+      {# vertical or horizontal divider depending on screen size #}
+      <div id="vertical-separator" class="col-md-2">
         <img class="vertical-rule" src='{% static "images/authentication/vertical_line.png" %}' alt="vertical line">
         <span class="vertical-rule-word">OR</span>
         <img class="vertical-rule" src='{% static "images/authentication/vertical_line.png" %}' alt="vertical line">
       </div>
-      <div class="col-5 vertical-align">
+      <div id="horizontal-separator" class="col-md-2">
+        <img class="horizontal-rule" src='{% static "images/authentication/horizontal_line.png" %}' alt="horizontal line">
+        <span class="horizontal-rule-word">OR</span>
+        <img class="horizontal-rule" src='{% static "images/authentication/horizontal_line.png" %}' alt="horizontal line">
+      </div>
+
+      <div class="col-md-5 vertical-align">
         <div class="login-container">
           <h5>Log in with your email address and password:</h5>
           {% crispy form form.helper %}

@@ -49,6 +49,17 @@ body {
   display: block;
   text-align: center;
 }
+#horizontal-separator {
+  display: none;
+}
+.horizontal-rule {
+  height: 2px;
+  width: 100px;
+}
+.horizontal-rule-word {
+  padding: 10px;
+  display: inline;
+}
 .login-container h5{
   margin-bottom: 15px;
   font-size: 1.1em;
@@ -64,3 +75,20 @@ body {
 .heading h1 {
   font-size: 2.0em;
 }
+
+/* style for small screens (e.g. cellphone) */
+@media screen and (max-width: 767px) {
+  /* Modify login page to remove vertical OR column */
+  #login-methods {
+    text-align: center;
+  }
+  #vertical-separator {
+    display: none;
+  }
+  #horizontal-separator {
+    display: unset;
+    margin: 40px 0px 40px 0px;
+  }
+  .login-container{
+    margin: 0 auto;
+  }
