@@ -143,6 +143,11 @@
 
 {% endblock javascript_bottom %}
 
+{% block below_nav %}
+  {% include "project/sidebar_button.html" %}
+{% endblock below_nav %}
+
+
 {% block content %}
 
   {# sidebar #}
@@ -150,8 +155,6 @@
 
   {# main content #}
   <div id="content">
-
-    {% include "project/sidebar_button.html" %}
 
     <div class="banner-logo">
       <h1>{{ trip.title }}</h1>

@@ -65,6 +65,7 @@
   }
   #navbar-toggle {
     visibility: visible;
+    margin: 5px;
   }
   /*When the slider button is pressed, the display-menu class is toggled*/
   #sidebar.display-menu {
@@ -73,7 +74,7 @@
   #dismiss.display-menu {
     visibility: visible;
   }
-  
+
   .overlay {
     /* full screen */
     width: 100%;
