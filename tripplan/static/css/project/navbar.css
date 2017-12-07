@@ -3,18 +3,18 @@
 }
 .navbar-light .navbar-brand {
   color: #ff8000;
-  font-size: 32pt;
+  font-size: 2.6em;
   font-family: 'American Typewriter';
   letter-spacing: -2px;
 }
 .navbar-nav .nav-item {
-  font-size: 15pt;
+  font-size: 1.2em;
 }
 #navbar-links {
   margin-right: 20px;
 }
 .navbar-link {
-  font-size: 20pt;
+  font-size: 1.2em;
   font-family: 'Futura';
   margin-left: 10px;
   margin-right: 10px;
@@ -26,5 +26,5 @@
 }
 /*Drop the main content to look nice.*/
 main {
-  margin-top: 60px;
+  margin-top: 34px;
 }

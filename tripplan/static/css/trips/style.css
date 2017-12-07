@@ -2,53 +2,39 @@
 .banner-logo {
   margin-bottom: 20pt;
 }
-.banner-logo h1{
-  color: #ff8000;
-  font-size: 42pt;
-  font-family: 'American Typewriter';
-  letter-spacing: -1px;
-}
-
 .trip-list {
   background: #e6f2ff;
-  margin-bottom: 50pt;
+  margin-bottom: 50px;
 }
-
 .trip-list .header {
   background: #99ccff;
   padding: 2pt;
 }
-
 li.hidden_bullet {
   list-style:none;
 }
-
 .header i{
   margin-left: 7pt;
 }
-
-.header h3{
-  margin-right: 20pt;
-  display: inline;
+.header h2{
+  font-size: 1.3em;
+  margin: 2px 20px 2px 2px;
+  display: inline-block;
 }
-
 .header a{
-  font-size: 20pt;
+  font-size: 1.2em;
 }
-
 .bold-label {
   font-size: 1.2em;
   font-weight: bold;
-  margin-left: 8pt;
+  margin-left: 8px;
 }
-
 .trip-info {
-  font-size: 1.1em;
+  font-size: 0.9em;
 }
-
 .list-padding {
-  margin-top: 5pt;
-  margin-bottom: 10pt;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 /* =======Location Form======= */
@@ -62,6 +48,10 @@ li.hidden_bullet {
 
 #id_longitude {
   width: 40%
+}
+.location_date {
+  font-size: 1.1em;
+  margin-left: 5px;
 }
 
 /* =======Member search field======= */
@@ -143,7 +133,7 @@ li.hidden_bullet {
 #pac-input {
   background-color: #fff;
   font-family: Futura;
-  font-size: 1.4em;
+  font-size: 1.2em;
   font-weight: 300;
   margin-left: 12px;
   margin-right: 12px;
@@ -160,7 +150,7 @@ li.hidden_bullet {
 #title {
   color: #fff;
   background-color: #4d90fe;
-  font-size: 25px;
+  font-size: 1.2em;
   font-weight: 500;
   padding: 6px 12px;
 }

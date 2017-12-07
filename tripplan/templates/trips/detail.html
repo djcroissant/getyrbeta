@@ -26,10 +26,10 @@
     <div class="banner-logo">
       <h1>{{ page_title }}</h1>
       <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
           <p class="trip-info">Start date: {{ trip.start_date }}</p>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
           {% if trip.number_nights == 0 %}
             <p class="trip-info">Day trip</p>
           {% else %}
@@ -39,7 +39,7 @@
       </div>
       {% if end_date %}
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-sm-6">
             <p class="trip-info">End date: {{ end_date }}</p>
           </div>
         </div>
@@ -49,7 +49,7 @@
     {# Trailhead Location Section #}
     <div class="trip-list">
       <div class="header">
-        <h3>Trailhead Location</h3>
+        <h2>Trailhead Location</h2>
         {% if trailhead %}
           <a href="{% url 'trips:location_edit' trip.id 'trailhead' trailhead.id  %}" aria-label="Edit"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
           <a href="{% url 'trips:location_delete' trip.id 'trailhead' trailhead.id  %}" aria-label="Delete"><i class="fa fa-trash fa-lg" aria-hidden="false"></i></a>
@@ -84,7 +84,7 @@
     {# Objective Location Section #}
     <div class="trip-list">
       <div class="header">
-        <h3>Objectives</h3>
+        <h2>Objectives</h2>
         <a href="{% url 'trips:location_create' trip.id 'objective' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new objective</a>
       </div>
       {% for date, location_list in objective_dict.items %}
@@ -120,7 +120,7 @@
     {% if trip.number_nights > 0 %}
       <div class="trip-list">
         <div class="header">
-          <h3>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h3>
+          <h2>Camp Location{% if trip.number_nights > 1 %}s{% endif %}</h2>
           <a href="{% url 'trips:location_create' trip.id 'camp' %}"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add new camp</a>
         </div>
         {% for date, location_list in camp_dict.items %}

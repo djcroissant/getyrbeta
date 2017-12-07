@@ -161,7 +161,7 @@
     {% if not trip.is_in_the_past %}
       <div class="trip-list" id="trip-list">
         <div class="header">
-          <h3>Add Members</h3>
+          <h2>Add Members</h2>
         </div>
         {% load crispy_forms_tags %}
         {% crispy form form.helper %}
@@ -181,7 +181,7 @@
 
     <div class="trip-list" id="pending-members-list">
       <div class="header">
-        <h3>Pending Members</h3>
+        <h2>Pending Members</h2>
       </div>
       <ul>
         {% if pending_members|length > 0 %}
@@ -200,7 +200,7 @@
 
     <div class="trip-list" id="current-members-list">
       <div class="header">
-        <h3>Current Members</h3>
+        <h2>Current Members</h2>
       </div>
       <ul>
         {% if current_members|length > 0 %}

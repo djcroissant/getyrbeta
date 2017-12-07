@@ -1,7 +1,7 @@
 /*Emergency Contact and Vehicle Forms*/
 /*This is the label suffixed by a :*/
 .form-control-label {
-  font-size: 14pt;
+  font-size: 1em;
   font-weight: bold;
   display: block;
 }
@@ -10,36 +10,27 @@
 ul.account_info_list {
   list-style-type: none;
 }
-
-ul.account_info_list a {
-  font-size: 13pt;
-}
-
 li.list_item_title {
-  font-size: 17pt;
+  font-size: 1.3em;
   font-weight: bold;
 }
-
 li.list_item_label {
-  font-size: 15pt;
+  font-size: 1em;
   font-weight: bold;
   display: inline-block;
 }
-
 li.list_item_info {
-  font-size: 15pt;
+  font-size: 1.1em;
   display: inline-block;
 }
 
 /*Content headers and "add new" links*/
 .header {
-  margin-bottom: 20pt
+  margin-bottom: 10px;
 }
-
 .header a{
   font-size: 1.3em;
 }
-
 .container {
   margin-top: 40px;
   margin-bottom: 40px;

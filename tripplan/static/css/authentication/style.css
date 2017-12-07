@@ -5,12 +5,6 @@ body {
   background-size: 100% auto;
   background-position: 0px 91px;
 }
-.banner-logo h1{
-    color: #ff8000;
-    font-size: 32pt;
-    font-family: 'American Typewriter';
-    letter-spacing: -1px;
-}
 .auth-container {
   position: relative;
   top: 100px;
@@ -57,6 +51,7 @@ body {
 }
 .login-container h5{
   margin-bottom: 15px;
+  font-size: 1.1em;
 }
 #id_show_password {
   margin-right: 5px;
@@ -65,4 +60,7 @@ body {
   margin: 0 auto;
   display: block;
   text-align: center;
+}
+.heading h1 {
+  font-size: 2.0em;
 }
