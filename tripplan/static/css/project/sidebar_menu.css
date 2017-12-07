@@ -35,9 +35,8 @@
   text-align: left;
   width: 100%;
 }
-#navbar-toggle {
+#sidebar-toggle {
   visibility: hidden;
-  border: 1px solid LightGray;
 }
 .wrapper {
   display: block;
@@ -65,9 +64,11 @@
   #content {
     margin-left: 0px;
   }
-  #navbar-toggle {
+  #sidebar-toggle {
     visibility: visible;
     margin: 5px;
+    border: 1px solid LightGray;
+    display: block;
   }
   /*When the slider button is pressed, the display-menu class is toggled*/
   #sidebar.display-menu {
