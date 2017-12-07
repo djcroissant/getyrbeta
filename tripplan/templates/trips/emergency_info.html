@@ -48,7 +48,7 @@
               {% if object.member.emergencycontact_set.all %}
                 {% for object in object.member.emergencycontact_set.all %}
                   {% include "trips/person_details.html" with object=object %}
-                  <br>
+                  <hr>
                 {% endfor %}
               {% else %}
                 <div class="einfo">
