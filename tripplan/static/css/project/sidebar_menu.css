@@ -37,13 +37,15 @@
 }
 #navbar-toggle {
   visibility: hidden;
+  border: 1px solid LightGray;
 }
 .wrapper {
   display: block;
 }
 #dismiss {
   visibility: hidden;
-  margin: 10px;
+  margin: 5px;
+  border: 1px solid LightGray;
 }
 
 /* collapsed sidebar styles */
