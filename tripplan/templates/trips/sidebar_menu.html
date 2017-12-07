@@ -1,8 +1,14 @@
+<div class="overlay"></div>
 
 <div id="sidebar" role="navigation">
+  <div id="dismiss">
+    <i class="fa fa-times" aria-hidden="false"></i>
+  </div>
+
   <div class="heading">
     <h2>Trip Info:</h2>
   </div>
+
   <ul class="nav">
     <li class="nav-item">
       <a class="nav-link" href="{% url 'trips:trip_detail' trip.id %}">Overview</a>
