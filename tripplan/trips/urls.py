@@ -7,7 +7,8 @@ app_name = 'trips'
 
 urlpatterns = [
     # Trips
-    url(r'^$', views.TripListView.as_view(), name='trip_list'),
+    url(r'^$',
+        views.TripListView.as_view(), name='trip_list'),
     url(r'^(?P<pk>[0-9]+)/$',
         views.TripDetailView.as_view(), name='trip_detail'),
     url(r'^create/$', views.TripCreateView.as_view(), name='trip_create'),
@@ -31,6 +32,10 @@ urlpatterns = [
     # Members
     url(r'^(?P<pk>[0-9]+)/members/$',
         views.TripMemberListView.as_view(), name='trip_members'),
+
+    # Gear Info
+    url(r'^(?P<trip_id>[0-9]+)/gear/$',
+        views.GearListView.as_view(), name='gear'),
 
     # AJAX requests:
     url(r'^ajax/user_exists/$',

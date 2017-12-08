@@ -1,0 +1,65 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
+{% endblock stylesheet %}
+
+{% block javascript_bottom %}
+  {# sidebar slider #}
+  <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
+{% endblock javascript_bottom %}
+
+{% block below_nav %}
+  {% include "project/sidebar_button.html" %}
+{% endblock below_nav %}
+
+{% block content %}
+  {# sidebar #}
+  {% include "trips/sidebar_menu.html" %}
+
+  {# main content #}
+  <div id="content">
+
+    <div class="banner-logo">
+      <h1>Gear</h1>
+    </div>
+
+    {# Table of users and emergency contacts #}
+    <div class="trip-list">
+
+      {% comment %}
+      <table id="emergency_info_table" class="alt_highlight">
+        <tr>
+          <th class="header">Trip Member</th>
+          <th class="header">Emergency Contact</th>
+        </tr>
+        {% for object in object_list %}
+          <tr>
+            {# user info #}
+            <td>
+              {% include "trips/person_details.html" with object=object.member %}
+            </td>
+
+            {# emergency contact info #}
+            <td>
+              {% if object.member.emergencycontact_set.all %}
+                {% for object in object.member.emergencycontact_set.all %}
+                  {% include "trips/person_details.html" with object=object %}
+                  <hr>
+                {% endfor %}
+              {% else %}
+                <div class="einfo">
+                  <p class="italic">None provided</p>
+                </div>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+      {% endcomment %}
+    </div>
+  </div>
+{% endblock content %}

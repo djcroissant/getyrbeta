@@ -103,7 +103,6 @@ class SunTime(models.Model):
 
 class Item(models.Model):
     description = models.CharField(max_length = 255)
-    quantity = models.PositiveSmallIntegerField(default=1)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     item_owners = models.ManyToManyField(settings.AUTH_USER_MODEL,
         through='ItemOwner')
@@ -112,6 +111,7 @@ class ItemOwner(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=1)
     accept_reqd = models.BooleanField(default=False)
 
 class TripMember(models.Model):
@@ -123,7 +123,7 @@ class TripMember(models.Model):
 
 class TripGuest(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    email = models.CharField(max_length=255)    
+    email = models.CharField(max_length=255)
 
 class TripLocation(models.Model):
     BEGIN = 'ST'

@@ -10,7 +10,8 @@ from django.http import JsonResponse, Http404
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
-from .models import Trip, TripLocation, TripMember, ItemNotification, TripGuest
+from .models import Trip, TripLocation, TripMember, ItemNotification, \
+    TripGuest, Item
 from account_info.models import EmergencyContact
 
 from account_info.models import User
@@ -511,5 +512,20 @@ class EmergencyInfoListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EmergencyInfoListView, self).get_context_data(**kwargs)
+        context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
+        return context
+
+class GearListView(LoginRequiredMixin, ListView):
+    model = Item
+    template_name = 'trips/gear.html'
+    queryset = Item.objects.all()
+
+    def get_queryset(self):
+        # Returns Items for current trip with accept_reqd = T or F
+        queryset = super(GearListView, self).get_queryset()
+        return queryset.filter(trip_id = self.kwargs['trip_id'])
+
+    def get_context_data(self, **kwargs):
+        context = super(GearListView, self).get_context_data(**kwargs)
         context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
         return context
