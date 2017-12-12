@@ -107,12 +107,18 @@ class Item(models.Model):
     item_owners = models.ManyToManyField(settings.AUTH_USER_MODEL,
         through='ItemOwner')
 
+    def __str__(self):
+        return self.description
+
 class ItemOwner(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
     accept_reqd = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.owner.email
 
 class TripMember(models.Model):
     member = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -121,9 +127,15 @@ class TripMember(models.Model):
     organizer = models.BooleanField(default=False)
     accept_reqd = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.member.email
+
 class TripGuest(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     email = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.email
 
 class TripLocation(models.Model):
     BEGIN = 'ST'
