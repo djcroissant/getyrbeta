@@ -1,6 +1,7 @@
 {% extends 'project/base.html' %}
 
 {% load static %}
+{% load trips_tags %}
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
@@ -28,38 +29,30 @@
     </div>
 
     {# Table of users and emergency contacts #}
-    <div class="trip-list">
-
-      {% comment %}
-      <table id="emergency_info_table" class="alt_highlight">
-        <tr>
-          <th class="header">Trip Member</th>
-          <th class="header">Emergency Contact</th>
-        </tr>
-        {% for object in object_list %}
+    <div class="x-scroll">
+      <table id="gear-table" class="table table-header-rotated table-striped table-hover table-striped-column">
+        <thead>
           <tr>
-            {# user info #}
-            <td>
-              {% include "trips/person_details.html" with object=object.member %}
-            </td>
-
-            {# emergency contact info #}
-            <td>
-              {% if object.member.emergencycontact_set.all %}
-                {% for object in object.member.emergencycontact_set.all %}
-                  {% include "trips/person_details.html" with object=object %}
-                  <hr>
-                {% endfor %}
-              {% else %}
-                <div class="einfo">
-                  <p class="italic">None provided</p>
-                </div>
-              {% endif %}
-            </td>
+            <th></th>
+            <!-- Following headers are rotated -->
+            {% for trip_member in trip_members %}
+              <th class="header rotate-45"><div><span>{{ trip_member.member.get_short_name }}</span></div></th>
+            {% endfor %}
           </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+          {% for item in trip_items %}
+            <tr>
+              <th class="row-header">{{ item.description }}</th>
+
+              {% for trip_member in trip_members %}
+                <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>
+              {% endfor %}
+
+            </tr>
+          {% endfor %}
+        </tbody>
       </table>
-      {% endcomment %}
     </div>
   </div>
 {% endblock content %}

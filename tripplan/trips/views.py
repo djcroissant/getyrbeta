@@ -519,13 +519,27 @@ class GearListView(LoginRequiredMixin, ListView):
     model = Item
     template_name = 'trips/gear.html'
     queryset = Item.objects.all()
+    context_object_name = 'trip_items'
 
     def get_queryset(self):
         # Returns Items for current trip with accept_reqd = T or F
-        queryset = super(GearListView, self).get_queryset()
-        return queryset.filter(trip_id = self.kwargs['trip_id'])
+        qs = super(GearListView, self).get_queryset()
+        qs = qs.filter(
+                trip_id = self.kwargs['trip_id']
+            ).prefetch_related(
+                'item_owners'
+            )
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(GearListView, self).get_context_data(**kwargs)
-        context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
+
+        trip = Trip.objects.get(pk=self.kwargs['trip_id'])
+        context['trip'] = trip
+
+        trip_members = TripMember.objects.filter(
+                trip=trip
+            ).select_related('member')
+        context['trip_members'] = trip_members
+        
         return context

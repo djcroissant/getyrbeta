@@ -176,19 +176,88 @@ li.hidden_bullet {
 .italic {
   font-style: italic;
 }
-#emergency_info_table {
+#emergency-info-table {
   width: 100%;
 }
-#emergency_info_table td, #emergency_info_table th {
+#emergency-info-table td, #emergency-info-table th {
   border: 1px solid black;
   padding: 6px;
 }
-#emergency_info_table th {
+#emergency-info-table th {
   background: #99ccff;
   font-size: 1.1em;
   font-weight: bold;
 }
-#emergency_info_table tr:nth-child(even) {
+#emergency-info-table tr:nth-child(even) {
   background-color: white;
 }
+
+/* =======Trip's Gear List======= */
+/*#gear-table {
+  background-color: #e6f2ff;
+}*/
+.table-header-rotated th.row-header{
+  width: auto;
+}
+
+.table-header-rotated td{
+  width: 40px;
+  border-top: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table-header-rotated th.rotate-45{
+  height: 160px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  position: relative;
+  vertical-align: bottom;
+  padding: 0;
+  font-size: 12px;
+  line-height: 0.8;
+}
+
+.table-header-rotated th.rotate-45 > div{
+  position: relative;
+  top: 0px;
+  left: 80px; /* 160 * tan(45) / 2 = 80 where 160 is the height on the cell and 45 is the transform angle*/
+  height: 100%;
+  -ms-transform:skew(-45deg,0deg);
+  -moz-transform:skew(-45deg,0deg);
+  -webkit-transform:skew(-45deg,0deg);
+  -o-transform:skew(-45deg,0deg);
+  transform:skew(-45deg,0deg);
+  overflow: hidden;
+
+}
+
+.table-header-rotated th.rotate-45 span {
+  -ms-transform:skew(45deg,0deg) rotate(315deg);
+  -moz-transform:skew(45deg,0deg) rotate(315deg);
+  -webkit-transform:skew(45deg,0deg) rotate(315deg);
+  -o-transform:skew(45deg,0deg) rotate(315deg);
+  transform:skew(45deg,0deg) rotate(315deg);
+  position: absolute;
+  bottom: 33px; /* 40 cos(45) = 28 with an additional 5px margin*/
+  left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
+  display: inline-block;
+  width: 100%;
+  width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
+  text-align: left;
+  white-space: nowrap; /*whether to display in one line or not*/
+}
+
+.table-striped-column > thead > tr th:nth-of-type(even) div {
+    background-color: #e6f2ff;
+}
+
+.table-striped-column > tbody > tr td:nth-of-type(odd) {
+    background-color: #e6f2ff;
+}
+.x-scroll {
+  overflow-x:auto;
 }
