@@ -193,36 +193,40 @@ li.hidden_bullet {
 }
 
 /* =======Trip's Gear List======= */
-/*#gear-table {
-  background-color: #e6f2ff;
-}*/
-.table-header-rotated td.row-header{
-  width: auto;
+/*Style for 1st column. I.e. row header.*/
+.table-header-rotated td.row-header {
+  width: 200px;
   font-weight: bold;
   text-align: left;
 }
-
-.table-header-rotated td{
-  width: 40px;
+/*trailing column adjusts in size to float remainder of table left*/
+.table-header-rotated td.trailing-column {
+  width: auto;
+  background-color: white;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+/*Style settings for body of table*/
+.table-header-rotated td {
+  width: 50px;
   border-top: 1px solid #dddddd;
   border-left: 1px solid #dddddd;
   border-right: 1px solid #dddddd;
   vertical-align: middle;
   text-align: center;
 }
-
+/*Set dimensions of rotated table header*/
 .table-header-rotated th.rotate-45{
   height: 160px;
-  width: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 50px;
   position: relative;
   vertical-align: bottom;
   padding: 0;
   font-size: 12px;
   line-height: 0.8;
 }
-
+/*rotate the div containing the text of the header*/
 .table-header-rotated th.rotate-45 > div{
   position: relative;
   top: 0px;
@@ -236,7 +240,7 @@ li.hidden_bullet {
   overflow: hidden;
 
 }
-
+/*rotate the text of the header*/
 .table-header-rotated th.rotate-45 span {
   -ms-transform:skew(45deg,0deg) rotate(315deg);
   -moz-transform:skew(45deg,0deg) rotate(315deg);
@@ -250,16 +254,24 @@ li.hidden_bullet {
   width: 100%;
   width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
   text-align: left;
-  white-space: nowrap; /*whether to display in one line or not*/
+  white-space: normal; /*whether to display in one line or not*/
 }
-
+/*Enable vertical stripping for readability*/
 .table-striped-column > thead > tr th:nth-of-type(even) div {
     background-color: #e6f2ff;
 }
-
 .table-striped-column > tbody > tr td:nth-of-type(even) {
     background-color: #e6f2ff;
 }
+/*Enable scrolling if table exceeds width of div due to number of users*/
 .x-scroll {
   overflow-x:auto;
+}
+/*Modify bootstrap border default for table header*/
+.table th {
+  border-top: none;
+}
+/*Modify bootstrap border default for table header*/
+.table thead th {
+  border-bottom: none;
 }

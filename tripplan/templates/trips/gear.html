@@ -38,6 +38,7 @@
             {% for trip_member in trip_members %}
               <th class="header rotate-45"><div><span>{{ trip_member.member.get_short_name }}</span></div></th>
             {% endfor %}
+            <th class="trailing-column"><th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +50,7 @@
                 <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>
               {% endfor %}
 
+              <td class="trailing-column"></td>
             </tr>
           {% endfor %}
         </tbody>
