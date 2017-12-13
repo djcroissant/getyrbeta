@@ -43,7 +43,7 @@
         <tbody>
           {% for item in trip_items %}
             <tr>
-              <th class="row-header">{{ item.description }}</th>
+              <td class="row-header">{{ item.description }}</td>
 
               {% for trip_member in trip_members %}
                 <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>

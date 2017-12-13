@@ -196,8 +196,10 @@ li.hidden_bullet {
 /*#gear-table {
   background-color: #e6f2ff;
 }*/
-.table-header-rotated th.row-header{
+.table-header-rotated td.row-header{
   width: auto;
+  font-weight: bold;
+  text-align: left;
 }
 
 .table-header-rotated td{
@@ -255,7 +257,7 @@ li.hidden_bullet {
     background-color: #e6f2ff;
 }
 
-.table-striped-column > tbody > tr td:nth-of-type(odd) {
+.table-striped-column > tbody > tr td:nth-of-type(even) {
     background-color: #e6f2ff;
 }
 .x-scroll {
