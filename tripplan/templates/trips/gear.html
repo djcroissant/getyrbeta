@@ -9,6 +9,14 @@
 {% endblock stylesheet %}
 
 {% block javascript_bottom %}
+  {# add/edit gear #}
+  <script>
+    $("#add-gear").on("click", function() {
+      var new_row = "<tr><td></td></tr>"
+      $(this).parent().before(new_row);
+    });
+  </script>
+
   {# sidebar slider #}
   <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
 {% endblock javascript_bottom %}
@@ -33,8 +41,9 @@
       <table id="gear-table" class="table table-header-rotated table-striped table-hover table-striped-column">
         <thead>
           <tr>
-            <th></th>
-            <!-- Following headers are rotated -->
+            <th class="button-column"></th> {# column for buttons #}
+            <th></th> {# column for item descriptions. I.e. row headers #}
+            {# Following headers are rotated #}
             {% for trip_member in trip_members %}
               <th class="header rotate-45"><div><span>{{ trip_member.member.get_short_name }}</span></div></th>
             {% endfor %}
@@ -44,7 +53,12 @@
         <tbody>
           {% for item in trip_items %}
             <tr>
-              <td class="row-header">{{ item.description }}</td>
+              <th class="no-wrap button-column">
+                <i class="fa fa-pencil fa-lg" aria-hidden="false"></i>
+                <i class="fa fa-trash fa-lg two-px-margin-left" aria-hidden="false"></i>
+              </th>
+
+              <th class="row-header">{{ item.description }}</th>
 
               {% for trip_member in trip_members %}
                 <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>
@@ -56,9 +70,10 @@
 
           {# final row holds add-new button #}
           <tr>
-            <td id="add-gear">
+            <th class="button-column"></th>
+            <th id="add-gear">
               <a href="#"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Gear</a>
-            </td>
+            </th>
           </tr>
         </tbody>
       </table>

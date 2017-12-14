@@ -260,7 +260,7 @@ li.hidden_bullet {
 .table-striped-column > thead > tr th:nth-of-type(even) div {
     background-color: #e6f2ff;
 }
-.table-striped-column > tbody > tr td:nth-of-type(even) {
+.table-striped-column > tbody > tr td:nth-of-type(odd) {
     background-color: #e6f2ff;
 }
 /*Enable scrolling if table exceeds width of div due to number of users*/
@@ -268,15 +268,23 @@ li.hidden_bullet {
   overflow-x:auto;
 }
 /*Modify bootstrap border default for table header*/
-.table th {
-  border-top: none;
-}
-/*Modify bootstrap border default for table header*/
 .table thead th {
   border-bottom: none;
+  border-top: none;
 }
 /*Remove border from add-gear cell*/
 #add-gear {
   border-right: none;
   text-align: left;
+}
+/*Prevent text from wrapping*/
+.no-wrap {
+  white-space: nowrap;
+}
+/*Used to space buttons*/
+.two-px-margin-left {
+  margin-left: 2px;
+}
+.button-column {
+  width: 20px;
 }
