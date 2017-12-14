@@ -275,3 +275,8 @@ li.hidden_bullet {
 .table thead th {
   border-bottom: none;
 }
+/*Remove border from add-gear cell*/
+#add-gear {
+  border-right: none;
+  text-align: left;
+}
