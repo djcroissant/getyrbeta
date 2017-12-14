@@ -28,3 +28,6 @@ psycopg2==2.7.3
 
 # Time zones support
 pytz==2017.2
+
+# Modify form fields from template
+django-widget-tweaks==1.4.1
