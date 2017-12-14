@@ -17,7 +17,7 @@ from account_info.models import EmergencyContact
 from account_info.models import User
 
 from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
-    TripGuestForm
+    TripGuestForm, ItemForm
 
 
 class LoginRequiredMixin:
@@ -515,21 +515,9 @@ class EmergencyInfoListView(LoginRequiredMixin, ListView):
         context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
         return context
 
-class GearListView(LoginRequiredMixin, ListView):
-    model = Item
+class GearListView(LoginRequiredMixin, FormView):
     template_name = 'trips/gear.html'
-    queryset = Item.objects.all()
-    context_object_name = 'trip_items'
-
-    def get_queryset(self):
-        # Returns Items for current trip with accept_reqd = T or F
-        qs = super(GearListView, self).get_queryset()
-        qs = qs.filter(
-                trip_id = self.kwargs['trip_id']
-            ).prefetch_related(
-                'item_owners'
-            )
-        return qs
+    form_class = ItemForm
 
     def get_context_data(self, **kwargs):
         context = super(GearListView, self).get_context_data(**kwargs)
@@ -537,9 +525,16 @@ class GearListView(LoginRequiredMixin, ListView):
         trip = Trip.objects.get(pk=self.kwargs['trip_id'])
         context['trip'] = trip
 
+        trip_items = Item.objects.filter(
+                trip_id = self.kwargs['trip_id']
+            ).prefetch_related(
+                'item_owners'
+            )
+        context['trip_items'] = trip_items
+
         trip_members = TripMember.objects.filter(
                 trip=trip
             ).select_related('member')
         context['trip_members'] = trip_members
-        
+
         return context

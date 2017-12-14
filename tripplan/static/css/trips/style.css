@@ -199,20 +199,10 @@ li.hidden_bullet {
   font-weight: bold;
   text-align: left;
 }
-/*trailing column adjusts in size to float remainder of table left*/
-.table-header-rotated td.trailing-column {
-  width: auto;
-  background-color: white;
-  border-top: none;
-  border-right: none;
-  border-bottom: none;
-}
 /*Style settings for body of table*/
 .table-header-rotated td {
   width: 50px;
-  border-top: 1px solid #dddddd;
-  border-left: 1px solid #dddddd;
-  border-right: 1px solid #dddddd;
+  border: 1px solid #dddddd;
   vertical-align: middle;
   text-align: center;
 }
@@ -260,7 +250,7 @@ li.hidden_bullet {
 .table-striped-column > thead > tr th:nth-of-type(even) div {
     background-color: #e6f2ff;
 }
-.table-striped-column > tbody > tr td:nth-of-type(odd) {
+.table-striped-column > tbody > tr td:nth-of-type(even) {
     background-color: #e6f2ff;
 }
 /*Enable scrolling if table exceeds width of div due to number of users*/
@@ -276,6 +266,7 @@ li.hidden_bullet {
 #add-gear {
   border-right: none;
   text-align: left;
+  /*background-color: white;*/
 }
 /*Prevent text from wrapping*/
 .no-wrap {

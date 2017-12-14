@@ -12,8 +12,7 @@
   {# add/edit gear #}
   <script>
     $("#add-gear").on("click", function() {
-      var new_row = "<tr><td></td></tr>"
-      $(this).parent().before(new_row);
+      $(this).parent().before( $("#row-template").html() );
     });
   </script>
 
@@ -47,15 +46,14 @@
             {% for trip_member in trip_members %}
               <th class="header rotate-45"><div><span>{{ trip_member.member.get_short_name }}</span></div></th>
             {% endfor %}
-            <th class="trailing-column"><th>
           </tr>
         </thead>
         <tbody>
           {% for item in trip_items %}
             <tr>
               <th class="no-wrap button-column">
-                <i class="fa fa-pencil fa-lg" aria-hidden="false"></i>
-                <i class="fa fa-trash fa-lg two-px-margin-left" aria-hidden="false"></i>
+                <a href="#"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
+                <a href="#"><i class="fa fa-trash fa-lg two-px-margin-left" aria-hidden="false"></i></a>
               </th>
 
               <th class="row-header">{{ item.description }}</th>
@@ -64,19 +62,35 @@
                 <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>
               {% endfor %}
 
-              <td class="trailing-column"></td>
             </tr>
           {% endfor %}
 
           {# final row holds add-new button #}
           <tr>
-            <th class="button-column"></th>
-            <th id="add-gear">
+            <th id="add-gear" colspan="2">
               <a href="#"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Gear</a>
             </th>
           </tr>
+
         </tbody>
       </table>
+
+      {# hidden template row. Added to table when #add-gear is pressed #}
+      <script type="text/template" id="row-template">
+        <tr>
+          <th>
+            <a href="#"><i class="fa fa-lock fa-lg" aria-hidden="false"></i></a>
+            <a href="#"><i class="fa fa-times fa-lg two-px-margin-left" aria-hidden="false"></i></a>
+          </th>
+          <th>
+            {{ form.description }}
+          </th>
+          {% for trip_member in trip_members %}
+            <td>{{ form.quantity }}</td>
+          {% endfor %}
+        </tr>
+      </script>
+
     </div>
   </div>
 {% endblock content %}

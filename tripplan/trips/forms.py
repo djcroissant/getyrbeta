@@ -124,3 +124,12 @@ class TripGuestForm(forms.ModelForm):
     class Meta:
         model = TripGuest
         fields = []
+
+class ItemForm(forms.Form):
+    # Use Form class to create elements for template. Data from these
+    # form fields will be submitted via AJAX requests only
+    description = forms.CharField(
+        max_length=100,
+        help_text="description"
+    )
+    quantity = forms.CharField(max_length=3)
