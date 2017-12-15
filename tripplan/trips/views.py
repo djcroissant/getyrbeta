@@ -79,7 +79,7 @@ class InviteEmailMixin:
         message = render_to_string(
             template,
             context = {
-                'inviter_email': self.kwargs.get('inviter_email'),
+                'inviter_email': self.request.user.email,
                 'trip_title': trip.title,
                 'link': 'https://www.getyrbeta.com' + link_action +
                     '?next=' + reverse('trips:notifications'),
@@ -348,14 +348,6 @@ class AddTripMemberView(LoginRequiredMixin, FlattenTripMemberMixin,
     form_class = TripMemberForm
     success_url = "#"
 
-    def post(self, request, *args, **kwargs):
-        self.kwargs['trip_id'] = request.POST.get('trip_id')
-        # invitee_email = email of the person being invited
-        self.kwargs['invitee_email'] = request.POST.get('email')
-        # inviter_email = email of the person sending the invitation
-        self.kwargs['inviter_email'] = request.user.email
-        return super(AddTripMemberView, self).post(request, *args, **kwargs)
-
     def form_invalid(self, form):
         response = super(AddTripMemberView, self).form_invalid(form)
         return JsonResponse(form.errors, status=400)
@@ -364,11 +356,12 @@ class AddTripMemberView(LoginRequiredMixin, FlattenTripMemberMixin,
         """
         Set values for the form based on data passed by AJAX request and
         on intended functionality
+        Person being invited = self.request.POST.get('email')
         """
         f = form.save(commit=False)
-        f.trip_id = int(self.kwargs.get('trip_id'))
+        f.trip_id = int(self.request.POST.get('trip_id'))
         f.member_id = get_object_or_404(
-            User, email=self.kwargs.get('invitee_email')).id
+            User, email=self.request.POST.get('email')).id
         f.organizer = True
         f.accept_reqd = True
         f.save()
@@ -382,7 +375,7 @@ class AddTripMemberView(LoginRequiredMixin, FlattenTripMemberMixin,
         }
         # Send text for success message to template
         msg = ("An invitation has been sent to %s to join the trip." %
-            self.kwargs.get('invitee_email'))
+            self.request.POST.get('email'))
         data['msg'] = msg
 
         return JsonResponse(data)
@@ -392,14 +385,6 @@ class AddTripGuestView(LoginRequiredMixin, InviteEmailMixin, CreateView):
     form_class = TripGuestForm
     success_url = "#"
 
-    def post(self, request, *args, **kwargs):
-        self.kwargs['trip_id'] = request.POST.get('trip_id')
-        # invitee_email = email of the person being invited
-        self.kwargs['invitee_email'] = request.POST.get('email')
-        # inviter_email = email of the person sending the invitation
-        self.kwargs['inviter_email'] = request.user.email
-        return super(AddTripGuestView, self).post(request, *args, **kwargs)
-
     def form_invalid(self, form):
         response = super(AddTripGuestView, self).form_invalid(form)
         return JsonResponse(form.errors, status=400)
@@ -408,11 +393,13 @@ class AddTripGuestView(LoginRequiredMixin, InviteEmailMixin, CreateView):
         """
         Set values for the form based on data passed by AJAX request and
         on intended functionality
+        Person being invited = self.request.POST.get('email')
+        Person sending the invitation = self.request.user.email
         """
         import pdb; pdb.set_trace()
         f = form.save(commit=False)
-        f.trip_id = int(self.kwargs.get('trip_id'))
-        f.email = self.kwargs.get('invitee_email')
+        f.trip_id = int(self.request.POST.get('trip_id'))
+        f.email = self.request.POST.get('email')
         f.save()
         response = super(AddTripGuestView, self).form_valid(form)
         self.email_invitation('nonregistered')
@@ -422,9 +409,8 @@ class AddTripGuestView(LoginRequiredMixin, InviteEmailMixin, CreateView):
 
         # Send text for success message to template
         msg = ("An invitation has been sent to %s to join the trip." %
-            self.kwargs.get('invitee_email'))
+            self.request.POST.get('email'))
         data['msg'] = msg
-
 
         return JsonResponse(data)
 
