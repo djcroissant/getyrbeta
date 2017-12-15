@@ -16,7 +16,7 @@ APPS_DIR = ROOT_DIR.path('tripplan')
 env = environ.Env()
 
 # .env file, should load only in development environment
-READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
+READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=True)
 
 if READ_DOT_ENV_FILE:
     # Operating System Environment variables have precedence over variables defined in the .env file,
@@ -109,7 +109,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 # Database URL format: postgres://user:password@host:5432/mydb
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres://tripplan:optoutside!@127.0.0.1:5432/tripplandb'),
+    'default': env.db('DATABASE_URL'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 

@@ -24,7 +24,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='#=j8t0s6t#bzh(2cn84!*w7&056%7k8wcisi0x96urmj&=#_rv')
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # Mail settings
 # ------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # ------------------------------------------------------------------------------
 # Google Maps API key can be acquired here:
 # https://developers.google.com/maps/documentation/javascript/get-api-key
-GOOGLE_MAPS_API = env('GOOGLE_MAPS_API', default='AIzaSyDWhowSelvksmtGM7SOllzIuuzaNq-rI7E')
+GOOGLE_MAPS_API = env('GOOGLE_MAPS_API')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 # Different for local and production because sites were created/deleted and
