@@ -194,7 +194,7 @@ li.hidden_bullet {
 
 /* =======Trip's Gear List======= */
 /*Style for 1st column. I.e. row header.*/
-.table-header-rotated td.row-header {
+.table-header-rotated th.row-header {
   width: 200px;
   font-weight: bold;
   text-align: left;
@@ -278,4 +278,14 @@ li.hidden_bullet {
 }
 .button-column {
   width: 20px;
+}
+.item-quantity {
+  width: 40px;
+}
+.table td.item-form, .table th.item-form {
+  padding: 2px;
+  vertical-align: middle;
+}
+.table {
+  width: auto;
 }

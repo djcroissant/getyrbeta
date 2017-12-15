@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load trips_tags %}
+{% load widget_tweaks %}
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
@@ -42,10 +43,12 @@
           <tr>
             <th class="button-column"></th> {# column for buttons #}
             <th></th> {# column for item descriptions. I.e. row headers #}
+
             {# Following headers are rotated #}
             {% for trip_member in trip_members %}
               <th class="header rotate-45"><div><span>{{ trip_member.member.get_short_name }}</span></div></th>
             {% endfor %}
+
           </tr>
         </thead>
         <tbody>
@@ -82,11 +85,11 @@
             <a href="#"><i class="fa fa-lock fa-lg" aria-hidden="false"></i></a>
             <a href="#"><i class="fa fa-times fa-lg two-px-margin-left" aria-hidden="false"></i></a>
           </th>
-          <th>
-            {{ form.description }}
+          <th class="item-form">
+            {{ form.description|add_class:"item-description" }}
           </th>
           {% for trip_member in trip_members %}
-            <td>{{ form.quantity }}</td>
+            <td class="item-form">{{ form.quantity|add_class:"item-quantity" }}</td>
           {% endfor %}
         </tr>
       </script>

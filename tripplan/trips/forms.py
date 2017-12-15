@@ -126,8 +126,15 @@ class TripGuestForm(forms.ModelForm):
         fields = []
 
 class ItemForm(forms.Form):
-    # Use Form class to create elements for template. Data from these
-    # form fields will be submitted via AJAX requests only
+    """
+    Use Form class to create elements for template. Data from these
+    form fields will be submitted via AJAX requests only
+    auto-id is disabled to allow multiple instances of 'quantity'
+    """
+    def __init__(self, *args, **kwargs):
+        super(ItemForm, self).__init__(*args, **kwargs)
+        self.auto_id=False
+
     description = forms.CharField(
         max_length=100,
         help_text="description"

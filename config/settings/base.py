@@ -51,7 +51,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
     'allauth.socialaccount.providers.facebook',
-    'widget-tweaks'
+    'widget_tweaks'
 ]
 
 # Apps specific for this project go here.
