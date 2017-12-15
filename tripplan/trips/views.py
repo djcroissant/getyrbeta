@@ -17,7 +17,7 @@ from account_info.models import EmergencyContact
 from account_info.models import User
 
 from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
-    TripGuestForm, ItemForm
+    TripGuestForm, ItemForm, ItemModelForm
 
 
 class LoginRequiredMixin:
@@ -373,7 +373,7 @@ class AddTripMemberView(LoginRequiredMixin, FlattenTripMemberMixin,
         f.accept_reqd = True
         f.save()
         response = super(AddTripMemberView, self).form_valid(form)
-        self.email_invitation('registered')
+        self.email_initation('registered')
 
         # The flatten_tripmember_queryset requires input to be an iterable
         # and outputs a list.
@@ -409,6 +409,7 @@ class AddTripGuestView(LoginRequiredMixin, InviteEmailMixin, CreateView):
         Set values for the form based on data passed by AJAX request and
         on intended functionality
         """
+        import pdb; pdb.set_trace()
         f = form.save(commit=False)
         f.trip_id = int(self.kwargs.get('trip_id'))
         f.email = self.kwargs.get('invitee_email')
@@ -538,3 +539,30 @@ class GearListView(LoginRequiredMixin, FormView):
         context['trip_members'] = trip_members
 
         return context
+
+class AddItemView(LoginRequiredMixin, CreateView):
+    model = Item
+    form_class = ItemModelForm
+    success_url = "#"
+
+    def form_invalid(self, form):
+        response = super(AddItemView, self).form_invalid(form)
+        return JsonResponse(form.errors, status=400)
+
+    def form_valid(self, form):
+        """
+        Set values for the form based on data passed by AJAX request and
+        on intended functionality
+        """
+        f = form.save(commit=False)
+        desc = self.request.POST.get('description')
+        f.description = desc
+        f.trip_id = int(self.request.POST.get('trip_id'))
+        f.save()
+        response = super(AddItemView, self).form_valid(form)
+        msg = ("Successfully added %s to the gear list." % desc)
+        data = {
+            'item_id': self.object.id,
+            'msg': msg
+        }
+        return JsonResponse(data)

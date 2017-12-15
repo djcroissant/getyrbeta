@@ -12,9 +12,34 @@
 {% block javascript_bottom %}
   {# add/edit gear #}
   <script>
+    // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
-      $(this).parent().before( $("#row-template").html() );
+      $(this).parent().before($("#row-template").html());
+
+      // Create handlers for save and cancel button
+      // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
+      $(".save-item").on("click", function() {
+        var description = $(this).parent().parent().find(".item-description").val();
+        var data = {
+          "description": description,
+          "trip_id": {{ trip.id }},
+          "csrfmiddlewaretoken": "{{ csrf_token }}",
+        }
+        ajax_create_item(data);
+      });
+
     });
+    // POST to Item
+    function ajax_create_item(data) {
+      $.ajax({
+        url: "{% url 'trips:add_item' %}",
+        data,
+        dataType: "json",
+        type: "POST",
+        success: function(data){
+        }
+      });
+    }
   </script>
 
   {# sidebar slider #}
@@ -82,8 +107,8 @@
       <script type="text/template" id="row-template">
         <tr>
           <th>
-            <a href="#"><i class="fa fa-lock fa-lg" aria-hidden="false"></i></a>
-            <a href="#"><i class="fa fa-times fa-lg two-px-margin-left" aria-hidden="false"></i></a>
+            <i class="fa fa-lock fa-lg save-item" aria-hidden="false"></i>
+            <a href="#"><i class="fa fa-times fa-lg two-px-margin-left cancel-item" aria-hidden="false"></i></a>
           </th>
           <th class="item-form">
             {{ form.description|add_class:"item-description" }}

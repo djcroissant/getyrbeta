@@ -4,7 +4,8 @@ from django.forms.widgets import NumberInput
 
 from account_info.models import User
 
-from .models import Trip, TripLocation, TripMember, TripGuest
+from .models import Trip, TripLocation, TripMember, TripGuest, \
+    Item, ItemOwner
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Field, Div
@@ -140,3 +141,8 @@ class ItemForm(forms.Form):
         help_text="description"
     )
     quantity = forms.CharField(max_length=3)
+
+class ItemModelForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = []
