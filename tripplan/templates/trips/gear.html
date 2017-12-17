@@ -33,8 +33,19 @@
         type: "POST",
         success: function(data){
           console.log("Successfully added item")
+          if (data["msg"]) {
+            post_message(data["msg"]);
+          }
         }
       });
+    }
+
+    // Display success message after adding model instance.
+    function post_message(msg) {
+      var message_container = $("#message-container");
+      message_container.empty();
+      message_container.append('<li class="alert alert-success ajax-alert">' + msg + '</li>');
+      $(".ajax-alert").slideDown("fast");
     }
   </script>
 
