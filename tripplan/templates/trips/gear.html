@@ -31,12 +31,20 @@
         data,
         dataType: "json",
         type: "POST",
-        success: function(data){
+        success: function(data) {
           console.log("Successfully added item")
           if (data["msg"]) {
             post_message(data["msg"]);
           }
-        }
+        },
+        error: function(data, textStatus, jqXHR) {
+          console.log(data)
+          console.log(data.responseJSON['description'])
+          console.log("Error on post request")
+          console.log(jqXHR)
+          console.log(textStatus)
+          // alert(data["description"])
+        },
       });
     }
 

@@ -539,7 +539,7 @@ class AddItemView(LoginRequiredMixin, CreateView):
         """
         Set values for the form based on data passed by AJAX request and
         on intended functionality
-        # """
+        """
         f = form.save(commit=False)
         f.trip_id = self.request.POST.get('trip_id')
         f.save()
