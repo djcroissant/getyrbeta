@@ -19,16 +19,11 @@
       // Create handlers for save and cancel button
       // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
       $(".save-item").on("click", function() {
-        var description = $(this).parent().parent().find(".item-description").val();
-        var data = {
-          "description": description,
-          "trip_id": {{ trip.id }},
-          "csrfmiddlewaretoken": "{{ csrf_token }}",
-        }
+        var data = $(this).parent().parent().parent().find(".add-item-form").serialize();
         ajax_create_item(data);
       });
-
     });
+
     // POST to Item
     function ajax_create_item(data) {
       $.ajax({
@@ -37,6 +32,7 @@
         dataType: "json",
         type: "POST",
         success: function(data){
+          console.log("Successfully added item")
         }
       });
     }
@@ -107,11 +103,15 @@
       <script type="text/template" id="row-template">
         <tr>
           <th>
-            <i class="fa fa-lock fa-lg save-item" aria-hidden="false"></i>
+            <a href="#"><i class="fa fa-lock fa-lg save-item" aria-hidden="false"></i></a>
             <a href="#"><i class="fa fa-times fa-lg two-px-margin-left cancel-item" aria-hidden="false"></i></a>
           </th>
           <th class="item-form">
-            {{ form.description|add_class:"item-description" }}
+            <form class="add-item-form">
+              {% csrf_token %}
+              {{ form.description }}
+              {{ form.trip_id }}
+            </form>
           </th>
           {% for trip_member in trip_members %}
             <td class="item-form">{{ form.quantity|add_class:"item-quantity" }}</td>

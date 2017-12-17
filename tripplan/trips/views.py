@@ -17,7 +17,7 @@ from account_info.models import EmergencyContact
 from account_info.models import User
 
 from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
-    TripGuestForm, ItemForm, ItemModelForm
+    TripGuestForm, GenericItemForm, ItemModelForm
 
 
 class LoginRequiredMixin:
@@ -504,7 +504,7 @@ class EmergencyInfoListView(LoginRequiredMixin, ListView):
 
 class GearListView(LoginRequiredMixin, FormView):
     template_name = 'trips/gear.html'
-    form_class = ItemForm
+    form_class = GenericItemForm
 
     def get_context_data(self, **kwargs):
         context = super(GearListView, self).get_context_data(**kwargs)
@@ -523,7 +523,7 @@ class GearListView(LoginRequiredMixin, FormView):
                 trip=trip
             ).select_related('member')
         context['trip_members'] = trip_members
-
+        context['form'].fields['trip_id'].initial = trip.id
         return context
 
 class AddItemView(LoginRequiredMixin, CreateView):
@@ -539,14 +539,12 @@ class AddItemView(LoginRequiredMixin, CreateView):
         """
         Set values for the form based on data passed by AJAX request and
         on intended functionality
-        """
+        # """
         f = form.save(commit=False)
-        desc = self.request.POST.get('description')
-        f.description = desc
-        f.trip_id = int(self.request.POST.get('trip_id'))
+        f.trip_id = self.request.POST.get('trip_id')
         f.save()
         response = super(AddItemView, self).form_valid(form)
-        msg = ("Successfully added %s to the gear list." % desc)
+        msg = ("Successfully added %s to the gear list." % self.object.description)
         data = {
             'item_id': self.object.id,
             'msg': msg

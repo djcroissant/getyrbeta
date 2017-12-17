@@ -126,23 +126,27 @@ class TripGuestForm(forms.ModelForm):
         model = TripGuest
         fields = []
 
-class ItemForm(forms.Form):
+class GenericItemForm(forms.Form):
     """
-    Use Form class to create elements for template. Data from these
-    form fields will be submitted via AJAX requests only
-    auto-id is disabled to allow multiple instances of 'quantity'
+    Generic form used for creating fields in the template.
+    Data will be submitted by AJAX request only. The fields in this
+    generic form will be broken up and utilized as needed in the
+    AJAX requests. Auto-id is disabled to allow multiple instances of
+    'quantity'
     """
     def __init__(self, *args, **kwargs):
-        super(ItemForm, self).__init__(*args, **kwargs)
+        super(GenericItemForm, self).__init__(*args, **kwargs)
         self.auto_id=False
 
     description = forms.CharField(
         max_length=100,
         help_text="description"
     )
-    quantity = forms.CharField(max_length=3)
+    quantity = forms.IntegerField(min_value=0, max_value=999)
+
+    trip_id = forms.IntegerField(widget=forms.HiddenInput())
 
 class ItemModelForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = []
+        fields = ["description"]
