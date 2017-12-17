@@ -12,14 +12,25 @@
 {% block javascript_bottom %}
   {# add/edit gear #}
   <script>
+    // Enable hover response for buttons
+    $("button.link-button").hover(function() {
+      $(this).find("i.link-button").toggleClass('dark-hover');
+    });
+
     // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
       $(this).parent().before($("#row-template").html());
 
+      // Enable hover response for new buttons
+      $(this).parent().prev().find("button.link-button").hover(function() {
+        $(this).find("i.link-button").toggleClass('dark-hover');
+      });
+
       // Create handlers for save and cancel button
       // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
-      $(".save-item").on("click", function() {
-        var data = $(this).parent().parent().parent().find(".add-item-form").serialize();
+      $(".add-item-form").on("submit", function(event) {
+        event.preventDefault();
+        var data = $(this).serialize();
         ajax_create_item(data);
       });
     });
@@ -38,12 +49,7 @@
           }
         },
         error: function(data, textStatus, jqXHR) {
-          console.log(data)
-          console.log(data.responseJSON['description'])
-          console.log("Error on post request")
-          console.log(jqXHR)
-          console.log(textStatus)
-          // alert(data["description"])
+          post_message("Your gear was not able to be added. Please make sure you included a description")
         },
       });
     }
@@ -81,7 +87,6 @@
       <table id="gear-table" class="table table-header-rotated table-striped table-hover table-striped-column">
         <thead>
           <tr>
-            <th class="button-column"></th> {# column for buttons #}
             <th></th> {# column for item descriptions. I.e. row headers #}
 
             {# Following headers are rotated #}
@@ -94,12 +99,14 @@
         <tbody>
           {% for item in trip_items %}
             <tr>
-              <th class="no-wrap button-column">
-                <a href="#"><i class="fa fa-pencil fa-lg" aria-hidden="false"></i></a>
-                <a href="#"><i class="fa fa-trash fa-lg two-px-margin-left" aria-hidden="false"></i></a>
-              </th>
+              <th class="row-header no-wrap">
+                <div class="button-group">
+                  <button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button>
+                  <button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button>
+                </div>
 
-              <th class="row-header">{{ item.description }}</th>
+                {{ item.description }}
+              </th>
 
               {% for trip_member in trip_members %}
                 <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>
@@ -111,7 +118,7 @@
           {# final row holds add-new button #}
           <tr>
             <th id="add-gear" colspan="2">
-              <a href="#"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Add Gear</a>
+              <button class="btn link-button"><i class="fa fa-plus-circle fa-lg link-button" aria-hidden="true"></i> Add Gear</button>
             </th>
           </tr>
 
@@ -121,19 +128,19 @@
       {# hidden template row. Added to table when #add-gear is pressed #}
       <script type="text/template" id="row-template">
         <tr>
-          <th>
-            <a href="#"><i class="fa fa-lock fa-lg save-item" aria-hidden="false"></i></a>
-            <a href="#"><i class="fa fa-times fa-lg two-px-margin-left cancel-item" aria-hidden="false"></i></a>
-          </th>
-          <th class="item-form">
+          <th class="itemform-element no-wrap">
             <form class="add-item-form">
               {% csrf_token %}
-              {{ form.description }}
+              <div class="button-group">
+                <button class="btn link-button"><i class="fa fa-lock fa-lg link-button" aria-hidden="false"></i></button>
+                <button class="btn link-button"><i class="fa fa-times fa-lg link-button" aria-hidden="false"></i></button>
+              </div>
+              {{ form.description|add_class:"item-description" }}
               {{ form.trip_id }}
             </form>
           </th>
           {% for trip_member in trip_members %}
-            <td class="item-form">{{ form.quantity|add_class:"item-quantity" }}</td>
+            <td class="itemform-element">{{ form.quantity|add_class:"item-quantity" }}</td>
           {% endfor %}
         </tr>
       </script>
