@@ -42,8 +42,6 @@
 
     {% include 'project/header.html' %}
 
-    {% block below_nav %}{% endblock below_nav %}
-
     <ul id="message-container">
       {% if messages %}
         {% for message in messages %}
@@ -51,6 +49,8 @@
         {% endfor %}
       {% endif %}
     </ul>
+
+    {% block below_nav %}{% endblock below_nav %}
 
     <main>
       <div class="container">
