@@ -11,13 +11,13 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from .models import Trip, TripLocation, TripMember, ItemNotification, \
-    TripGuest, Item
+    TripGuest, Item, ItemOwner
 from account_info.models import EmergencyContact
 
 from account_info.models import User
 
 from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
-    TripGuestForm, GenericItemForm, ItemModelForm
+    TripGuestForm, GenericItemForm, ItemModelForm, ItemOwnerModelForm
 
 
 class LoginRequiredMixin:
@@ -537,8 +537,7 @@ class AddItemView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """
-        Set values for the form based on data passed by AJAX request and
-        on intended functionality
+        Set values for the form based on data passed by AJAX request
         """
         f = form.save(commit=False)
         f.trip_id = self.request.POST.get('trip_id')
@@ -549,4 +548,26 @@ class AddItemView(LoginRequiredMixin, CreateView):
             'item_id': self.object.id,
             'msg': msg
         }
+        return JsonResponse(data)
+
+class AddItemOwnerView(LoginRequiredMixin, CreateView):
+    model = ItemOwner
+    form_class = ItemOwnerModelForm
+    success_url = "#"
+
+    def form_invalid(self, form):
+        response = super(AddItemOwnerView, self).form_invalid(form)
+        return JsonResponse(form.errors, status=400)
+
+    def form_valid(self, form):
+        """
+        Set values for the form based on data passed by AJAX request
+        """
+        f = form.save(commit=False)
+        f.item_id = self.request.POST.get('item_id')
+        f.owner_id = self.request.POST.get('owner_id')
+        f.accept_reqd = self.request.POST.get('accept_reqd')
+        f.save()
+        response = super(AddItemOwnerView, self).form_valid(form)
+        data = {}
         return JsonResponse(data)

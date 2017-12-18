@@ -21,33 +21,35 @@
     $("#add-gear").on("click", function() {
       $(this).parent().before($("#row-template").html());
 
-      // Enable hover response for new buttons
+      // Enable hover response for new save and cancel buttons
       $(this).parent().prev().find("button.link-button").hover(function() {
         $(this).find("i.link-button").toggleClass('dark-hover');
       });
 
       // Create handlers for save and cancel button
-      // Passing csrf token with data due to CSRF_COOKIE_HTTPONLY
       $(".add-item-form").on("submit", function(event) {
         event.preventDefault();
-        var data = $(this).serialize();
-        ajax_create_item(data);
+        var form = $(this);
+        var data = form.serialize();
+        ajax_create_item(data, form); // send form for success function
       });
     });
 
     // POST to Item
-    function ajax_create_item(data) {
+    function ajax_create_item(data, form) {
       $.ajax({
         url: "{% url 'trips:add_item' %}",
-        data,
+        data: data,
         dataType: "json",
         type: "POST",
+
         success: function(data) {
-          console.log("Successfully added item")
           if (data["msg"]) {
             post_message(data["msg"]);
           }
+          create_item_owner(form, data["item_id"]);
         },
+
         error: function(data, textStatus, jqXHR) {
           post_message("Your gear was not able to be added. Please make sure you included a description")
         },
@@ -60,6 +62,15 @@
       message_container.empty();
       message_container.append('<li class="alert alert-success ajax-alert">' + msg + '</li>');
       $(".ajax-alert").slideDown("fast");
+    }
+
+    // Loop through all trip memeber columns and create instances
+    // of ItemOwner for new Item
+    function create_item_owner(form, item_id) {
+      var item_owner_forms = form.closest("tr").find("td.form");
+      console.log(item_owner_forms);
+      console.log(item_id);
+      // https://stackoverflow.com/questions/6539502/this-serialize-how-to-add-a-value
     }
   </script>
 
@@ -132,15 +143,23 @@
             <form class="add-item-form">
               {% csrf_token %}
               <div class="button-group">
-                <button class="btn link-button"><i class="fa fa-lock fa-lg link-button" aria-hidden="false"></i></button>
-                <button class="btn link-button"><i class="fa fa-times fa-lg link-button" aria-hidden="false"></i></button>
+                <button type="submit" class="btn link-button"><i class="fa fa-lock fa-lg link-button" aria-hidden="false"></i></button>
+                <button type="reset" class="btn link-button"><i class="fa fa-times fa-lg link-button" aria-hidden="false"></i></button>
               </div>
               {{ form.description|add_class:"item-description" }}
               {{ form.trip_id }}
             </form>
           </th>
           {% for trip_member in trip_members %}
-            <td class="itemform-element">{{ form.quantity|add_class:"item-quantity" }}</td>
+            <td class="itemform-element">
+              <form class="add-itemowner-form">
+                {% csrf_token %}
+                {{ form.quantity|add_class:"item-quantity" }}
+                {{ form.item_id }}
+                {{ form.owner_id }}
+                {{ form.accept_reqd }}
+              </form>
+            </td>
           {% endfor %}
         </tr>
       </script>

@@ -50,4 +50,6 @@ urlpatterns = [
         views.DeleteTripMemberView.as_view(), name='delete_trip_member'),
     url(r'^ajax/add_item/$',
         views.AddItemView.as_view(), name='add_item'),
+    url(r'^ajax/add_item_owner/$',
+        views.AddItemOwnerView.as_view(), name='add_item_owner'),
 ]
