@@ -152,7 +152,15 @@ class GenericItemForm(forms.Form):
 class ItemModelForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ["description"]
+        fields = ["description", "trip_id"]
+        # NOTE: May need to remove 'trip_id' from line above
+
+    description = forms.CharField(
+        max_length=100,
+        help_text="description"
+    )
+
+    trip_id = forms.IntegerField(widget=forms.HiddenInput())
 
 class ItemOwnerModelForm(forms.ModelForm):
     class Meta:

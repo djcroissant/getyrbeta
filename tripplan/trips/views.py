@@ -3,11 +3,12 @@ import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView, ListView, \
-    CreateView, DeleteView, DetailView, FormView, View
+    CreateView, DeleteView, DetailView, FormView, View, TemplateView
 from django.utils import timezone
 from django.contrib.auth import authenticate
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.core.mail import send_mail
+from django.template import RequestContext
 from django.template.loader import render_to_string
 
 from .models import Trip, TripLocation, TripMember, ItemNotification, \
@@ -502,9 +503,8 @@ class EmergencyInfoListView(LoginRequiredMixin, ListView):
         context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
         return context
 
-class GearListView(LoginRequiredMixin, FormView):
+class GearListView(LoginRequiredMixin, TemplateView):
     template_name = 'trips/gear.html'
-    form_class = GenericItemForm
 
     def get_context_data(self, **kwargs):
         context = super(GearListView, self).get_context_data(**kwargs)
@@ -523,13 +523,26 @@ class GearListView(LoginRequiredMixin, FormView):
                 trip=trip
             ).select_related('member')
         context['trip_members'] = trip_members
-        context['form'].fields['trip_id'].initial = trip.id
         return context
 
 class AddItemView(LoginRequiredMixin, CreateView):
     model = Item
     form_class = ItemModelForm
     success_url = "#"
+    template_name = 'trips/ajax/item.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        context = self.get_context_data(**kwargs)
+        return render(self.request, self.template_name, context)
+
+        # response = super(AddItemView, self).get(request, *args, **kwargs)
+        # return HttpResponse(response)
+
+    def get_context_data(self, **kwargs):
+        context = super(AddItemView, self).get_context_data(**kwargs)
+        context['form'].fields['trip_id'].initial = self.request.GET.get('trip_id')
+        return context
 
     def form_invalid(self, form):
         response = super(AddItemView, self).form_invalid(form)

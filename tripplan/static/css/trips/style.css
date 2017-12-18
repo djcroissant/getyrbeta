@@ -247,7 +247,7 @@ li.hidden_bullet {
   white-space: normal; /*whether to display in one line or not*/
 }
 /*Enable vertical stripping for readability*/
-.table-striped-column > thead > tr th:nth-of-type(even) div {
+.table-striped-column > thead > tr th:nth-of-type(odd) div {
     background-color: #e6f2ff;
 }
 .table-striped-column > tbody > tr td:nth-of-type(even) {
@@ -299,4 +299,8 @@ div.button-group {
 }
 .item-description {
   width: 200px;
+}
+span.hidden {
+  display: none;
+  visibility: hidden;
 }

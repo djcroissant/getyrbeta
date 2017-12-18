@@ -19,23 +19,53 @@
 
     // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
-      $(this).parent().before($("#row-template").html());
-
-      // Enable hover response for new save and cancel buttons
-      $(this).parent().prev().find("button.link-button").hover(function() {
-        $(this).find("i.link-button").toggleClass('dark-hover');
-      });
-
-      // Create handlers for save and cancel button
-      $(".add-item-form").on("submit", function(event) {
-        event.preventDefault();
-        var form = $(this);
-        var data = form.serialize();
-        ajax_create_item(data, form); // send form for success function
-      });
+      // $(this).parent().before($("#row-template").html());
+      var data = {
+        "trip_id": {{ trip.id }},
+      };
+      ajax_get_item(data);
     });
 
-    // POST to Item
+    // GET request to Item
+    function ajax_get_item(data) {
+      $.ajax({
+        url: "{% url 'trips:add_item' %}",
+        data: data,
+        // dataType: "json",
+        type: "GET",
+
+        success: function(response) {
+          // Add row for new item entry
+          $("#add-gear").parent().before(response);
+          var new_row = $("#add-gear").parent().prev();
+
+          // Enable hover response for new save and cancel buttons
+          new_row.find("button.link-button").hover(function() {
+            $(this).find("i.link-button").toggleClass('dark-hover');
+          });
+
+          // Create handlers for save and cancel button
+          new_row.find(".add-item-form").on("submit", function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var data = form.serialize();
+            ajax_create_item(data, form); // send form for success function
+          });
+
+
+
+
+
+        },
+
+        error: function(data, textStatus, jqXHR) {
+          post_message("GetYrBeta is acting up! Please contact customer support")
+        },
+      });
+    }
+
+
+    // POST request to Item
     function ajax_create_item(data, form) {
       $.ajax({
         url: "{% url 'trips:add_item' %}",
@@ -102,7 +132,12 @@
 
             {# Following headers are rotated #}
             {% for trip_member in trip_members %}
-              <th class="header rotate-45"><div><span>{{ trip_member.member.get_short_name }}</span></div></th>
+              <th class="header rotate-45 trip-member">
+                <div>
+                  <span>{{ trip_member.member.get_short_name }}</span>
+                  <span class="member_id hidden">{{ trip_member.member.id }}</span>
+                </div>
+              </th>
             {% endfor %}
 
           </tr>
@@ -128,7 +163,7 @@
 
           {# final row holds add-new button #}
           <tr>
-            <th id="add-gear" colspan="2">
+            <th id="add-gear">
               <button class="btn link-button"><i class="fa fa-plus-circle fa-lg link-button" aria-hidden="true"></i> Add Gear</button>
             </th>
           </tr>

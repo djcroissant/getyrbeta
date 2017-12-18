@@ -1,0 +1,15 @@
+{% load widget_tweaks %}
+
+<tr>
+  <th class="itemform-element no-wrap">
+    <form class="add-item-form">
+      {% csrf_token %}
+      <div class="button-group">
+        <button type="submit" class="btn link-button"><i class="fa fa-lock fa-lg link-button" aria-hidden="false"></i></button>
+        <button type="reset" class="btn link-button"><i class="fa fa-times fa-lg link-button" aria-hidden="false"></i></button>
+      </div>
+      {{ form.description|add_class:"item-description" }}
+      {{ form.trip_id }}
+    </form>
+  </th>
+</tr>
