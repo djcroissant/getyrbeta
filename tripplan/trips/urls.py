@@ -51,5 +51,5 @@ urlpatterns = [
     url(r'^ajax/add_item/$',
         views.AddItemView.as_view(), name='add_item'),
     url(r'^ajax/add_item_owner/$',
-        views.AddItemOwnerView.as_view(), name='add_item_owner'),
+        views.AddItemOwnerView.as_view(), name='add_itemowner'),
 ]

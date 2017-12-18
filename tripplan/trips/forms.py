@@ -153,7 +153,6 @@ class ItemModelForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ["description", "trip_id"]
-        # NOTE: May need to remove 'trip_id' from line above
 
     description = forms.CharField(
         max_length=100,
@@ -165,4 +164,9 @@ class ItemModelForm(forms.ModelForm):
 class ItemOwnerModelForm(forms.ModelForm):
     class Meta:
         model = ItemOwner
-        fields = ["quantity"]
+        fields = ["quantity", "item_id", "owner_id", "accept_reqd"]
+
+    quantity = forms.IntegerField(min_value=0, max_value=999)
+    item_id = forms.IntegerField(widget=forms.HiddenInput())
+    owner_id = forms.IntegerField(widget=forms.HiddenInput())
+    accept_reqd = forms.BooleanField(widget=forms.HiddenInput())

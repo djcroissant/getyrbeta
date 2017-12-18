@@ -19,19 +19,18 @@
 
     // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
-      // $(this).parent().before($("#row-template").html());
-      var data = {
+      var get_item_data = {
         "trip_id": {{ trip.id }},
       };
-      ajax_get_item(data);
+      ajax_get_item(get_item_data);
     });
 
     // GET request to Item
-    function ajax_get_item(data) {
+    function ajax_get_item(get_item_data) {
       $.ajax({
         url: "{% url 'trips:add_item' %}",
-        data: data,
-        // dataType: "json",
+        data: get_item_data,
+        dataType: "html",
         type: "GET",
 
         success: function(response) {
@@ -48,14 +47,36 @@
           new_row.find(".add-item-form").on("submit", function(event) {
             event.preventDefault();
             var form = $(this);
-            var data = form.serialize();
-            ajax_create_item(data, form); // send form for success function
+            var post_item_data = form.serialize();
+            ajax_create_item(post_item_data, form); // success function needs to know which form was submitted
           });
 
+          var owner_id = ""
+          var col_index = ""
+          $("th.trip-member").each(function(index) {
+            get_itemowner_data = {
+              "owner_id": parseInt($(this).find("span.member_id").text()),
+            };
+            ajax_get_itemowner(get_itemowner_data, new_row);
+          });
 
+        },
 
+        error: function(data, textStatus, jqXHR) {
+          post_message("GetYrBeta is acting up! Please contact customer support")
+        },
+      });
+    }
 
+    function ajax_get_itemowner(get_itemowner_data, new_row) {
+      $.ajax({
+        url: "{% url 'trips:add_itemowner' %}",
+        data: get_itemowner_data,
+        dataType: "html",
+        type: "GET",
 
+        success: function(response) {
+          new_row.append(response);
         },
 
         error: function(data, textStatus, jqXHR) {

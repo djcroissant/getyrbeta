@@ -536,9 +536,6 @@ class AddItemView(LoginRequiredMixin, CreateView):
         context = self.get_context_data(**kwargs)
         return render(self.request, self.template_name, context)
 
-        # response = super(AddItemView, self).get(request, *args, **kwargs)
-        # return HttpResponse(response)
-
     def get_context_data(self, **kwargs):
         context = super(AddItemView, self).get_context_data(**kwargs)
         context['form'].fields['trip_id'].initial = self.request.GET.get('trip_id')
@@ -567,6 +564,19 @@ class AddItemOwnerView(LoginRequiredMixin, CreateView):
     model = ItemOwner
     form_class = ItemOwnerModelForm
     success_url = "#"
+    template_name = 'trips/ajax/itemowner.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        context = self.get_context_data(**kwargs)
+        return render(self.request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        context = super(AddItemOwnerView, self).get_context_data(**kwargs)
+        context['form'].fields['owner_id'].initial = self.request.GET.get('owner_id')
+        # accept_reqd funtionality to be activated in future release
+        context['form'].fields['accept_reqd'].initial = False
+        return context
 
     def form_invalid(self, form):
         response = super(AddItemOwnerView, self).form_invalid(form)
