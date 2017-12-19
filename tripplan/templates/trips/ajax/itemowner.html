@@ -1,11 +1,9 @@
 {% load widget_tweaks %}
 
-<td class="itemform-element">
-  <form class="add-itemowner-form">
-    {% csrf_token %}
-    {{ form.quantity|add_class:"item-quantity" }}
-    {{ form.item_id }}
-    {{ form.owner_id }}
-    {{ form.accept_reqd }}
-  </form>
-</td>
+<form class="add-itemowner-form">
+  {% csrf_token %}
+  {{ form.quantity|add_class:"item-quantity" }}
+  {{ form.item_id }}
+  {{ form.owner_id }}
+  {{ form.accept_reqd }}
+</form>
