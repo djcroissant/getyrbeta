@@ -19,10 +19,7 @@
 
     // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
-      var get_item_data = {
-        "trip_id": {{ trip.id }},
-      };
-      ajax_get_item(get_item_data);
+      ajax_get_item();
     });
 
     // GET request to Item
@@ -30,7 +27,9 @@
     function ajax_get_item(get_item_data) {
       $.ajax({
         url: "{% url 'trips:add_item' %}",
-        data: get_item_data,
+        data: {
+          "trip_id": {{ trip.id }},
+        },
         dataType: "html",
         type: "GET",
 
@@ -48,15 +47,15 @@
           new_row.find(".add-item-form").on("submit", function(event) {
             event.preventDefault();
             var post_item_data = $(this).serialize();
-            ajax_post_item(post_item_data, new_row); // success function needs to know which form was submitted
+            // passing new_row allows multiple "row forms" to be open
+            ajax_post_item(post_item_data, new_row);
           });
 
-          var owner_id = ""
-          var col_index = ""
           $("th.trip-member").each(function() {
-            get_itemowner_data = {
+            var get_itemowner_data = {
               "owner_id": parseInt($(this).find("span.member_id").text()),
             };
+            console.log("owner_id: " + get_itemowner_data["owner_id"])
             ajax_get_itemowner(get_itemowner_data, new_row);
           });
 
@@ -103,9 +102,7 @@
           current_row.find("td.itemform-element").each(function() {
             if ($(this).find(".item-quantity").val() > 0) {
               $(this).find("[name=item_id]").val(data['item_id'])
-              console.log($(this).find("[name=item_id]").val())
               var post_itemowner_data = $(this).find("form").serialize();
-              // post_itemowner_data.push({item_id: data['item_id']});
               console.log(post_itemowner_data);
               ajax_post_itemowner(post_itemowner_data);
             }
@@ -123,12 +120,14 @@
       $.ajax({
         url: "{% url 'trips:add_itemowner' %}",
         data: post_itemowner_data,
-        // dataType: "json",
+        dataType: "json",
         type: "POST",
 
         success: function(data) {
-          // No action needed
-          console.log("itemowner post success")
+          // No message expected with current functionality
+          if (data["msg"]) {
+            post_message(data["msg"]);
+          }
         },
 
         error: function(data, textStatus, jqXHR) {
@@ -146,14 +145,6 @@
       $(".ajax-alert").slideDown("fast");
     }
 
-    // Loop through all trip memeber columns and create instances
-    // of ItemOwner for new Item
-    function create_item_owner(form, item_id) {
-      var item_owner_forms = form.closest("tr").find("td.form");
-      console.log(item_owner_forms);
-      console.log(item_id);
-      // https://stackoverflow.com/questions/6539502/this-serialize-how-to-add-a-value
-    }
   </script>
 
   {# sidebar slider #}

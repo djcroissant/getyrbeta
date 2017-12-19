@@ -18,7 +18,7 @@ from account_info.models import EmergencyContact
 from account_info.models import User
 
 from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
-    TripGuestForm, ItemModelForm, ItemOwnerModelForm, ItemOwnerTestForm
+    TripGuestForm, ItemModelForm, ItemOwnerModelForm
 
 
 class LoginRequiredMixin:
