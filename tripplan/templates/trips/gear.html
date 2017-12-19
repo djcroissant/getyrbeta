@@ -57,18 +57,8 @@
             };
             var td_class = "owner-id-" + get_itemowner_data["owner_id"]
             new_row.append('<td class="' + td_class + ' itemform-element"></td>')
-            console.log("owner_id from column header: " + get_itemowner_data["owner_id"]);
             ajax_get_itemowner(get_itemowner_data, td_class, new_row);
           });
-
-          //temp for logging:
-          // console.log("new_row: " + new_row.find(".add-item-form").find("[name=owner_id]"));
-          // new_row.find(".add-item-form").find("[name=owner_id]").each(function() {
-          //     console.log("resulting sequence: " + $(this).val());
-          // });
-          // end logging
-
-
         },
 
         error: function(data, textStatus, jqXHR) {
@@ -80,7 +70,6 @@
     // Get request to ItemOwner.
     // Returns ItemOwner form.
     function ajax_get_itemowner(get_itemowner_data, td_class, current_row) {
-      console.log("get_itemowner_data received: " + get_itemowner_data["owner_id"]);
       $.ajax({
         url: "{% url 'trips:add_itemowner' %}",
         data: get_itemowner_data,
@@ -89,7 +78,6 @@
 
         success: function(response) {
           current_row.find("." + td_class).append(response);
-          console.log("appended form element with class:" + td_class);
         },
 
         error: function(data, textStatus, jqXHR) {
@@ -115,7 +103,6 @@
             if ($(this).find(".item-quantity").val() > 0) {
               $(this).find("[name=item_id]").val(data['item_id'])
               var post_itemowner_data = $(this).find("form").serialize();
-              console.log(post_itemowner_data);
               ajax_post_itemowner(post_itemowner_data);
             }
           });
