@@ -66,7 +66,7 @@ class InviteEmailMixin:
     def email_invitation(self, status="registered"):
         trip = get_object_or_404(
             Trip,
-            id=int(self.kwargs.get('trip_id'))
+            id=int(self.request.POST.get('trip_id'))
         )
 
         if status == "nonregistered":
