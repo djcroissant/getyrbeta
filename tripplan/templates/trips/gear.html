@@ -26,6 +26,7 @@
     });
 
     // GET request to Item
+    // Returns Item form
     function ajax_get_item(get_item_data) {
       $.ajax({
         url: "{% url 'trips:add_item' %}",
@@ -46,14 +47,13 @@
           // Create handlers for save and cancel button
           new_row.find(".add-item-form").on("submit", function(event) {
             event.preventDefault();
-            var form = $(this);
-            var post_item_data = form.serialize();
-            ajax_create_item(post_item_data, form); // success function needs to know which form was submitted
+            var post_item_data = $(this).serialize();
+            ajax_post_item(post_item_data, new_row); // success function needs to know which form was submitted
           });
 
           var owner_id = ""
           var col_index = ""
-          $("th.trip-member").each(function(index) {
+          $("th.trip-member").each(function() {
             get_itemowner_data = {
               "owner_id": parseInt($(this).find("span.member_id").text()),
             };
@@ -68,6 +68,8 @@
       });
     }
 
+    // Get request to ItemOwner.
+    // Returns ItemOwner form.
     function ajax_get_itemowner(get_itemowner_data, new_row) {
       $.ajax({
         url: "{% url 'trips:add_itemowner' %}",
@@ -85,12 +87,11 @@
       });
     }
 
-
     // POST request to Item
-    function ajax_create_item(data, form) {
+    function ajax_post_item(post_item_data, current_row) {
       $.ajax({
         url: "{% url 'trips:add_item' %}",
-        data: data,
+        data: post_item_data,
         dataType: "json",
         type: "POST",
 
@@ -98,11 +99,41 @@
           if (data["msg"]) {
             post_message(data["msg"]);
           }
-          create_item_owner(form, data["item_id"]);
+
+          current_row.find("td.itemform-element").each(function() {
+            if ($(this).find(".item-quantity").val() > 0) {
+              $(this).find("[name=item_id]").val(data['item_id'])
+              console.log($(this).find("[name=item_id]").val())
+              var post_itemowner_data = $(this).find("form").serialize();
+              // post_itemowner_data.push({item_id: data['item_id']});
+              console.log(post_itemowner_data);
+              ajax_post_itemowner(post_itemowner_data);
+            }
+          });
         },
 
         error: function(data, textStatus, jqXHR) {
           post_message("Your gear was not able to be added. Please make sure you included a description")
+        },
+      });
+    }
+
+    // POST request to ItemOwner
+    function ajax_post_itemowner(post_itemowner_data) {
+      $.ajax({
+        url: "{% url 'trips:add_itemowner' %}",
+        data: post_itemowner_data,
+        // dataType: "json",
+        type: "POST",
+
+        success: function(data) {
+          // No action needed
+          console.log("itemowner post success")
+        },
+
+        error: function(data, textStatus, jqXHR) {
+          post_message("Your gear was not able to be added. Please make sure you included a description")
+          console.log("itemowner post fail")
         },
       });
     }

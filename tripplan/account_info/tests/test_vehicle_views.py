@@ -255,7 +255,6 @@ class VehicleDeleteViewTests(TestCase):
         '''
         v = Vehicle.objects.create(make='suzuki', model='baja', color='red',
         lic_plate_st='WA', lic_plate_num='10', owner=self.user)
-        # import pdb; pdb.set_trace()
         request = self.factory.get(reverse('account_info:vehicle_delete',
             args = [v.id]))
         request.user = self.user

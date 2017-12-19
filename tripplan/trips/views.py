@@ -18,7 +18,7 @@ from account_info.models import EmergencyContact
 from account_info.models import User
 
 from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
-    TripGuestForm, GenericItemForm, ItemModelForm, ItemOwnerModelForm
+    TripGuestForm, ItemModelForm, ItemOwnerModelForm, ItemOwnerTestForm
 
 
 class LoginRequiredMixin:
@@ -397,7 +397,6 @@ class AddTripGuestView(LoginRequiredMixin, InviteEmailMixin, CreateView):
         Person being invited = self.request.POST.get('email')
         Person sending the invitation = self.request.user.email
         """
-        import pdb; pdb.set_trace()
         f = form.save(commit=False)
         f.trip_id = int(self.request.POST.get('trip_id'))
         f.email = self.request.POST.get('email')
@@ -575,11 +574,13 @@ class AddItemOwnerView(LoginRequiredMixin, CreateView):
         context = super(AddItemOwnerView, self).get_context_data(**kwargs)
         context['form'].fields['owner_id'].initial = self.request.GET.get('owner_id')
         # accept_reqd funtionality to be activated in future release
+        # setting all to False for now
         context['form'].fields['accept_reqd'].initial = False
         return context
 
     def form_invalid(self, form):
         response = super(AddItemOwnerView, self).form_invalid(form)
+        import pdb; pdb.set_trace()
         return JsonResponse(form.errors, status=400)
 
     def form_valid(self, form):
@@ -589,7 +590,6 @@ class AddItemOwnerView(LoginRequiredMixin, CreateView):
         f = form.save(commit=False)
         f.item_id = self.request.POST.get('item_id')
         f.owner_id = self.request.POST.get('owner_id')
-        f.accept_reqd = self.request.POST.get('accept_reqd')
         f.save()
         response = super(AddItemOwnerView, self).form_valid(form)
         data = {}

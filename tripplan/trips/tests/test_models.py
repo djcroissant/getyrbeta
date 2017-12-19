@@ -313,7 +313,6 @@ class TripLocationTests(TestCase):
         location_type = 'CM'
         test = TripLocation.objects.create(date=date,
             trip=self.trip, location_type=location_type)
-        # import pdb; pdb.set_trace()
         self.assertRaises(ValueError, lambda: test.get_date())
 
     def test_get_date_method_returns_date(self):

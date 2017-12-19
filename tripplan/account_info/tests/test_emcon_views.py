@@ -256,7 +256,6 @@ class EmergencyContactDeleteViewTests(TestCase):
         '''
         ec = EmergencyContact.objects.create(full_name='Don Gately',
             relationship='Buddy', user = self.user)
-        # import pdb; pdb.set_trace()
         request = self.factory.get(reverse('account_info:emerg_contact_delete',
             args = [ec.id]))
         request.user = self.user
