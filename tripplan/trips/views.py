@@ -10,6 +10,7 @@ from django.http import JsonResponse, Http404, HttpResponse
 from django.core.mail import send_mail
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.db.models.functions import Lower
 
 from .models import Trip, TripLocation, TripMember, ItemNotification, \
     TripGuest, Item, ItemOwner
@@ -516,7 +517,7 @@ class GearListView(LoginRequiredMixin, TemplateView):
             ).prefetch_related(
                 'item_owners'
             )
-        context['trip_items'] = trip_items
+        context['trip_items'] = trip_items.order_by(Lower('description'))
 
         trip_members = TripMember.objects.filter(
                 trip=trip
