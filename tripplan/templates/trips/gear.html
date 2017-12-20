@@ -13,9 +13,12 @@
   {# add/edit gear #}
   <script>
     // Enable hover response for buttons
-    $("button.link-button").hover(function() {
-      $(this).find("i.link-button").toggleClass('dark-hover');
-    });
+    function add_hover(buttons) {
+      buttons.hover(function() {
+        $(this).find("i.link-button").toggleClass('dark-hover');
+      });
+    }
+    add_hover($("button.link-button"));
 
     // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
@@ -39,9 +42,7 @@
           var new_row = $("#add-gear").parent().prev();
 
           // Enable hover response for new save and cancel buttons
-          new_row.find("button.link-button").hover(function() {
-            $(this).find("i.link-button").toggleClass('dark-hover');
-          });
+          add_hover(new_row.find("button.link-button"));
 
           // Create handlers for save and cancel button
           new_row.find(".add-item-form").on("submit", function(event) {
@@ -122,10 +123,9 @@
             th_element.find("form").replaceWith(function() {
               return '<div class="button-group"><button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button><button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button></div><span>' + $(this).find(".item-description").val() + '</span>';
             });
-            // Enable hover response for new save and cancel buttons
-            th_element.find("button.link-button").hover(function() {
-              $(this).find("i.link-button").toggleClass('dark-hover');
-            });
+            // Enable hover response for new edit and delete buttons
+            add_hover(th_element.find("button.link-button"));
+
             // Replace quantity text boxes to with plain text
             var td_elements = current_row.find("td");
             td_elements.removeClass();
