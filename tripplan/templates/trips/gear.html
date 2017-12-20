@@ -1,7 +1,6 @@
 {% extends 'project/base.html' %}
 
 {% load static %}
-{% load trips_tags %}
 {% load widget_tweaks %}
 
 {% block stylesheet %}
@@ -111,6 +110,22 @@
         error: function(data, textStatus, jqXHR) {
           post_message("Your gear was not able to be added. Please make sure you included a description")
         },
+
+        complete: function(jqXHR, textStatus) {
+          if (textStatus === "success") {
+            var th_element = current_row.find("th");
+            th_element.removeClass("itemform-element");
+            th_element.addClass("row-header");
+            th_element.find("form").replaceWith(function() {
+              return '<div class="button-group"><button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button><button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button></div><span>' + $(this).find(".item-description").val() + '</span>';
+            });
+            var td_elements = current_row.find("td");
+            td_elements.removeClass();
+            td_elements.find("form").replaceWith(function() {
+              return '<span>' + $(this).find(".item-quantity").val() + '</span>';
+            });
+          }
+        }
       });
     }
 
@@ -165,7 +180,6 @@
       <h1>Gear</h1>
     </div>
 
-    {# Table of users and emergency contacts #}
     <div class="x-scroll">
       <table id="gear-table" class="table table-header-rotated table-striped table-hover table-striped-column">
         <thead>
@@ -186,14 +200,14 @@
         </thead>
         <tbody>
           {% for item in trip_items %}
-            <tr>
+            {<tr>
               <th class="row-header no-wrap">
                 <div class="button-group">
                   <button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button>
                   <button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button>
                 </div>
 
-                {{ item.description }}
+                <span>{{ item.description }}</span>
               </th>
 
               {% for trip_member in trip_members %}
@@ -212,35 +226,6 @@
 
         </tbody>
       </table>
-
-      {# hidden template row. Added to table when #add-gear is pressed #}
-      <script type="text/template" id="row-template">
-        <tr>
-          <th class="itemform-element no-wrap">
-            <form class="add-item-form">
-              {% csrf_token %}
-              <div class="button-group">
-                <button type="submit" class="btn link-button"><i class="fa fa-lock fa-lg link-button" aria-hidden="false"></i></button>
-                <button type="reset" class="btn link-button"><i class="fa fa-times fa-lg link-button" aria-hidden="false"></i></button>
-              </div>
-              {{ form.description|add_class:"item-description" }}
-              {{ form.trip_id }}
-            </form>
-          </th>
-          {% for trip_member in trip_members %}
-            <td class="itemform-element">
-              <form class="add-itemowner-form">
-                {% csrf_token %}
-                {{ form.quantity|add_class:"item-quantity" }}
-                {{ form.item_id }}
-                {{ form.owner_id }}
-                {{ form.accept_reqd }}
-              </form>
-            </td>
-          {% endfor %}
-        </tr>
-      </script>
-
     </div>
   </div>
 {% endblock content %}
