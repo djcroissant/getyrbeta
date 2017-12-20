@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load widget_tweaks %}
+{% load trips_tags %}
 
 {% block stylesheet %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
@@ -113,12 +114,19 @@
 
         complete: function(jqXHR, textStatus) {
           if (textStatus === "success") {
+            // Add edit/delete buttons
+            // Replace description text box with plain text
             var th_element = current_row.find("th");
             th_element.removeClass("itemform-element");
             th_element.addClass("row-header");
             th_element.find("form").replaceWith(function() {
               return '<div class="button-group"><button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button><button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button></div><span>' + $(this).find(".item-description").val() + '</span>';
             });
+            // Enable hover response for new save and cancel buttons
+            th_element.find("button.link-button").hover(function() {
+              $(this).find("i.link-button").toggleClass('dark-hover');
+            });
+            // Replace quantity text boxes to with plain text
             var td_elements = current_row.find("td");
             td_elements.removeClass();
             td_elements.find("form").replaceWith(function() {
@@ -200,7 +208,7 @@
         </thead>
         <tbody>
           {% for item in trip_items %}
-            {<tr>
+            <tr>
               <th class="row-header no-wrap">
                 <div class="button-group">
                   <button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button>
