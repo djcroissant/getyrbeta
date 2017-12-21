@@ -12,13 +12,29 @@
 {% block javascript_bottom %}
   {# add/edit gear #}
   <script>
-    // Enable hover response for buttons
-    function add_hover(buttons) {
+    // Handler for button hover (shades button like a link)
+    function handle_hover(buttons) {
       buttons.hover(function() {
         $(this).find("i.link-button").toggleClass('dark-hover');
       });
     }
-    add_hover($("button.link-button"));
+    handle_hover($("button.link-button"));
+
+    // Handler for edit button
+    function handle_edit(buttons) {
+      buttons.on("click", function() {
+        alert("Edit functionality coming (very) soon!");
+      });
+    }
+    handle_edit($(".edit-button"));
+
+    // Handler for delete button
+    function handle_delete(buttons) {
+      buttons.on("click", function() {
+        alert("Delete functionality coming (very) soon!");
+      });
+    }
+    handle_delete($(".delete-button"));
 
     // Handler for "Add Gear" link. Adds text entry fields.
     $("#add-gear").on("click", function() {
@@ -42,7 +58,7 @@
           var new_row = $("#add-gear").parent().prev();
 
           // Enable hover response for new save and cancel buttons
-          add_hover(new_row.find("button.link-button"));
+          handle_hover(new_row.find("button.link-button"));
 
           // Create handlers for save and cancel button
           new_row.find(".add-item-form").on("submit", function(event) {
@@ -68,7 +84,7 @@
       });
     }
 
-    // Get request to ItemOwner.
+    // GET request to ItemOwner.
     // Returns ItemOwner form.
     function ajax_get_itemowner(get_itemowner_data, td_class, current_row) {
       $.ajax({
@@ -121,12 +137,14 @@
             th_element.removeClass("itemform-element");
             th_element.addClass("row-header");
             th_element.find("form").replaceWith(function() {
-              return '<div class="button-group"><button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button><button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button></div><span>' + $(this).find(".item-description").val() + '</span>';
+              return '<div class="button-group"><button class="btn link-button edit-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button><button class="btn link-button delete-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button></div><span>' + $(this).find(".item-description").val() + '</span>';
             });
-            // Enable hover response for new edit and delete buttons
-            add_hover(th_element.find("button.link-button"));
+            // Enable responses for new edit and delete buttons
+            handle_hover(th_element.find("button.link-button"));
+            handle_edit(th_element.find("button.edit-button"));
+            handle_delete(th_element.find("button.delete-button"));
 
-            // Replace quantity text boxes to with plain text
+            // Replace quantity text boxes with plain text
             var td_elements = current_row.find("td");
             td_elements.removeClass();
             td_elements.find("form").replaceWith(function() {
@@ -211,8 +229,8 @@
             <tr>
               <th class="row-header no-wrap">
                 <div class="button-group">
-                  <button class="btn link-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button>
-                  <button class="btn link-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button>
+                  <button class="btn link-button edit-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button>
+                  <button class="btn link-button delete-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button>
                 </div>
 
                 <span>{{ item.description }}</span>
