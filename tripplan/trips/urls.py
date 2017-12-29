@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from django.views.generic import TemplateView
 
 from . import views
 
@@ -36,6 +35,10 @@ urlpatterns = [
     # Gear Info
     url(r'^(?P<trip_id>[0-9]+)/gear/$',
         views.GearListView.as_view(), name='gear'),
+
+    # PDF preview
+    url(r'^(?P<trip_id>[0-9]+)/preview/$',
+        views.PreviewView.as_view(), name='preview'),
 
     # AJAX requests:
     url(r'^ajax/user_exists/$',

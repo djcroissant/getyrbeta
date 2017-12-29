@@ -1,0 +1,35 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
+{% endblock stylesheet %}
+
+{% block javascript_bottom %}
+  {# sidebar slider #}
+  <script src="{% static 'js/project/sidebar_menu.js' %}"></script>
+{% endblock javascript_bottom %}
+
+{% block below_nav %}
+  {% include "project/sidebar_button.html" %}
+{% endblock below_nav %}
+
+{% block content %}
+  {# sidebar #}
+  {% include "trips/sidebar_menu.html" %}
+
+  {# main content #}
+  <div id="content">
+
+    <div class="banner-logo">
+      <h1>Trip Plan</h1>
+    </div>
+
+    <a href="{% url 'pdfgen:test' %}" name="makepdf" class="btn btn-secondary">Make pdf</a>
+    {% comment %}
+    {% endcomment %}
+
+  </div>
+{% endblock content %}

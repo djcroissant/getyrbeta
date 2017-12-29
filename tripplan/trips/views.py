@@ -595,3 +595,12 @@ class AddItemOwnerView(LoginRequiredMixin, CreateView):
         response = super(AddItemOwnerView, self).form_valid(form)
         data = {}
         return JsonResponse(data)
+
+class PreviewView(LoginRequiredMixin, TemplateView):
+    template_name = 'trips/preview.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PreviewView, self).get_context_data(**kwargs)
+        trip = Trip.objects.get(pk=self.kwargs['trip_id'])
+        context['trip'] = trip
+        return context

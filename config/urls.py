@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^account_info/', include('account_info.urls')),
     url(r'^trips/', include('trips.urls')),
     url(r'^about/', site_views.AboutView.as_view(), name='about'),
+    url(r'^pdfgen/', include('pdfgen.urls')),
 
     # User management. Allauth urls overwritten in authentication app
     # will be matched first.
