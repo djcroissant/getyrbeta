@@ -31,3 +31,8 @@ pytz==2017.2
 
 # Modify form fields from template
 django-widget-tweaks==1.4.1
+
+# Render pdf documents
+reportlab==3.4.0
+django-easy-pdf==0.1.1
+xhtml2pdf==0.2b1

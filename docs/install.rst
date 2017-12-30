@@ -62,3 +62,11 @@ Mailgun
 Mailgun credentials are not required for development. All emails will be
 snubbed and displayed in the terminal. Mailgun setup is described for
 production in docs/deploy.rst.
+
+Easy PDF
+--------
+Currently using stable version 0.1.1. However, note that a new PDF rendering
+backend using WeasyPrint (instead of xhtml2pdf)for more accurate rendering
+is in development under the develop branch. See 
+https://github.com/nigma/django-easy-pdf/pull/34
+for changes, testing and discussion.

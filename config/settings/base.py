@@ -51,7 +51,8 @@ THIRD_PARTY_APPS = [
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
     'allauth.socialaccount.providers.facebook',
-    'widget_tweaks'
+    'widget_tweaks',
+    'easy_pdf',
 ]
 
 # Apps specific for this project go here.
@@ -61,6 +62,7 @@ LOCAL_APPS = [
     'authentication.apps.AuthenticationConfig',
     'trips.apps.TripsConfig',
     'site_info.apps.SiteInfoConfig',
+    'pdfgen.apps.PdfgenConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
