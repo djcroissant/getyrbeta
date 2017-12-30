@@ -1,3 +1,5 @@
+from django.urls import reverse
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -33,3 +35,6 @@ def hello_world(request):
     p.showPage()
     p.save()
     return response
+
+def TripPlanView(TemplateView)
+    template_name = "pdfgen/trip_plan.html"
