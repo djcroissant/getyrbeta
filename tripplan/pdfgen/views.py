@@ -1,12 +1,15 @@
 from django.urls import reverse
-from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 
+from easy_pdf.views import PDFTemplateView
+
+from trips.models import Trip, TripMember
 
 def hello_world(request):
     # Create HttpResponse object.
@@ -36,5 +39,14 @@ def hello_world(request):
     p.save()
     return response
 
-def TripPlanView(TemplateView)
+class TripPlanView(TemplateView):
     template_name = "pdfgen/trip_plan.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TripPlanView, self).get_context_data(**kwargs)
+        context['object_list'] = TripMember.objects.filter(
+            trip_id = self.kwargs['trip_id'],
+            accept_reqd = False
+        )
+        context['trip'] = Trip.objects.get(pk=self.kwargs['trip_id'])
+        return context
