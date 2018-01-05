@@ -3,8 +3,338 @@
 {% load static %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/project/sidebar_menu.css' %}" />
+
+{% comment %}
+Current version of django-easy-pdf does not support static files.
+This requires CSS to be inline, which is a little clumsy. Good news:
+django-easy-print is working on an upgrade to fix this (using WeasyPrint).
+I'm reducing CSS to a minimum for now and will refactor after
+the django-easy-pdf upgrade is moved to from development to stable release.
+{% endcomment %}
+<style type="text/css">
+  /* Style adopted from the following file
+  <link rel="stylesheet" type="text/css" href="{% static 'css/project/theme.css' %}" /> */
+  .banner-logo {
+    margin-bottom: 20pt;
+  }
+  .banner-logo h1{
+    color: #ff8000;
+    font-size: 2.4em;
+    /* will add custom fonts after django-easy-pdf upgrade */
+    /* font-family: 'american_typewriter'; */
+    /* letter-spacing: -1px; */
+  }
+</style>
+
+<style type="text/css">
+  /* Style adopted from the following file
+  <link rel="stylesheet" type="text/css" href="{% static 'css/trips/style.css' %}" /> */
+  /* =======General for all pages within Trips app======= */
+  .trip-list {
+    background: #e6f2ff;
+    margin-bottom: 50px;
+  }
+  .trip-list .header {
+    background: #99ccff;
+    padding: 2pt;
+  }
+  li.hidden_bullet {
+    list-style:none;
+  }
+  .header i{
+    margin-left: 7pt;
+  }
+  .header h2{
+    font-size: 1.3em;
+    margin: 2px 20px 2px 2px;
+    display: inline-block;
+  }
+  .header a{
+    font-size: 1.2em;
+  }
+  .bold-label {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+  .trip-info {
+    font-size: 0.9em;
+  }
+  .list-padding {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  /* =======Location Form======= */
+  #id_title {
+    width: 100%
+  }
+
+  #id_latitude {
+    width: 40%
+  }
+
+  #id_longitude {
+    width: 40%
+  }
+  .location_date {
+    font-size: 1.1em;
+    margin-left: 5px;
+  }
+
+  /* =======Member search field======= */
+  #id_email_search {
+    width: 80%;
+    margin: 8px;
+  }
+
+  .trip-forms .form-control-label {
+    font-size: 1.1em;
+  }
+
+  #confirm-add-member {
+    display: none;
+  }
+
+  #current-member-alert {
+    display: none;
+    padding: 1px;
+  }
+
+  #confirm-add-member p{
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  #confirm-add-member button{
+    margin: 2px;
+  }
+
+  #new-member-added {
+    display: none;
+  }
+
+
+  /* =======Notifications======= */
+  #trip-notifications .trip-id {
+    display: none;
+  }
+
+
+  /* =======Google Map API======= */
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 100%;
+  }
+
+  #infowindow-content .title {
+    font-weight: bold;
+  }
+
+  #infowindow-content {
+    display: none;
+  }
+
+  #map #infowindow-content {
+    display: inline;
+  }
+
+  .pac-card {
+    margin: 10px 10px 0 0;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    font-family: Futura;
+    letter-spacing: .5pt;
+    margin-bottom: 30px;
+  }
+
+  #pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+  }
+
+  #pac-input {
+    background-color: #fff;
+    font-family: Futura;
+    font-size: 1.2em;
+    font-weight: 300;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-top: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 99%;
+  }
+
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
+
+  #title {
+    color: #fff;
+    background-color: #4d90fe;
+    font-size: 1.2em;
+    font-weight: 500;
+    padding: 6px 12px;
+  }
+  #start_date {
+    display: none;
+  }
+  #div_id_start_date {
+    margin-bottom: 0;
+  }
+
+  /* =======Trip's Emergency Info======= */
+  .nineoneone {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: firebrick;
+  }
+  .einfo p {
+    margin: 0;
+  }
+  .margin-sixteen {
+    margin-bottom: 16px;
+  }
+  .italic {
+    font-style: italic;
+  }
+  #emergency-info-table {
+    width: 100%;
+  }
+  #emergency-info-table td, #emergency-info-table th {
+    border: 1px solid black;
+    padding: 6px;
+  }
+  #emergency-info-table th {
+    background: #99ccff;
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+  #emergency-info-table tr:nth-child(even) {
+    background-color: white;
+  }
+
+  /* =======Trip's Gear List======= */
+  /*Style for 1st column. I.e. row header.*/
+  .table-header-rotated th.row-header {
+    width: 280px;
+    font-weight: bold;
+    text-align: left;
+  }
+  /*Style settings for body of table*/
+  .table-header-rotated td {
+    width: 50px;
+    border: 1px solid #dddddd;
+    vertical-align: middle;
+    text-align: center;
+  }
+  /*Set dimensions of rotated table header*/
+  .table-header-rotated th.rotate-45{
+    height: 160px;
+    width: 50px;
+    position: relative;
+    vertical-align: bottom;
+    padding: 0;
+    font-size: 12px;
+    line-height: 0.8;
+  }
+  /*rotate the div containing the text of the header*/
+  .table-header-rotated th.rotate-45 > div{
+    position: relative;
+    top: 0px;
+    left: 80px; /* 160 * tan(45) / 2 = 80 where 160 is the height on the cell and 45 is the transform angle*/
+    height: 100%;
+    -ms-transform:skew(-45deg,0deg);
+    -moz-transform:skew(-45deg,0deg);
+    -webkit-transform:skew(-45deg,0deg);
+    -o-transform:skew(-45deg,0deg);
+    transform:skew(-45deg,0deg);
+    overflow: hidden;
+
+  }
+  /*rotate the text of the header*/
+  .table-header-rotated th.rotate-45 span {
+    -ms-transform:skew(45deg,0deg) rotate(315deg);
+    -moz-transform:skew(45deg,0deg) rotate(315deg);
+    -webkit-transform:skew(45deg,0deg) rotate(315deg);
+    -o-transform:skew(45deg,0deg) rotate(315deg);
+    transform:skew(45deg,0deg) rotate(315deg);
+    position: absolute;
+    bottom: 33px; /* 40 cos(45) = 28 with an additional 5px margin*/
+    left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
+    display: inline-block;
+    width: 100%;
+    width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
+    text-align: left;
+    white-space: normal; /*whether to display in one line or not*/
+  }
+  /*Enable vertical stripping for readability*/
+  .table-striped-column > thead > tr th:nth-of-type(odd) div {
+      background-color: #e6f2ff;
+  }
+  .table-striped-column > tbody > tr td:nth-of-type(even) {
+      background-color: #e6f2ff;
+  }
+  /*Enable scrolling if table exceeds width of div due to number of users*/
+  .x-scroll {
+    overflow-x:auto;
+  }
+  /*Modify bootstrap border default for table header*/
+  .table thead th {
+    border-bottom: none;
+    border-top: none;
+  }
+  /*Remove border from add-gear cell*/
+  #add-gear {
+    border-right: none;
+    text-align: left;
+    /*background-color: white;*/
+  }
+  /*Prevent text from wrapping*/
+  .no-wrap {
+    white-space: nowrap;
+  }
+  .item-quantity {
+    width: 40px;
+  }
+  .table td.itemform-element, .table th.itemform-element {
+    padding: 2px;
+    vertical-align: middle;
+  }
+  #gear-table.table {
+    width: auto;
+  }
+  button.link-button {
+    background-color: Transparent;
+    padding: 3px;
+  }
+  i.link-button {
+    color: #007bff;
+  }
+  i.dark-hover {
+    color: #0260bb;
+  }
+  div.button-group {
+    margin-left: 10px;
+    margin-right: 15px;
+    display: inline;
+  }
+  .item-description {
+    width: 200px;
+  }
+  span.hidden {
+    display: none;
+    visibility: hidden;
+  }
+
+</style>
+
 {% endblock stylesheet %}
 
 {% block content %}

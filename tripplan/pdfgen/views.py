@@ -39,8 +39,9 @@ def hello_world(request):
     p.save()
     return response
 
-class TripPlanView(TemplateView):
+class TripPlanView(PDFTemplateView):
     template_name = "pdfgen/trip_plan.html"
+    # pdf_filename = "test.pdf"
 
     def get_context_data(self, **kwargs):
         context = super(TripPlanView, self).get_context_data(**kwargs)
