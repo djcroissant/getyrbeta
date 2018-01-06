@@ -44,12 +44,13 @@
         {% endfor %}
 
         {# final row holds add-new button #}
-        <tr>
-          <th id="add-gear">
-            <button class="btn link-button"><i class="fa fa-plus-circle fa-lg link-button" aria-hidden="true"></i> Add Gear</button>
-          </th>
-        </tr>
-
+        {% if pdf == False %}
+          <tr>
+            <th id="add-gear">
+              <button class="btn link-button"><i class="fa fa-plus-circle fa-lg link-button" aria-hidden="true"></i> Add Gear</button>
+            </th>
+          </tr>
+        {% endif %}
       </tbody>
     </table>
   </div>

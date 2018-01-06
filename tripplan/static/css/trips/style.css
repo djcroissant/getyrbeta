@@ -219,22 +219,23 @@ li.hidden_bullet {
   position: relative;
   top: 0px;
   left: 80px; /* 160 * tan(45) / 2 = 80 where 160 is the height on the cell and 45 is the transform angle*/
-  height: 100%;
-  -ms-transform:skew(-45deg,0deg);
-  -moz-transform:skew(-45deg,0deg);
-  -webkit-transform:skew(-45deg,0deg);
-  -o-transform:skew(-45deg,0deg);
-  transform:skew(-45deg,0deg);
-  overflow: hidden;
-
+  height: 160px;
+  -ms-transform:skewX(-45deg);
+  -moz-transform:skewX(-45deg);
+  -webkit-transform:skewX(-45deg);
+  -o-transform:skewX(-45deg);
+  transform:skewX(-45deg);
+  border-right: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
 }
 /*rotate the text of the header*/
+/*span skew and div skew cancel each other so text looks normal*/
 .table-header-rotated th.rotate-45 span {
-  -ms-transform:skew(45deg,0deg) rotate(315deg);
-  -moz-transform:skew(45deg,0deg) rotate(315deg);
-  -webkit-transform:skew(45deg,0deg) rotate(315deg);
-  -o-transform:skew(45deg,0deg) rotate(315deg);
-  transform:skew(45deg,0deg) rotate(315deg);
+  -ms-transform:skewX(45deg) rotate(315deg);
+  -moz-transform:skewX(45deg) rotate(315deg);
+  -webkit-transform:skewX(45deg) rotate(315deg);
+  -o-transform:skewX(45deg) rotate(315deg);
+  transform:skewX(45deg) rotate(315deg);
   position: absolute;
   bottom: 33px; /* 40 cos(45) = 28 with an additional 5px margin*/
   left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/

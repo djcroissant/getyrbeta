@@ -7,7 +7,15 @@
 {% endblock stylesheet %}
 
 {% block content %}
-  {% include "trips/partials/emergency_info_content.html" %}
-  {% include "trips/partials/detail_content.html" %}
-  {% include "trips/partials/gear_content.html" %}
+  <div>
+    {% include "trips/partials/emergency_info_content.html" %}
+  </div>
+
+  <div class="page-break-before">
+    {% include "trips/partials/detail_content.html" %}
+  </div>
+
+  <div class="page-break-before">
+    {% include "trips/partials/gear_content.html" with pdf=True %}
+  </div>
 {% endblock content %}
