@@ -21,44 +21,5 @@
   {% include "trips/sidebar_menu.html" %}
 
   {# main content #}
-  <div id="content">
-
-    <div class="banner-logo">
-      <h1>Emergency Info</h1>
-      <h5>To report a lost hiker, dial <span class="nineoneone">911</span></h5>
-    </div>
-
-    {# Table of users and emergency contacts #}
-    <div class="trip-list">
-
-      <table id="emergency-info-table">
-        <tr>
-          <th class="header">Trip Member</th>
-          <th class="header">Emergency Contact</th>
-        </tr>
-        {% for object in object_list %}
-          <tr>
-            {# user info #}
-            <td>
-              {% include "trips/person_details.html" with object=object.member %}
-            </td>
-
-            {# emergency contact info #}
-            <td>
-              {% if object.member.emergencycontact_set.all %}
-                {% for object in object.member.emergencycontact_set.all %}
-                  {% include "trips/person_details.html" with object=object %}
-                  <hr>
-                {% endfor %}
-              {% else %}
-                <div class="einfo">
-                  <p class="italic">None provided</p>
-                </div>
-              {% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
+  {% include "trips/partials/emergency_info_content.html" %}
 {% endblock content %}

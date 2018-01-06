@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import reverse
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -41,7 +42,8 @@ def hello_world(request):
 
 class TripPlanView(PDFTemplateView):
     template_name = "pdfgen/trip_plan.html"
-    # pdf_filename = "test.pdf"
+    # base_url = settings.STATIC_ROOT
+    # download_filename = "test.pdf"
 
     def get_context_data(self, **kwargs):
         context = super(TripPlanView, self).get_context_data(**kwargs)

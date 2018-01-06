@@ -11,7 +11,7 @@
   border-right: 1px solid black;
   float: left;
 }
-#content {
+.trip-content {
   margin-left: 270px;
 }
 #sidebar .heading {
@@ -61,7 +61,7 @@
     overflow: auto;
     visibility: hidden;
   }
-  #content {
+  .trip-content {
     margin-left: 0px;
   }
   #sidebar-toggle {

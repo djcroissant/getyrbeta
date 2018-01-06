@@ -175,6 +175,7 @@ li.hidden_bullet {
 }
 #emergency-info-table {
   width: 100%;
+  border-collapse: collapse;
 }
 #emergency-info-table td, #emergency-info-table th {
   border: 1px solid black;
