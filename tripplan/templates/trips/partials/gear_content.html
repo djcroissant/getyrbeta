@@ -1,0 +1,56 @@
+{% load trips_tags %}
+
+<div class="trip-content">
+
+  <div class="banner-logo">
+    <h1>Gear</h1>
+  </div>
+
+  <div class="x-scroll">
+    <table id="gear-table" class="table table-header-rotated table-striped-row table-hover table-striped-column">
+      <thead>
+        <tr>
+          <th></th> {# column for item descriptions. I.e. row headers #}
+
+          {# Following headers are rotated #}
+          {% for trip_member in trip_members %}
+            <th class="header rotate-45 trip-member">
+              <div>
+                <span>{{ trip_member.member.get_short_name }}</span>
+                <span class="member_id hidden">{{ trip_member.member.id }}</span>
+              </div>
+            </th>
+          {% endfor %}
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in trip_items %}
+          <tr>
+            <th class="row-header no-wrap">
+              <div class="button-group">
+                <button class="btn link-button edit-button"><i class="fa fa-pencil fa-lg link-button" aria-hidden="false"></i></button>
+                <button class="btn link-button delete-button"><i class="fa fa-trash fa-lg link-button" aria-hidden="false"></i></button>
+              </div>
+
+              <span>{{ item.description }}</span>
+            </th>
+
+            {% for trip_member in trip_members %}
+              <td>{{ item.itemowner_set|get_quantity:trip_member.member }}</td>
+            {% endfor %}
+
+          </tr>
+        {% endfor %}
+
+        {# final row holds add-new button #}
+        <tr>
+          <th id="add-gear">
+            <button class="btn link-button"><i class="fa fa-plus-circle fa-lg link-button" aria-hidden="true"></i> Add Gear</button>
+          </th>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

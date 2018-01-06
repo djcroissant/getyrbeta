@@ -5,10 +5,11 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import TemplateView
+from django.db.models.functions import Lower
 
 from easy_pdf.views import PDFTemplateView
 
-from trips.models import Trip, TripMember, TripLocation
+from trips.models import Trip, TripMember, TripLocation, Item
 
 def hello_world(request):
     # Create HttpResponse object.
@@ -64,4 +65,17 @@ class TripPlanView(PDFTemplateView):
         context['objective_dict'] = trip.get_location_context(
             TripLocation.OBJECTIVE)
         context['camp_dict'] = trip.get_location_context(TripLocation.CAMP)
+
+        # Context for gear list
+        trip_items = Item.objects.filter(
+                trip_id = self.kwargs['trip_id']
+            ).prefetch_related(
+                'item_owners'
+            )
+        context['trip_items'] = trip_items.order_by(Lower('description'))
+
+        trip_members = TripMember.objects.filter(
+                trip=trip
+            ).select_related('member')
+        context['trip_members'] = trip_members
         return context

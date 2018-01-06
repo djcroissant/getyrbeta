@@ -204,7 +204,7 @@ li.hidden_bullet {
   vertical-align: middle;
   text-align: center;
 }
-/*Set dimensions of rotated table header*/
+/* Set dimensions of rotated table header*/
 .table-header-rotated th.rotate-45{
   height: 160px;
   width: 50px;
@@ -242,7 +242,7 @@ li.hidden_bullet {
   width: 100%;
   width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
   text-align: left;
-  white-space: normal; /*whether to display in one line or not*/
+  white-space: normal; /*whether to display in one line or not */
 }
 /*Enable vertical stripping for readability*/
 .table-striped-column > thead > tr th:nth-of-type(odd) div {
@@ -250,6 +250,9 @@ li.hidden_bullet {
 }
 .table-striped-column > tbody > tr td:nth-of-type(even) {
     background-color: #e6f2ff;
+}
+.table-striped-row > tbody > tr:nth-child(odd) {
+  background-color: #f2f2f2;
 }
 /*Enable scrolling if table exceeds width of div due to number of users*/
 .x-scroll {
@@ -279,6 +282,7 @@ li.hidden_bullet {
 }
 #gear-table.table {
   width: auto;
+  border-collapse: collapse;
 }
 button.link-button {
   background-color: Transparent;
