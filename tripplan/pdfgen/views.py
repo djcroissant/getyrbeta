@@ -52,6 +52,3 @@ class TripPlanView(PDFTemplateView):
             ).select_related('member')
         context['trip_members'] = trip_members
         return context
-
-class SaveTripPlanView(TripPlanView):
-    download_filename = "getyrbeta_trip_plan.pdf"
