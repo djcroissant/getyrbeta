@@ -182,7 +182,7 @@ class TripDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TripDetailView, self).get_context_data(**kwargs)
         trip = self.get_object()
-        context['page_title'] = trip.title
+        context['detail_page_title'] = trip.title
         if trip.number_nights > 0:
             context['end_date'] = trip.start_date + datetime.timedelta(
                 days=trip.number_nights)
