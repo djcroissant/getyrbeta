@@ -15,10 +15,6 @@ from trips.models import Trip, TripMember, TripLocation, Item
 class TripPlanView(PDFTemplateView):
     template_name = "pdfgen/trip_plan.html"
     base_url = 'file://' + settings.STATIC_ROOT + '/'
-    # base_url = 'file://' + settings.STATICFILES_DIRS[0] + '/'
-    # base_url = "file:///Users/djCroissant/projects/python-projects/tripplan/tripplan"
-    # base_url = "file:///Users/djCroissant/projects/python-projects/tripplan/tripplan/static/"
-    # import pdb; pdb.set_trace()
     # download_filename = "test.pdf"
 
     def get_context_data(self, **kwargs):
