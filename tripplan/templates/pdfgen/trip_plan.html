@@ -1,10 +1,50 @@
 {% extends 'pdfgen/pdf_base.html' %}
 
-{% block stylesheet %}
+{% load static %}
+
+{% comment %}
   <link rel="stylesheet" type="text/css" href="http://localhost:8000/static/css/pdfgen/style.css" />
   <link rel="stylesheet" type="text/css" href="http://localhost:8000/static/css/project/theme.css" />
   <link rel="stylesheet" type="text/css" href="http://localhost:8000/static/css/trips/style.css" />
+{% endcomment %}
+
+{% comment %}
+  <link rel="stylesheet" type="text/css" href="{% static '/css/pdfgen/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static '/css/project/theme.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static '/css/trips/style.css' %}" />
+{% endcomment %}
+
+{% comment %}
+  <link rel="stylesheet" type="text/css" href="css/pdfgen/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/project/theme.css" />
+  <link rel="stylesheet" type="text/css" href="css/trips/style.css" />
+{% endcomment %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" type="text/css" href="css/pdfgen/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/project/theme.css" />
+  <link rel="stylesheet" type="text/css" href="css/trips/style.css" />
 {% endblock stylesheet %}
+
+{% comment %}
+  <link rel="stylesheet" type="text/css" href="file:///Users/djCroissant/projects/python-projects/tripplan/tripplan/static/css/pdfgen/style.css" />
+  <link rel="stylesheet" type="text/css" href="file:///Users/djCroissant/projects/python-projects/tripplan/tripplan/static/css/project/theme.css" />
+  <link rel="stylesheet" type="text/css" href="file:///Users/djCroissant/projects/python-projects/tripplan/tripplan/static/css/trips/style.css" />
+{% endcomment %}
+
+{% comment %}
+  <link rel="stylesheet" type="text/css" href="file:///Users/djCroissant/projects/python-projects/tripplan/tripplan{% static '/css/pdfgen/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="file:///Users/djCroissant/projects/python-projects/tripplan/tripplan{% static '/css/project/theme.css' %}" />
+  <link rel="stylesheet" type="text/css" href="file:///Users/djCroissant/projects/python-projects/tripplan/tripplan{% static '/css/trips/style.css' %}" />
+{% endcomment %}
+
+{% comment %}
+  <link rel="stylesheet" type="text/css" href="{% static '/css/pdfgen/style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static '/css/project/theme.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static '/css/trips/style.css' %}" />
+{% endcomment %}
+
+
 
 {% block content %}
   <div>
