@@ -3028,12 +3028,12 @@
 /* Banner */
 
 	#banner {
-		background-attachment: scroll,							fixed;
+		background-attachment: fixed,							scroll;
 		background-color: #666;
-		background-image: url("images/overlay.png"), url("../../images/banner.jpg");
-		background-position: top left,						center center;
-		background-repeat: repeat,							no-repeat;
-		background-size: auto,							cover;
+		background-image: url("../../images/site_info/banner.jpg"), url("images/overlay.png");
+		background-position: center center,						top left;
+		background-repeat: no-repeat,						repeat;
+		background-size: cover,						auto;
 		color: #fff;
 		padding: 12em 0 20em 0;
 		text-align: center;
