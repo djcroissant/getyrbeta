@@ -1,4 +1,6 @@
 from django import forms
+from django.core.mail import send_mail
+
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Div, Field, ButtonHolder
@@ -83,4 +85,20 @@ class ContactForm(forms.Form):
 
     def send_email(self):
         # send email using the self.cleaned_data dictionary
-        pass
+        # import pdb; pdb.set_trace()
+        subject = "[GYB Contact] " + self.cleaned_data['subject']
+        from_email = self.cleaned_data['email']
+        to_email = ("derek.covey@gmail.com",)
+        message = "Name: %s\nEmail: %s\n\n" % (
+            self.cleaned_data['name'],
+            from_email,
+        )
+        message += self.cleaned_data['message']
+
+        send_mail(
+            subject,
+            message,
+            from_email,
+            to_email,
+            fail_silently=False,
+        )
