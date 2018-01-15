@@ -1,52 +1,95 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}<!DOCTYPE HTML>
+<!--
+	Alpha by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>{% block title %}Get Yr Beta{% endblock %}</title>
-  <link rel="shortcut icon" type="image/ico" href="{% static 'images/site_info/favicon.ico' %}"/>
-  <meta name="Description" content="Get Yr Beta is a trip planning application. It will facilitate, automate, and coordinate planning logistics for outdoor adventures. Create your trip, invite your friends, add your objectives, and assign group gear. Get Yr Beta makes planning easy and keeps your team safe.">
-  <meta property="og:title" content="Organize Your Next Adventure" />
-  <meta property="og:description" content="Get Yr Beta is a trip planning application. It will facilitate, automate, and coordinate planning logistics for outdoor adventures. Create your trip, invite your friends, add your objectives, and assign group gear. Get Yr Beta makes planning easy and keeps your team safe." />
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Get Yr Beta" />
-  <meta property="og:url" content="https://getyrbeta.com{{ request.path }}" />
-  <meta property="og:locale" content="en_US" />
-  <meta property="og:image" content="https://getyrbeta.com{% static 'images/site_info/GYB_1x1.png' %}" />
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="150" />
-  <meta property="og:image:height" content="150" />
+	<head>
+		<title>{% block title %}Get Yr Beta - Welcome{% endblock title %}</title>
+    <link rel="shortcut icon" type="image/ico" href="{% static 'images/site_info/favicon.ico' %}"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="{% static 'js/site_info/ie/html5shiv.js' %}"></script><![endif]-->
 
-  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <![endif]-->
+    <meta name="Description" content="Get Yr Beta is a trip planning application. It will facilitate, automate, and coordinate planning logistics for outdoor adventures. Create your trip, invite your friends, add your objectives, and assign group gear. Get Yr Beta makes planning easy and keeps your team safe.">
+    <meta property="og:title" content="Organize Your Next Adventure" />
+    <meta property="og:description" content="Get Yr Beta is a trip planning application. It will facilitate, automate, and coordinate planning logistics for outdoor adventures. Create your trip, invite your friends, add your objectives, and assign group gear. Get Yr Beta makes planning easy and keeps your team safe." />
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Get Yr Beta" />
+    <meta property="og:url" content="https://getyrbeta.com{{ request.path }}" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://getyrbeta.com{% static 'images/site_info/GYB_1x1.png' %}" />
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="150" />
+    <meta property="og:image:height" content="150" />
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-  <!-- Bootstrap Social CSS -->
-  <link rel="stylesheet" type="text/css" href="{% static 'css/project/bootstrap_social.css' %}" />
-  <!-- Navbar CSS -->
-  <link rel="stylesheet" type="text/css" href="{% static 'css/project/navbar.css' %}" />
-  <!-- Font Awesome CSS-->
-  <script src="https://use.fontawesome.com/8a609c9c4b.js"></script>
-  <!-- Sitewide CSS -->
-  <link rel="stylesheet" type="text/css" href="{% static 'css/project/theme.css' %}" />
-  <!-- Addins from apps -->
-  {% block stylesheet %}{% endblock %}
+    <!-- HTML5UP CSS -->
+		<link rel="stylesheet" href="{% static 'css/site_info/main.css' %}" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/site_info/ie8.css' %}" /><![endif]-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <!-- Bootstrap Social CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/bootstrap_social.css' %}" />
+    <!-- Navbar CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/navbar.css' %}" />
+    <!-- Font Awesome CSS-->
+    <script src="https://use.fontawesome.com/8a609c9c4b.js"></script>
+    <!-- Sitewide CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/project/theme.css' %}" />
+    <!-- Addins from apps -->
+    {% block stylesheet %}{% endblock %}
 </head>
-<body>
-  {% block javascript_top %}{% endblock javascript_top%}
+<body class="landing">
+  <div id="page-wrapper">
 
-    {% include 'project/header.html' %}
+    <!-- Header -->
+      <header id="header" class="alt">
+        <nav id="nav">
+          {% if user.is_authenticated %}
+            <ul>
+              <li>
+                <a href="#" class="icon fa-angle-down">Trip</a>
+								<ul>
+									<li><a href="#">Overview</a></li>
+									<li><a href="#">Members</a></li>
+									<li><a href="#">Emergency Info</a></li>
+									<li><a href="#">Gear List</a></li>
+									<li><a href="#">Trip Plan</a></li>
+								</ul>
+              </li>
+              <li><a href="#">Notifications</a></li>
+              <li>
+                <a href="#" class="icon fa-angle-down">My Account</a>
+								<ul>
+									<li><a href="#">Profile</a></li>
+									<li><a href="#">Emergency Contact</a></li>
+									<li><a href="#">Vehicle Info</a></li>
+									<li><a href="#">Login Info</a></li>
+								</ul>
+              </li>
+              <li><a href="#" class="button">Contact</a></li>
+              <li><a href="{% url 'authentication:logout' %}" class="button">Sign Out</a></li>
+            </ul>
+          {% else %}
+            <ul>
+              <li><a href="#">Contact</a></li>
+              <li><a href="{% url 'authentication:login' %}">Log In</a></li>
+              <li><a href="{% url 'authentication:signup' %}" class="button">Sign Up</a></li>
+            </ul>
+          {% endif %}
+        </nav>
+      </header>
 
-    <ul id="message-container">
-      {% if messages %}
-        {% for message in messages %}
-          <li class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</li>
-        {% endfor %}
-      {% endif %}
-    </ul>
+      <messages>
+        <ul id="message-container">
+          {% if messages %}
+            {% for message in messages %}
+              <li class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+      </messages>
 
     {% block below_nav %}{% endblock below_nav %}
 
