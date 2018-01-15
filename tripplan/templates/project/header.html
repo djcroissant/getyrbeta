@@ -25,10 +25,6 @@
           <a class="nav-link" href="{% url 'authentication:logout' %}">Sign out</a>
         </li>
       </ul>
-      {% else %}
-        <div class="ml-auto" id="navbar-links">
-          <a href="{% url 'about' %}" title="About" class="navbar-link">About</a>
-        </div>
       {% endif %}
     </div>
   </nav>

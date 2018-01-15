@@ -14,9 +14,6 @@ class HomeView(TemplateView):
         else:
             return super(HomeView, self).dispatch(request, *args, **kwargs)
 
-class AboutView(TemplateView):
-    template_name = 'site_info/about.html'
-
 class ContactView(FormView):
     template_name = 'site_info/contact.html'
     form_class = ContactForm
