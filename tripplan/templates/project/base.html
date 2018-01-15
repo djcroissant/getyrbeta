@@ -27,8 +27,10 @@
     <!-- HTML5UP CSS -->
 		<link rel="stylesheet" href="{% static 'css/site_info/main.css' %}" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/site_info/ie8.css' %}" /><![endif]-->
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+      <!-- Bootstrap CSS -->
+    <!-- Bootstrap doesn't play well with HTML5 UP -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"> -->
     <!-- Bootstrap Social CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/project/bootstrap_social.css' %}" />
     <!-- Navbar CSS -->
@@ -39,11 +41,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/project/theme.css' %}" />
     <!-- Addins from apps -->
     {% block stylesheet %}{% endblock %}
-</head>
-<body class="landing">
-  <div id="page-wrapper">
 
-    <!-- Header -->
+
+
+  </head>
+  <body class="landing">
+    <div id="page-wrapper">
+
+      <!-- Header -->
       <header id="header" class="alt">
         <nav id="nav">
           {% if user.is_authenticated %}
@@ -81,6 +86,7 @@
         </nav>
       </header>
 
+			{% comment %}
       <messages>
         <ul id="message-container">
           {% if messages %}
@@ -90,10 +96,9 @@
           {% endif %}
         </ul>
       </messages>
+		  {% endcomment %}
 
-      <main>
-        {% block content %}{% endblock content %}
-      </main>
+      {% block content %}{% endblock content %}
 
     	<!-- Footer -->
   		<footer id="footer">
@@ -123,6 +128,7 @@
   	<!--[if lte IE 8]><script src="{% static 'js/site_info/ie/respond.min.js' %}"></script><![endif]-->
   	<script src="{% static 'js/site_info/main.js' %}"></script>
 
+
     <!-- Was using before HTML5 UP -->
     <script src="{% static 'js/jquery-3.2.1.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -133,5 +139,6 @@
     <!-- Also should be able to change javascript_bottom to just javascript -->
 
     {% block javascript_bottom %}{% endblock javascript_bottom %}
+
   </body>
 </html>

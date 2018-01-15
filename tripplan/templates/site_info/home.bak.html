@@ -1,0 +1,169 @@
+{% load static %}<!DOCTYPE HTML>
+<!--
+	Alpha by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Get Yr Beta - Welcome</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="{% static 'js/site_info/ie/html5shiv.js' %}"></script><![endif]-->
+		<link rel="stylesheet" href="{% static 'css/site_info/main.css' %}" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/site_info/ie8.css' %}" /><![endif]-->
+
+		<!-- Font Awesome CSS-->
+	  <script src="https://use.fontawesome.com/8a609c9c4b.js"></script>
+	</head>
+	<body class="landing">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header" class="alt">
+					<nav id="nav">
+						<ul>
+							<li><a href="#">Contact</a></li>
+							<li><a href="{% url 'authentication:login' %}">Log In</a></li>
+							<li><a href="{% url 'authentication:signup' %}" class="button">Sign Up</a></li>
+						</ul>
+					</nav>
+				</header>
+
+
+
+
+			<!-- Banner -->
+				<section id="banner">
+					<h2>Get Yr Beta</h2>
+					<p>Facilitate, automate, and coordinate planning logistics for outdoor adventures.</p>
+					<ul class="actions">
+						<li><a href="{% url 'authentication:signup' %}" class="button special">Sign Up</a></li>
+						<li><a href="{% url 'authentication:login' %}" class="button">Log In</a></li>
+					</ul>
+				</section>
+
+			<!-- Main -->
+				<section id="main" class="container">
+
+					<section class="box special">
+						<header class="major">
+							<h2>Rapid trip planning means
+								<br/>more time doing what you love</h2>
+							<p>Create your trip, invite your friends, add your objectives, and assign group gear.
+							<br/>Get Yr Beta makes planning easy and keeps your team safe.
+				    </p></p>
+						</header>
+						<span class="image featured"><img src="{% static 'images/site_info/featured.jpg' %}" alt="" /></span>
+					</section>
+
+					<section class="box special features">
+						<div class="features-row">
+							<section>
+								<span class="icon major fa-map-marker accent2"></span>
+								<h3>Route Planning</h3>
+								<p>Plan your route by entering your trailhead, objectives, and camp locations. Get Yr Beta makes it easy with built-in Google Maps and automatic coordinates.</p>
+							</section>
+							<section>
+								<span class="icon major fa-users accent3"></span>
+								<h3>Trip Roster</h3>
+								<p>Add people to the trip by email address. Whether you're on a trip with a buddy or planning for the whole crew, Get Yr Beta will keep track of who's in.</p>
+							</section>
+						</div>
+						<div class="features-row">
+							<section>
+								<span class="icon major fa-bolt accent4"></span>
+								<h3>Emergency Info</h3>
+								<p>Maintain up to date emergency contact information for everyone on the trip. Gey Yr Beta will send the final trip plan to specified emergency contacts.</p>
+							</section>
+							<section>
+								<span class="icon major fa-list-ol accent5"></span>
+								<h3>Packing List</h3>
+								<p>Create a gear list and make assignments. Get Yr Beta will keep you organized and make sure everyone knows what they're supposed to bring.</p>
+							</section>
+						</div>
+					</section>
+
+					<div class="row">
+						<div class="6u 12u(narrower)">
+
+							<section class="box special">
+								<span class="image featured"><img src="{% static 'images/site_info/about.jpg' %}" alt="" /></span>
+								<h3>About</h3>
+								<p>The idea for Get Yr Beta stemmed from weekly meetings with the Boeing Alpine Club.
+					      Collecting numbers, route planning, and assigning gear took
+					      longer than anyone wanted. Get Yr Beta was born to streamline this process and get everyone out to
+					      9lb Hammer sooner than later.</p>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/derek-covey-1928b07b/" class="icon fa-linkedin"><span class="label">Linked In</span></a></li>
+								</ul>
+							</section>
+
+						</div>
+						<div class="6u 12u(narrower)">
+
+							<section class="box special">
+								<span class="image featured"><img src="{% static 'images/site_info/source_code.jpg' %}" alt="" /></span>
+								<h3>Source Code</h3>
+								<p>Get Yr Beta is an open source project under GNU General Public License.
+								   The full source code is available on Github. If you're into mountaineering and coding,
+									 pat yourself on the back, you're not alone. Come join the team! To get involved,
+									 drop me a line using the Contact form.
+								<ul class="icons">
+									<li><a href="https://github.com/djcroissant/getyrbeta" class="icon fa-github"><span class="label">Github</span></a></li>
+								</ul>
+							</section>
+
+						</div>
+					</div>
+
+				</section>
+
+			<!-- CTA -->
+			{% comment %}
+				<section id="cta">
+
+					<h2>Sign up for beta access</h2>
+					<p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc.</p>
+
+					<form>
+						<div class="row uniform 50%">
+							<div class="8u 12u(mobilep)">
+								<input type="email" name="email" id="email" placeholder="Email Address" />
+							</div>
+							<div class="4u 12u(mobilep)">
+								<input type="submit" value="Sign Up" class="fit" />
+							</div>
+						</div>
+					</form>
+
+				</section>
+			{% endcomment %}
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="icons">
+						<li><a href="https://github.com/djcroissant/getyrbeta" class="icon fa-github"><span class="label">Github</span></a></li>
+						<li><a href="https://www.linkedin.com/in/derek-covey-1928b07b/" class="icon fa-linkedin"><span class="label">Linked In</span></a></li>
+						<li><a href="https://www.instagram.com/croissantdj/?hl=en" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://www.facebook.com/derek.covey" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="https://twitter.com/croissantdj" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy; Derek Covey 2018. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'js/site_info/jquery.min.js' %}"></script>
+			<script src="{% static 'js/site_info/jquery.dropotron.min.js' %}"></script>
+			<script src="{% static 'js/site_info/jquery.scrollgress.min.js' %}"></script>
+			<script src="{% static 'js/site_info/skel.min.js' %}"></script>
+			<script src="{% static 'js/site_info/util.js' %}"></script>
+			<!--[if lte IE 8]><script src="{% static 'js/site_info/ie/respond.min.js' %}"></script><![endif]-->
+			<script src="{% static 'js/site_info/main.js' %}"></script>
+
+	</body>
+</html>
