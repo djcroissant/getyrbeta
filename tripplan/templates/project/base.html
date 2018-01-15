@@ -91,31 +91,47 @@
         </ul>
       </messages>
 
-    <main>
-      {% block content %}{% endblock content %}
-    </main>
+      <main>
+        {% block content %}{% endblock content %}
+      </main>
 
-  <!-- JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    	<!-- Footer -->
+  		<footer id="footer">
+  			<ul class="icons">
+  				<li><a href="https://github.com/djcroissant/getyrbeta" class="icon fa-github"><span class="label">Github</span></a></li>
+  				<li><a href="https://www.linkedin.com/in/derek-covey-1928b07b/" class="icon fa-linkedin"><span class="label">Linked In</span></a></li>
+  				<li><a href="https://www.instagram.com/croissantdj/?hl=en" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+  				<li><a href="https://www.facebook.com/derek.covey" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+  				<li><a href="https://twitter.com/croissantdj" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+  			</ul>
+  			<ul class="copyright">
+  				<li>&copy; Derek Covey 2018. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+  			</ul>
+  		</footer>
 
-  <!-- Came with HTML5 UP -->
-	<script src="{% static 'js/site_info/jquery.min.js' %}"></script>
-	<script src="{% static 'js/site_info/jquery.dropotron.min.js' %}"></script>
-	<script src="{% static 'js/site_info/jquery.scrollgress.min.js' %}"></script>
-	<script src="{% static 'js/site_info/skel.min.js' %}"></script>
-	<script src="{% static 'js/site_info/util.js' %}"></script>
-	<!--[if lte IE 8]><script src="{% static 'js/site_info/ie/respond.min.js' %}"></script><![endif]-->
-	<script src="{% static 'js/site_info/main.js' %}"></script>
+    </div>
 
-  <!-- Was using before HTML5 UP -->
-  <script src="{% static 'js/jquery-3.2.1.js' %}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-  <script src="{% static 'js/disable_submit_button.js' %}"></script>
+    <!-- JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-  <!-- Should be able to combine jquery-3.2.1, jquery.min.js, and jquery-ui -->
-  <!-- Also should be able to change javascript_bottom to just javascript -->
+    <!-- Came with HTML5 UP -->
+  	<script src="{% static 'js/site_info/jquery.min.js' %}"></script>
+  	<script src="{% static 'js/site_info/jquery.dropotron.min.js' %}"></script>
+  	<script src="{% static 'js/site_info/jquery.scrollgress.min.js' %}"></script>
+  	<script src="{% static 'js/site_info/skel.min.js' %}"></script>
+  	<script src="{% static 'js/site_info/util.js' %}"></script>
+  	<!--[if lte IE 8]><script src="{% static 'js/site_info/ie/respond.min.js' %}"></script><![endif]-->
+  	<script src="{% static 'js/site_info/main.js' %}"></script>
 
-  {% block javascript_bottom %}{% endblock javascript_bottom %}
-</body>
+    <!-- Was using before HTML5 UP -->
+    <script src="{% static 'js/jquery-3.2.1.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="{% static 'js/disable_submit_button.js' %}"></script>
+
+    <!-- Should be able to combine jquery-3.2.1, jquery.min.js, and jquery-ui -->
+    <!-- Also should be able to change javascript_bottom to just javascript -->
+
+    {% block javascript_bottom %}{% endblock javascript_bottom %}
+  </body>
 </html>
