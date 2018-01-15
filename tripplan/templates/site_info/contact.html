@@ -2,49 +2,19 @@
 
 {% load static %}
 
-{% block title %}Welcome · Get Yr Beta{% endblock %}
+{% block title %}Contact · Get Yr Beta{% endblock %}
 
 {% block content %}
-			<!-- Main -->
-				<section id="main" class="container 75%">
-					<header>
-						<h2>Contact Us</h2>
-						<p>Comments or questions? Drop us a line.</p>
-					</header>
-					<div class="box">
-				    {% load crispy_forms_tags %}
-				    {% crispy form form.helper %}
-					</div>
-				</section>
+	<!-- Main -->
+	<section id="main" class="container 75%">
+		<header>
+			<h2>Contact Us</h2>
+			<p>Comments or questions? Drop us a line.</p>
+		</header>
+		<div class="box">
+	    {% load crispy_forms_tags %}
+	    {% crispy form form.helper %}
+		</div>
+	</section>
 
 {% endblock content %}
-
-{% comment %}
-						<form method="post" action="#">
-							<div class="row uniform 50%">
-								<div class="6u 12u(mobilep)">
-									<input type="text" name="name" id="name" value="" placeholder="Name" />
-								</div>
-								<div class="6u 12u(mobilep)">
-									<input type="email" name="email" id="email" value="" placeholder="Email" />
-								</div>
-							</div>
-							<div class="row uniform 50%">
-								<div class="12u">
-									<input type="text" name="subject" id="subject" value="" placeholder="Subject" />
-								</div>
-							</div>
-							<div class="row uniform 50%">
-								<div class="12u">
-									<textarea name="message" id="message" placeholder="Enter your message" rows="6"></textarea>
-								</div>
-							</div>
-							<div class="row uniform">
-								<div class="12u">
-									<ul class="actions align-center">
-										<li><input type="submit" value="Send Message" /></li>
-									</ul>
-								</div>
-							</div>
-						</form>
-{% endcomment %}

@@ -12,9 +12,15 @@
 #message-container {
   list-style: none;
   padding-left: 0;
+  margin-top: 46px;
 }
 #message-container > li {
   margin-bottom: 2px;
+}
+#message-container .success {
+  background: #d6f5d6;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 .ajax-alert {
   display: none;
