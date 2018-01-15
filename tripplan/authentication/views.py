@@ -26,7 +26,7 @@ class LogoutView(views.LogoutView):
     template_name = 'authentication/logout.html'
 
     def get_redirect_url(self):
-        return reverse_lazy('authentication:login')
+        return reverse_lazy('home')
 
 class SocialSignupView(LoginView):
     '''
