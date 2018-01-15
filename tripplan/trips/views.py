@@ -88,7 +88,7 @@ class InviteEmailMixin:
             }
         )
         from_email = 'noreply@getyrbeta.com'
-        to_email = [self.kwargs.get('invitee_email')]
+        to_email = (self.request.POST.get('email'),)
 
         send_mail(
             subject,
@@ -368,7 +368,7 @@ class AddTripMemberView(LoginRequiredMixin, FlattenTripMemberMixin,
         f.accept_reqd = True
         f.save()
         response = super(AddTripMemberView, self).form_valid(form)
-        self.email_initation('registered')
+        self.email_invitation('registered')
 
         # The flatten_tripmember_queryset requires input to be an iterable
         # and outputs a list.
@@ -581,7 +581,6 @@ class AddItemOwnerView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         response = super(AddItemOwnerView, self).form_invalid(form)
-        import pdb; pdb.set_trace()
         return JsonResponse(form.errors, status=400)
 
     def form_valid(self, form):
