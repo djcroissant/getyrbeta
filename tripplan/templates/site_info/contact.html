@@ -9,9 +9,17 @@
 				<section id="main" class="container 75%">
 					<header>
 						<h2>Contact Us</h2>
-						<p>Tell us what you think about our little operation.</p>
+						<p>Comments or questions? Drop us a line.</p>
 					</header>
 					<div class="box">
+				    {% load crispy_forms_tags %}
+				    {% crispy form form.helper %}
+					</div>
+				</section>
+
+{% endblock content %}
+
+{% comment %}
 						<form method="post" action="#">
 							<div class="row uniform 50%">
 								<div class="6u 12u(mobilep)">
@@ -39,7 +47,4 @@
 								</div>
 							</div>
 						</form>
-					</div>
-				</section>
-
-{% endblock content %}
+{% endcomment %}
