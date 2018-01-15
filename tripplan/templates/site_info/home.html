@@ -21,28 +21,11 @@
 
 			<!-- Header -->
 				<header id="header" class="alt">
-					<h1><a href="index.html">Alpha</a> by HTML5 UP</h1>
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li>
-								<a href="#" class="icon fa-angle-down">Layouts</a>
-								<ul>
-									<li><a href="generic.html">Generic</a></li>
-									<li><a href="contact.html">Contact</a></li>
-									<li><a href="elements.html">Elements</a></li>
-									<li>
-										<a href="#">Submenu</a>
-										<ul>
-											<li><a href="#">Option One</a></li>
-											<li><a href="#">Option Two</a></li>
-											<li><a href="#">Option Three</a></li>
-											<li><a href="#">Option Four</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li><a href="#" class="button">Sign Up</a></li>
+							<li><a href="#">Contact</a></li>
+							<li><a href="{% url 'authentication:login' %}">Log In</a></li>
+							<li><a href="{% url 'authentication:signup' %}" class="button">Sign Up</a></li>
 						</ul>
 					</nav>
 				</header>
@@ -68,30 +51,30 @@
 							<br/>Get Yr Beta makes planning easy and keeps your team safe.
 				    </p></p>
 						</header>
-						<span class="image featured"><img src="{% static 'images/site_info/canyon_storm.jpg' %}" alt="" /></span>
+						<span class="image featured"><img src="{% static 'images/site_info/featured.jpg' %}" alt="" /></span>
 					</section>
 
 					<section class="box special features">
 						<div class="features-row">
 							<section>
-								<span class="icon major fa-bolt accent2"></span>
+								<span class="icon major fa-map-marker accent2"></span>
 								<h3>Route Planning</h3>
 								<p>Plan your route by entering your trailhead, objectives, and camp locations. Get Yr Beta makes it easy with built-in Google Maps and automatic coordinates.</p>
 							</section>
 							<section>
-								<span class="icon major fa-area-chart accent3"></span>
+								<span class="icon major fa-users accent3"></span>
 								<h3>Trip Roster</h3>
 								<p>Add people to the trip by email address. Whether you're on a trip with a buddy or planning for the whole crew, Get Yr Beta will keep track of who's in.</p>
 							</section>
 						</div>
 						<div class="features-row">
 							<section>
-								<span class="icon major fa-cloud accent4"></span>
+								<span class="icon major fa-bolt accent4"></span>
 								<h3>Emergency Info</h3>
 								<p>Maintain up to date emergency contact information for everyone on the trip. Gey Yr Beta will send the final trip plan to specified emergency contacts.</p>
 							</section>
 							<section>
-								<span class="icon major fa-lock accent5"></span>
+								<span class="icon major fa-list-ol accent5"></span>
 								<h3>Packing List</h3>
 								<p>Create a gear list and make assignments. Get Yr Beta will keep you organized and make sure everyone knows what they're supposed to bring.</p>
 							</section>
@@ -102,7 +85,7 @@
 						<div class="6u 12u(narrower)">
 
 							<section class="box special">
-								<span class="image featured"><img src="{% static 'images/site_info/pic02.jpg' %}" alt="" /></span>
+								<span class="image featured"><img src="{% static 'images/site_info/about.jpg' %}" alt="" /></span>
 								<h3>About</h3>
 								<p>The idea for Get Yr Beta stemmed from weekly meetings with the Boeing Alpine Club.
 					      Collecting numbers, route planning, and assigning gear took
@@ -117,10 +100,10 @@
 						<div class="6u 12u(narrower)">
 
 							<section class="box special">
-								<span class="image featured"><img src="{% static 'images/site_info/pic03.jpg' %}" alt="" /></span>
+								<span class="image featured"><img src="{% static 'images/site_info/source_code.jpg' %}" alt="" /></span>
 								<h3>Source Code</h3>
 								<p>Get Yr Beta is an open source project under GNU General Public License.
-								   Source code is available on Github at the link below. If you're into mountaineering and coding,
+								   The full source code is available on Github. If you're into mountaineering and coding,
 									 pat yourself on the back, you're not alone. Come join the team! To get involved,
 									 drop me a line using the Contact form.
 								<ul class="icons">
