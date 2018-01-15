@@ -9,6 +9,7 @@ from tripplan.site_info import views as site_views
 urlpatterns = [
     # url(r'^$', RedirectView.as_view(pattern_name='authentication:login', permanent=False)),
     url(r'^$', site_views.HomeView.as_view(), name='home'),
+    url(r'^contact/$', site_views.ContactView.as_view(), name='contact'),
     url(r'^account_info/', include('account_info.urls')),
     url(r'^trips/', include('trips.urls')),
     url(r'^about/', site_views.AboutView.as_view(), name='about'),

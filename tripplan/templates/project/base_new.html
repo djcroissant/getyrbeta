@@ -45,11 +45,11 @@
 
 
   </head>
-  <body class="landing">
+  <body {% block body_class %}{% endblock body_class %}>
     <div id="page-wrapper">
 
       <!-- Header -->
-      <header id="header" class="alt">
+      <header id="header" {% block header_class %}{% endblock header_class %}>
         <nav id="nav">
           {% if user.is_authenticated %}
             <ul>
@@ -78,7 +78,7 @@
             </ul>
           {% else %}
             <ul>
-              <li><a href="#">Contact</a></li>
+              <li><a href="{% url 'contact' %}">Contact</a></li>
               <li><a href="{% url 'authentication:login' %}">Log In</a></li>
               <li><a href="{% url 'authentication:signup' %}" class="button">Sign Up</a></li>
             </ul>
