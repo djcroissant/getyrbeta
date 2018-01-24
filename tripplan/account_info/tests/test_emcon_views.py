@@ -49,7 +49,7 @@ class EmergencyContactListViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = EmergencyContactListView.as_view()(request)
-        self.assertTrue('emerg_contact/list.html' in response.template_name)
+        self.assertTrue('account_info/emerg_contact/list.html' in response.template_name)
 
     def test_get_queryset_returns_emcons_for_logged_in_user(self):
         '''
@@ -246,7 +246,7 @@ class EmergencyContactDeleteViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = EmergencyContactDeleteView.as_view()(request, pk=ec.id)
-        self.assertTrue('emerg_contact/delete.html' in response.template_name)
+        self.assertTrue('account_info/emerg_contact/delete.html' in response.template_name)
 
     def test_get_object_returns_emergency_contact_if_logged_in(self):
         '''

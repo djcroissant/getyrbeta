@@ -68,7 +68,7 @@ class ProfileViewTests(TestCase):
         request = self.factory.get(reverse('account_info:account_profile'))
         request.user = self.user
         response = ProfileView.as_view()(request)
-        self.assertTrue('account_info/profile.html' in response.template_name)
+        self.assertTrue('account_info/form.html' in response.template_name)
 
     def test_get_object_returns_logged_in_user(self):
         '''

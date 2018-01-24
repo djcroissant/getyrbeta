@@ -216,7 +216,7 @@ class TripDetailViewTests(TestCase):
         view = setup_view(view, request, **kwargs)
         view.object = self.trip
         context = view.get_context_data()
-        self.assertIn('page_title', context)
+        self.assertIn('detail_page_title', context)
 
     def test_get_context_data_includes_end_date_multi_night(self):
         '''
