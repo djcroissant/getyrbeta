@@ -401,6 +401,22 @@ class TripLocationTests(TestCase):
             trip=self.trip, location_type=location_type)
         self.assertEqual('camp', test.get_location_type_verbose)
 
+    def test_get_suntime(self):
+        date = 'today'
+        location_type = 'ST'
+        latitude = 50.1163
+        longitude = 122.9574
+
+        test = TripLocation.objects.create(
+            date=date,
+            trip=self.trip,
+            location_type=location_type,
+            latitude=latitude,
+            longitude=longitude
+        )
+        self.assertNotEqual({}, test.get_suntime())
+
+
 class SunTimeModelTests(TestCase):
     @classmethod
     def setUpTestData(cls):

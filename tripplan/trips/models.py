@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
+import requests
 
 
 class Trip(models.Model):
@@ -225,6 +226,26 @@ class TripLocation(models.Model):
                         'date': '%s is not a valid date format.' % self.date
                     }
                 )
+
+    def get_suntime(self):
+        try:
+            suntime_response = requests.get(
+                'https://api.sunrise-sunset.org/json',
+                params={
+                    'lat': self.latitude,
+                    'lng': self.longitude,
+                    'date': self.date,
+                }
+            ).json()
+            return_value = {
+                'sunrise': suntime_response['results']['sunrise'],
+                'sunset': suntime_response['results']['sunset'],
+            }
+        except KeyError:
+            return_value = {}
+
+        return return_value
+
 
 class ItemNotification(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
