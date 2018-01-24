@@ -43,6 +43,9 @@ following steps:
 
   #) Sites: add the domain name: 127.0.0.1:8000
 
+    * Note that the index of site must match what is set in the settings variable SITE_ID
+  
+
   #) SOCIAL ACCOUNTS -> Social applications: Create Facebook and add:
 
     * Client id: (From Facebook account)
