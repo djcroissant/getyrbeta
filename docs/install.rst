@@ -1,3 +1,4 @@
+=========
 Install
 =========
 
@@ -5,25 +6,71 @@ Source code is located here:
 https://github.com/djcroissant/getyrbeta
 
 Follow these steps to setup a local copy of Get Yr Beta:
-#) Clone the repo onto local machine: https://github.com/djcroissant/getyrbeta.git
 
-#) Make a virtual environment and install dependencies from requirements/local.txt
+Clone the repo onto local machine
++++++++++++++++++++++++++++++++++
 
-#) Create PostgreSQL database.
+.. code::
 
-#) Create .env file in base directory. It will follow the format in env.example.
+  git clone https://github.com/djcroissant/getyrbeta.git
 
-#) Using the log in credentials for your PostgreSQL database, assign the DATABASE_URL environmental variable in the .env file
+Setup your environment
+++++++++++++++++++++++
 
-#) Assign the DJANGO_SECRET_KEY environmental variable in the .env file.
+On OSX:
+-------
 
-#) Migrate database: $ python manage.py migrate
+Make a virtual environment and install dependencies.  You must have brew installed and the bundle command *will* install packages into your system environment!
+  
+.. code::
 
-#) Create superuser
+  pip3 -r requirements/local.txt
+  brew bundle
 
-#) Run local tasks with settings/local.py:
-  * $ python manage.py shell --settings=config.settings.local
-  * $ python manage.py runserver --settings=config.settings.local
+Postgres
+--------
+
+Create PostgreSQL database using your favourite method or use docker.  Please refer to other resources on installing and using docker like `here <https://docs.docker.com/docker-for-mac/install/>`_.
+
+.. code::
+
+  CONTAINER_NAME=getyrbeta_db_1
+  DATABASE_NAME=getyrbeta
+  docker-compose
+  CONTAINER_IP=$(docker-machine inspect --format='{{.Driver.IPAddress}}')
+  DATABASE_URL=postgres://postgres:password@$CONTAINER_IP:5432
+  docker exec -it getyrbeta_db_1 psql $DATABASE_URL -c "CREATE DATABASE $DATABASE_NAME"
+  echo -e "\n---\nPostgres is now ready at: $DATABASE_URL/$DATABASE_NAME\n---"
+
+Use the IP address for the next section to configure your DATABASE_URL.
+
+Django
+------
+
+Copy `env.example <env.example>`_ to .env and edit the .env file with your development data.  Use the comments within the file for help.
+
+DATABASE_URL
+  Defines where to find the database using the postgres format (see env.example)
+
+DJANGO_SECRET_KEY
+  This is your own unique key for this project and can be generated online or locally.
+
+Leave other variables empty unless you plan to use the mapping or mail features.
+
+Now django can be setup for first time use:
+
+.. code::
+
+  python manage.py migrate
+  python manage.py django-admin createsuperuser
+  python manage.py shell --settings=config.settings.local
+
+To start the server now (and in the future):
+
+.. code::
+
+  python manage.py runserver --settings=config.settings.local
+
 
 Facebook
 ---------------
