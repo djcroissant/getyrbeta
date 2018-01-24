@@ -11,6 +11,7 @@ Follow these steps to setup a local copy of Get Yr Beta:
 
     * Note, WeasyPrint has additional dependencies that must be installed separately.
     More info here: https://github.com/djcroissant/getyrbeta/blob/master/docs/install.rst
+
     * Installation relies on homebrew. Run the following command:
 
     brew install cairo pango gdk-pixbuf libffi
