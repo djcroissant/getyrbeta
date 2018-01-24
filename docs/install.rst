@@ -11,6 +11,8 @@ Follow these steps to setup a local copy of Get Yr Beta:
 
 #) Create PostgreSQL database.
 
+    * Excellent tutorial here: https://www.codementor.io/devops/tutorial/getting-started-postgresql-server-mac-osx
+
 #) Create .env file in base directory. It will follow the format in env.example.
 
 #) Using the log in credentials for your PostgreSQL database, assign the DATABASE_URL environmental variable in the .env file
