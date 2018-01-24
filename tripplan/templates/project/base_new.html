@@ -45,24 +45,27 @@
 
 
   </head>
+	<!-- The HTML5UP template applies different class to body for home page versus non-home page -->
   <body {% block body_class %}{% endblock body_class %}>
     <div id="page-wrapper">
 
       <!-- Header -->
+			<!-- The HTML5UP template applies different class to header for home page versus non-home page -->
       <header id="header" {% block header_class %}{% endblock header_class %}>
         <nav id="nav">
           {% if user.is_authenticated %}
             <ul>
               <li>
-                <a href="#" class="icon fa-angle-down">Trip</a>
+                <a href="#" class="icon fa-angle-down">Trip Details</a>
 								<ul>
-									<li><a href="#">Overview</a></li>
+									<li><a href="#">Route Info</a></li>
 									<li><a href="#">Members</a></li>
 									<li><a href="#">Emergency Info</a></li>
 									<li><a href="#">Gear List</a></li>
 									<li><a href="#">Trip Plan</a></li>
 								</ul>
               </li>
+                <a href="#">Trip Dashboard</a>
               <li><a href="#">Notifications</a></li>
               <li>
                 <a href="#" class="icon fa-angle-down">My Account</a>
@@ -71,10 +74,10 @@
 									<li><a href="#">Emergency Contact</a></li>
 									<li><a href="#">Vehicle Info</a></li>
 									<li><a href="#">Login Info</a></li>
+		              <li><a href="{% url 'authentication:logout' %}" class="button">Sign Out</a></li>
 								</ul>
               </li>
               <li><a href="#" class="button">Contact</a></li>
-              <li><a href="{% url 'authentication:logout' %}" class="button">Sign Out</a></li>
             </ul>
           {% else %}
             <ul>
@@ -86,18 +89,6 @@
           {% endif %}
         </nav>
       </header>
-
-			{% comment %}
-      <messages>
-        <ul id="message-container">
-          {% if messages %}
-            {% for message in messages %}
-              <li class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</li>
-            {% endfor %}
-          {% endif %}
-        </ul>
-      </messages>
-		  {% endcomment %}
 
 			{% if messages %}
 				<ul id="message-container">
@@ -139,6 +130,7 @@
 
 
     <!-- Was using before HTML5 UP -->
+		<!-- commenting out jquery-3.2.1.js due to conflit with jquery.min.js used with HTML5UP template -->
     <!-- <script src="{% static 'js/jquery-3.2.1.js' %}"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
