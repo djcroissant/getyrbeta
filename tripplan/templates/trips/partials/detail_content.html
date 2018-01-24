@@ -26,11 +26,11 @@
 
     {% if sunrise_time and sunset_time %}
       <div class="row">
-        <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ sunrise_time }}</p>
+        <div class="col-sm-6 suntime">
+          <img src="{% static 'images/trips/sunrise.png' %}" alt="Sunrise Time" height="25" width="25" /><span class="trip-info"> {{ sunrise_time }}</span>
         </div>
-        <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ sunset_time }}</p>
+        <div class="col-sm-6 suntime">
+          <img src="{% static 'images/trips/sunset.png' %}" alt="Sunset Time" height="25" width="25" /><span class="trip-info"> {{ sunset_time }}</span>
         </div>
       </div>
     {% endif %}
