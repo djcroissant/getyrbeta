@@ -185,6 +185,13 @@ class TripLocation(models.Model):
         }
         return location_type[self.location_type]
 
+    def get_suntime(self):
+        suntimes = {
+            "sunrise": "sunrise time",
+            "sunset": "sunset time",
+        }
+        return suntimes
+
     def get_date(self):
         """
         This function returns the date if it is assigned.

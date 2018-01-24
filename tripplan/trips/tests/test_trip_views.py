@@ -91,7 +91,6 @@ class TripListViewTests(TestCase):
         TripMember.objects.create(
             member=self.user,
             trip=trip,
-            email="fake@fake.fake"
         )
         queryset = view.get_queryset()
         self.assertEqual(list(self.user.trip_set.all()), list(queryset))
@@ -117,12 +116,10 @@ class TripListViewTests(TestCase):
         TripMember.objects.create(
             member=self.user,
             trip=trip_past,
-            email="fake@fake.fake"
         )
         TripMember.objects.create(
             member=self.user,
             trip=trip_future,
-            email="fake@fake.fake"
         )
         view.object_list = self.user.trip_set.all()
         context = view.get_context_data()
@@ -154,12 +151,10 @@ class TripListViewTests(TestCase):
         TripMember.objects.create(
             member=self.user,
             trip=trip_past,
-            email="fake@fake.fake"
         )
         TripMember.objects.create(
             member=self.user,
             trip=trip_future,
-            email="fake@fake.fake"
         )
         view.object_list = self.user.trip_set.all()
         context = view.get_context_data()
@@ -216,7 +211,7 @@ class TripDetailViewTests(TestCase):
         view = setup_view(view, request, **kwargs)
         view.object = self.trip
         context = view.get_context_data()
-        self.assertIn('page_title', context)
+        self.assertIn('detail_page_title', context)
 
     def test_get_context_data_includes_end_date_multi_night(self):
         '''

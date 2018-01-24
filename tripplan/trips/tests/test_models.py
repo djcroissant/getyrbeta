@@ -518,12 +518,6 @@ class ItemModelTests(TestCase):
         test = lambda: Item.objects.create(description=("x"*256), trip=self.trip)
         self.assertRaises(DataError, test)
 
-    def test_item_quantity_defaults_to_one(self):
-        '''  If item.quantity isn't specified, it will default to one '''
-        title = 'title'
-        start_date = timezone.now().date()
-        item = Item.objects.create(description='test', trip=self.trip)
-        self.assertEqual(item.quantity, 1)
 
 class ItemOwnerModelTests(TestCase):
     @classmethod
@@ -539,6 +533,12 @@ class ItemOwnerModelTests(TestCase):
         ''' If accept_reqd isn't specified, it will default to False '''
         item_owner = ItemOwner.objects.create(item=self.item, owner=self.user)
         self.assertEqual(item_owner.accept_reqd, False)
+
+    def test_item_quantity_defaults_to_one(self):
+        '''  If item.quantity isn't specified, it will default to one '''
+        item_owner = ItemOwner.objects.create(item=self.item, owner=self.user)
+        self.assertEqual(item_owner.quantity, 1)
+
 
 class TripMemberModelTests(TestCase):
     @classmethod

@@ -48,7 +48,7 @@ class VehicleListViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = VehicleListView.as_view()(request)
-        self.assertTrue('vehicle/list.html' in response.template_name)
+        self.assertTrue('account_info/vehicle/list.html' in response.template_name)
 
     def test_get_queryset_returns_vehicles_for_logged_in_user(self):
         '''
@@ -245,7 +245,7 @@ class VehicleDeleteViewTests(TestCase):
         request = self.factory.get('/fake/')
         request.user = self.user
         response = VehicleDeleteView.as_view()(request, pk=v.id)
-        self.assertTrue('vehicle/delete.html' in response.template_name)
+        self.assertTrue('account_info/vehicle/delete.html' in response.template_name)
 
     def test_get_object_returns_vehicle_if_logged_in(self):
         '''

@@ -1,6 +1,8 @@
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory
+from django.contrib.messages.storage.fallback import FallbackStorage
+
 
 from account_info.views import ProfileView
 
@@ -35,6 +37,13 @@ class ProfileViewTests(TestCase):
 
     def test_post_redirects_to_profile_page_if_user_is_logged_in(self):
         request = self.factory.post('/fake/')
+
+        # Django bug with messages. Work around provided here:
+        # https://stackoverflow.com/questions/11938164/why-dont-my-django-unittests-know-that-messagemiddleware-is-installed
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
         request.user = self.user
         response = ProfileView.as_view()(request)
         self.assertEqual(response.status_code, 302)
@@ -68,7 +77,7 @@ class ProfileViewTests(TestCase):
         request = self.factory.get(reverse('account_info:account_profile'))
         request.user = self.user
         response = ProfileView.as_view()(request)
-        self.assertTrue('account_info/profile.html' in response.template_name)
+        self.assertTrue('account_info/form.html' in response.template_name)
 
     def test_get_object_returns_logged_in_user(self):
         '''
