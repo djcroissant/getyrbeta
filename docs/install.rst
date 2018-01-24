@@ -9,6 +9,12 @@ Follow these steps to setup a local copy of Get Yr Beta:
 
 #) Make a virtual environment and install dependencies from requirements/local.txt
 
+    * Note, WeasyPrint has additional dependencies that must be installed separately.
+    More info here: https://github.com/djcroissant/getyrbeta/blob/master/docs/install.rst
+    * Installation relies on homebrew. Run the following command:
+
+    brew install cairo pango gdk-pixbuf libffi
+
 #) Create PostgreSQL database.
 
     * Excellent tutorial here: https://www.codementor.io/devops/tutorial/getting-started-postgresql-server-mac-osx
@@ -46,7 +52,7 @@ following steps:
   #) Sites: add the domain name: 127.0.0.1:8000
 
     * Note that the index of site must match what is set in the settings variable SITE_ID
-  
+
 
   #) SOCIAL ACCOUNTS -> Social applications: Create Facebook and add:
 
