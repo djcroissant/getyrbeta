@@ -104,12 +104,12 @@ will coming soon!
 
 Installation for development
 ----------------------------
-see docs/install.rst
+see `installation <docs/install.rst>`_
 
 
 Deployment
 ----------
-See docs/deploy.rst
+see `deployment <docs/deploy.rst>`_
 
 
 General layout
