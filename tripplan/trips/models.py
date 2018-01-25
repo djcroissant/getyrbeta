@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
+import pytz
 import requests
 
 
@@ -247,7 +248,7 @@ class TripLocation(models.Model):
 
         return return_value
 
-    def get_suntime(self):
+    def get_suntimes_in_utc(self):
         try:
             suntime_response = requests.get(
                 'https://api.sunrise-sunset.org/json',
@@ -257,11 +258,18 @@ class TripLocation(models.Model):
                     'date': datetime.datetime.strftime(
                         self.get_date(), '%Y-%m-%d'
                     ),
+                    'formatted': 0,
                 }
             ).json()
             return_value = {
-                'sunrise': suntime_response['results']['sunrise'],
-                'sunset': suntime_response['results']['sunset'],
+                'sunrise': datetime.datetime.strptime(
+                    suntime_response['results']['sunrise'],
+                    '%Y-%m-%dT%H:%M:%S+00:00'
+                ).replace(tzinfo=pytz.utc),
+                'sunset':  datetime.datetime.strptime(
+                    suntime_response['results']['sunset'],
+                    '%Y-%m-%dT%H:%M:%S+00:00'
+                ).replace(tzinfo=pytz.utc),
             }
         except KeyError:
             return_value = {}

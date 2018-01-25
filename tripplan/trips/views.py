@@ -12,6 +12,8 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.db.models.functions import Lower
 
+import pytz
+
 from .models import Trip, TripLocation, TripMember, ItemNotification, \
     TripGuest, Item, ItemOwner
 from account_info.models import EmergencyContact
@@ -192,10 +194,20 @@ class TripDetailView(LoginRequiredMixin, DetailView):
         context['endpoint'] = trip.get_endpoint()
 
         if trailhead and trailhead.latitude and trailhead.longitude:
-            suntimes = trailhead.get_suntime()
-            context['sunrise_time'] = suntimes["sunrise"]
-            context['sunset_time'] = suntimes["sunset"]
+            local_timezone = pytz.timezone(
+                trailhead.get_timezone()['timeZoneId']
+            )
 
+            suntimes = trailhead.get_suntimes_in_utc()
+            sunrise_local = suntimes['sunrise'].astimezone(
+                local_timezone
+            ).strftime('%H:%M:%S %Z%z')
+            sunset_local = suntimes['sunset'].astimezone(
+                local_timezone
+            ).strftime('%H:%M:%S %Z%z')
+
+            context['sunrise_time'] = sunrise_local
+            context['sunset_time'] = sunset_local
 
         context['objective_dict'] = trip.get_location_context(
             TripLocation.OBJECTIVE)
