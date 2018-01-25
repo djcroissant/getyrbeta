@@ -37,6 +37,9 @@ li.hidden_bullet {
   /* align-items: center; */
   display: inline-block;
 }
+.trip-times {
+  margin-bottom: 12px;
+}
 
 /* =======Location Form======= */
 #id_title {

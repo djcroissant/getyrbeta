@@ -191,11 +191,12 @@ class TripDetailView(LoginRequiredMixin, DetailView):
         context['trailhead'] = trailhead
         context['endpoint'] = trip.get_endpoint()
 
-        if trailhead.latitude and trailhead.longitude:
+        if trailhead and trailhead.latitude and trailhead.longitude:
             suntimes = trailhead.get_suntime()
-            context['sunrise_time'] = suntimes["sunrise"]
-            context['sunset_time'] = suntimes["sunset"]
-
+            context['suntime'] = {
+                "sunrise_start_time": suntimes["sunrise"],
+                "sunset_start_time": suntimes["sunset"],
+            }
 
         context['objective_dict'] = trip.get_location_context(
             TripLocation.OBJECTIVE)

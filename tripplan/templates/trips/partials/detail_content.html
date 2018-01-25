@@ -4,10 +4,38 @@
 
   <div class="banner-logo">
     <h1>{{ detail_page_title }}</h1>
-    <div class="row">
-      <div class="col-sm-6">
-        <p class="trip-info">Start date: {{ trip.start_date }}</p>
+    <div class="row trip-times">
+      <div class="col-sm-4">
+        <span class="trip-info">Start date: {{ trip.start_date }}</span>
       </div>
+      {% if suntime.sunrise_start_time and suntime.sunset_start_time %}
+          <div class="col-sm-4 suntime">
+            <img src="{% static 'images/trips/sunrise.png' %}" alt="Sunrise Time" height="25" width="25" /><span class="trip-info"> {{ suntime.sunrise_start_time }}</span>
+          </div>
+          <div class="col-sm-4 suntime">
+            <img src="{% static 'images/trips/sunset.png' %}" alt="Sunset Time" height="25" width="25" /><span class="trip-info"> {{ suntime.sunset_start_time }}</span>
+          </div>
+      {% endif %}
+    </div>
+
+    {% if end_date %}
+      <div class="row trip-times">
+        <div class="col-sm-4">
+          <span class="trip-info">End date: {{ end_date }}</span>
+        </div>
+        {% if suntime.sunrise_end_date and suntime.sunset_end_date %}
+            <div class="col-sm-4 suntime">
+              <img src="{% static 'images/trips/sunrise.png' %}" alt="Sunrise Time" height="25" width="25" /><span class="trip-info"> {{ sunrise_time }}</span>
+            </div>
+            <div class="col-sm-4 suntime">
+              <img src="{% static 'images/trips/sunset.png' %}" alt="Sunset Time" height="25" width="25" /><span class="trip-info"> {{ sunset_time }}</span>
+            </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+
+    <div class="row trip-times">
       <div class="col-sm-6">
         {% if trip.number_nights == 0 %}
           <p class="trip-info">Day trip</p>
@@ -16,25 +44,7 @@
         {% endif %}
       </div>
     </div>
-    {% if end_date %}
-      <div class="row">
-        <div class="col-sm-6">
-          <p class="trip-info">End date: {{ end_date }}</p>
-        </div>
-      </div>
-    {% endif %}
 
-    {% if sunrise_time and sunset_time %}
-      <div class="row">
-        <div class="col-sm-6 suntime">
-          <img src="{% static 'images/trips/sunrise.png' %}" alt="Sunrise Time" height="25" width="25" /><span class="trip-info"> {{ sunrise_time }}</span>
-        </div>
-        <div class="col-sm-6 suntime">
-          <img src="{% static 'images/trips/sunset.png' %}" alt="Sunset Time" height="25" width="25" /><span class="trip-info"> {{ sunset_time }}</span>
-        </div>
-      </div>
-    {% endif %}
-  </div>
 
   {# Trailhead Location Section #}
   <div class="trip-list">
