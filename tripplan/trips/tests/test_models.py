@@ -401,11 +401,26 @@ class TripLocationTests(TestCase):
             trip=self.trip, location_type=location_type)
         self.assertEqual('camp', test.get_location_type_verbose)
 
-    def test_get_suntime(self):
-        date = 'today'
+    def test_get_timezone(self):
+        date = 'Day 1 - 2018-01-01'
         location_type = 'ST'
         latitude = 50.1163
-        longitude = 122.9574
+        longitude = -122.9574
+
+        test = TripLocation.objects.create(
+            date=date,
+            trip=self.trip,
+            location_type=location_type,
+            latitude=latitude,
+            longitude=longitude
+        )
+        self.assertNotEqual({}, test.get_timezone())
+
+    def test_get_suntime(self):
+        date = 'Day 1 - 2018-01-01'
+        location_type = 'ST'
+        latitude = 50.1163
+        longitude = -122.9574
 
         test = TripLocation.objects.create(
             date=date,

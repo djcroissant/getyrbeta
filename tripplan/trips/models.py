@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -227,6 +228,25 @@ class TripLocation(models.Model):
                     }
                 )
 
+    def get_timezone(self):
+        date_at_midnight = str(int(datetime.datetime.combine(
+            self.get_date(),
+            datetime.datetime.min.time()
+        ).timestamp()))
+        try:
+            return_value = requests.get(
+                'https://maps.googleapis.com/maps/api/timezone/json',
+                params={
+                    'location': f'{self.latitude}, {self.longitude}',
+                    'timestamp': date_at_midnight,
+                    'key': settings.GOOGLE_MAPS_API,
+                }
+            ).json()
+        except KeyError:
+            return_value = {}
+
+        return return_value
+
     def get_suntime(self):
         try:
             suntime_response = requests.get(
@@ -234,7 +254,9 @@ class TripLocation(models.Model):
                 params={
                     'lat': self.latitude,
                     'lng': self.longitude,
-                    'date': self.date,
+                    'date': datetime.datetime.strftime(
+                        self.get_date(), '%Y-%m-%d'
+                    ),
                 }
             ).json()
             return_value = {
