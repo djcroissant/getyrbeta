@@ -27,10 +27,10 @@
     {% if sunrise_time and sunset_time %}
       <div class="row">
         <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ sunrise_time }}</p>
+          <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ sunrise_time }} UTC</p>
         </div>
         <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ sunset_time }}</p>
+          <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ sunset_time }} UTC</p>
         </div>
       </div>
     {% endif %}

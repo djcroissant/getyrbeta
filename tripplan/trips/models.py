@@ -1,9 +1,11 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
+import requests
 
 
 class Trip(models.Model):
@@ -225,6 +227,47 @@ class TripLocation(models.Model):
                         'date': '%s is not a valid date format.' % self.date
                     }
                 )
+
+    def get_timezone(self):
+        date_at_midnight = str(int(datetime.datetime.combine(
+            self.get_date(),
+            datetime.datetime.min.time()
+        ).timestamp()))
+        try:
+            return_value = requests.get(
+                'https://maps.googleapis.com/maps/api/timezone/json',
+                params={
+                    'location': f'{self.latitude}, {self.longitude}',
+                    'timestamp': date_at_midnight,
+                    'key': settings.GOOGLE_MAPS_API,
+                }
+            ).json()
+        except KeyError:
+            return_value = {}
+
+        return return_value
+
+    def get_suntime(self):
+        try:
+            suntime_response = requests.get(
+                'https://api.sunrise-sunset.org/json',
+                params={
+                    'lat': self.latitude,
+                    'lng': self.longitude,
+                    'date': datetime.datetime.strftime(
+                        self.get_date(), '%Y-%m-%d'
+                    ),
+                }
+            ).json()
+            return_value = {
+                'sunrise': suntime_response['results']['sunrise'],
+                'sunset': suntime_response['results']['sunset'],
+            }
+        except KeyError:
+            return_value = {}
+
+        return return_value
+
 
 class ItemNotification(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
