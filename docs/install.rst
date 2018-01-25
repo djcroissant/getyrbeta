@@ -64,7 +64,7 @@ Now django can be setup for first time use:
 .. code::
 
   python manage.py migrate
-  python manage.py django-admin createsuperuser
+  python manage.py createsuperuser
   python manage.py shell --settings=config.settings.local
 
 To start the server now (and in the future):
