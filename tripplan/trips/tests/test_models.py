@@ -404,8 +404,8 @@ class TripLocationTests(TestCase):
     def test_get_timezone(self):
         date = 'Day 1 - 2018-01-01'
         location_type = 'ST'
-        latitude = 50.1163
-        longitude = -122.9574
+        latitude = 1
+        longitude = 1
 
         test = TripLocation.objects.create(
             date=date,
@@ -416,11 +416,11 @@ class TripLocationTests(TestCase):
         )
         self.assertNotEqual({}, test.get_timezone())
 
-    def test_get_suntime(self):
+    def test_get_suntimes_in_utc(self):
         date = 'Day 1 - 2018-01-01'
         location_type = 'ST'
-        latitude = 50.1163
-        longitude = -122.9574
+        latitude = 1
+        longitude = 1
 
         test = TripLocation.objects.create(
             date=date,
@@ -429,7 +429,7 @@ class TripLocationTests(TestCase):
             latitude=latitude,
             longitude=longitude
         )
-        self.assertNotEqual({}, test.get_suntime())
+        self.assertNotEqual({}, test.get_suntimes_in_utc())
 
 
 class SunTimeModelTests(TestCase):
