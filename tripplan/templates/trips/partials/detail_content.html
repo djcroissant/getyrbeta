@@ -23,17 +23,6 @@
         </div>
       </div>
     {% endif %}
-
-    {% if trailhead.sunrise and trailhead.sunset %}
-      <div class="row">
-        <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ trailhead.sunrise }}</p>
-        </div>
-        <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ trailhead.sunset }}</p>
-        </div>
-      </div>
-    {% endif %}
   </div>
 
   {# Trailhead Location Section #}
@@ -48,6 +37,7 @@
       {% endif %}
     </div>
     {% if trailhead %}
+
       {% if trailhead.title %}
         <div class="row">
           <div class="col-md-3">
@@ -58,6 +48,7 @@
           </div>
         </div>
       {% endif %}
+
       {% if trailhead.latitude and trailhead.longitude %}
         <div class="row">
           <div class="col-md-3">
@@ -68,6 +59,18 @@
           </div>
         </div>
       {% endif %}
+
+      {% if trailhead.sunrise and trailhead.sunset %}
+        <div class="row">
+          <div class="col-sm-4">
+            <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ trailhead.sunrise }}</p>
+          </div>
+          <div class="col-sm-4">
+            <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ trailhead.sunset }}</p>
+          </div>
+        </div>
+      {% endif %}
+
     {% endif %}
   </div>
 
