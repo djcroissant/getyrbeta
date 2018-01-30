@@ -11,6 +11,8 @@ from django.core.mail import send_mail
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.db.models.functions import Lower
+from django.conf import settings
+
 
 import pytz
 
@@ -160,6 +162,12 @@ class LocationFormMixin:
         kwargs['choices'] = tuple(choices)
 
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(LocationFormMixin, self).get_context_data(**kwargs)
+        context['googleAPI'] = settings.GOOGLE_MAPS_API
+        return context
+
 
 class TripListView(LoginRequiredMixin, ListView):
     model = Trip
