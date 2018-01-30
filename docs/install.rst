@@ -20,10 +20,10 @@ Setup your environment
 Mac OSX:
 --------
 
-Make a virtual environment and install dependencies.  
+Make a virtual environment and install dependencies.
 
-Note: This project uses WeasyPrint which requires additional dependencies.  You must have brew installed and the bundle command will install packages into your *host environment*!  
-  
+Note: This project uses WeasyPrint which requires additional dependencies.  You must have brew installed and the bundle command will install packages into your *host environment*!
+
 .. code::
 
   pip3 -r requirements/local.txt
@@ -105,9 +105,17 @@ following steps:
 
 Google Maps
 -----------
-Get Yr Beta uses Google maps API for trip locations. Get an API key from
-https://developers.google.com/places/javascript/. Assign this key to the
-GOOGLE_MAPS_API environmental variable in the .env file.
+Get Yr Beta uses Google APIs for trip locations and time zones. Get an
+API key from: https://console.developers.google.com.
+Assign this key to the GOOGLE_MAPS_API environmental variable in the
+.env file.
+
+A list of Google APIs will be activated automatically. You will need to
+manually activate the the "Google Maps Time Zone API."
+
+
+
+
 
 Mailgun
 -------
