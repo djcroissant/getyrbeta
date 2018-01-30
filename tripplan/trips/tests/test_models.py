@@ -8,7 +8,7 @@ from django.db.utils import DataError, IntegrityError
 
 from account_info.models import User
 
-from trips.models import Trip, SunTime, Item, ItemOwner, TripMember, \
+from trips.models import Trip, Item, ItemOwner, TripMember, \
     TripLocation
 
 
@@ -402,10 +402,14 @@ class TripLocationTests(TestCase):
         self.assertEqual('camp', test.get_location_type_verbose)
 
     def test_get_timezone(self):
+        """
+        Note: latitude = 1; longitude = 1 caused an error
+        Using a specific lat/long ok. Expect this is due to API
+        """
         date = 'Day 1 - 2018-01-01'
         location_type = 'ST'
-        latitude = 1
-        longitude = 1
+        latitude = 40.646062
+        longitude = -111.497973
 
         test = TripLocation.objects.create(
             date=date,
@@ -417,10 +421,14 @@ class TripLocationTests(TestCase):
         self.assertNotEqual({}, test.get_timezone())
 
     def test_get_suntimes_in_utc(self):
+        """
+        Note: latitude = 1; longitude = 1 caused an error
+        Using a specific lat/long ok. Expect this is due to API
+        """
         date = 'Day 1 - 2018-01-01'
         location_type = 'ST'
-        latitude = 1
-        longitude = 1
+        latitude = 40.646062
+        longitude = -111.497973
 
         test = TripLocation.objects.create(
             date=date,
@@ -431,86 +439,6 @@ class TripLocationTests(TestCase):
         )
         self.assertNotEqual({}, test.get_suntimes_in_utc())
 
-
-class SunTimeModelTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        ''' Create a valid instance of Trip '''
-        cls.trip = Trip.objects.create(title='title',
-            start_date=timezone.now().date())
-
-    def test_invalid_SunTime_without_dawn(self):
-        test = lambda: SunTime.objects.create(
-            dawn='',
-            dusk=timezone.now().time(),
-            sunrise=timezone.now().time(),
-            sunset=timezone.now().time(),
-            date=timezone.now().date(),
-            trip=self.trip
-        )
-        self.assertRaises(ValidationError, test)
-
-    def test_invalid_SunTime_without_dusk(self):
-        test = lambda: SunTime.objects.create(
-            dawn=timezone.now().time(),
-            dusk='',
-            sunrise=timezone.now().time(),
-            sunset=timezone.now().time(),
-            date=timezone.now().date(),
-            trip=self.trip
-        )
-        self.assertRaises(ValidationError, test)
-
-    def test_invalid_SunTime_without_sunrise(self):
-        test = lambda: SunTime.objects.create(
-            dawn=timezone.now().time(),
-            dusk=timezone.now().time(),
-            sunrise='',
-            sunset=timezone.now().time(),
-            date=timezone.now().date(),
-            trip=self.trip
-        )
-        self.assertRaises(ValidationError, test)
-
-    def test_invalid_SunTime_without_sunset(self):
-        test = lambda: SunTime.objects.create(
-            dawn=timezone.now().time(),
-            dusk=timezone.now().time(),
-            sunrise=timezone.now().time(),
-            sunset='',
-            date=timezone.now().date(),
-            trip=self.trip
-        )
-        self.assertRaises(ValidationError, test)
-
-    def test_invalid_SunTime_without_date(self):
-        test = lambda: SunTime.objects.create(
-            dawn=timezone.now().time(),
-            dusk=timezone.now().time(),
-            sunrise=timezone.now().time(),
-            sunset=timezone.now().time(),
-            date='',
-            trip=self.trip
-        )
-        self.assertRaises(ValidationError, test)
-
-    def test_valid_SunTime_with_only_required_fields(self):
-        '''
-        No exception raised when a SunTime is created with only the required
-        fields defined (all of them).
-        '''
-        test = SunTime.objects.create(
-            dawn=timezone.now().time(),
-            dusk=timezone.now().time(),
-            sunrise=timezone.now().time(),
-            sunset=timezone.now().time(),
-            date=timezone.now().date(),
-            trip=self.trip
-        )
-        try:
-            test.full_clean()
-        except:
-            self.fail("full_clean() raised an error unexpectedly!")
 
 class ItemModelTests(TestCase):
     @classmethod
