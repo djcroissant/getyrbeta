@@ -13,12 +13,6 @@ from .base import *  # noqa
 DEBUG = False
 TEMPLATES[0]['OPTIONS']['debug'] = False
 
-# SECRET CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-# Note: This key only used for development and testing.
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='#=j8t0s6t#bzh(2cn84!*w7&056%7k8wcisi0x96urmj&=#_rv')
-
 # Mail settings
 # ------------------------------------------------------------------------------
 EMAIL_HOST = 'localhost'
