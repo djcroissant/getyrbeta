@@ -94,16 +94,6 @@ class Trip(models.Model):
     is_in_the_past.boolean = True
     is_in_the_past.short_description = 'Past Trip?'
 
-class SunTime(models.Model):
-    dawn = models.TimeField()
-    dusk = models.TimeField()
-    sunrise = models.TimeField()
-    sunset = models.TimeField()
-    date = models.DateField()
-    latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-
 class Item(models.Model):
     description = models.CharField(max_length = 255)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
@@ -141,11 +131,13 @@ class TripGuest(models.Model):
         return self.email
 
 class TripLocation(models.Model):
+    # Set variables to allow human-friendly access to location types
     BEGIN = 'ST'
     END = 'EN'
     OBJECTIVE = 'OB'
     CAMP = 'CM'
 
+    # Types of locations
     LOCATION_TYPE_CHOICES = (
         (BEGIN, 'Trailhead'),
         (END, 'Endpoint'),
@@ -153,6 +145,7 @@ class TripLocation(models.Model):
         (CAMP, 'Camp'),
     )
 
+    # Used in trips/views.py
     LOCATION_TYPE = {
         'trailhead': BEGIN,
         'endpoint': END,
@@ -160,6 +153,7 @@ class TripLocation(models.Model):
         'camp': CAMP
     }
 
+    # Model fields
     location_type = models.CharField(
         max_length=2,
         choices=LOCATION_TYPE_CHOICES
@@ -172,6 +166,12 @@ class TripLocation(models.Model):
     latitude = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+
+    # Celestial Times:
+    dawn = models.TimeField(blank=True, null=True)
+    dusk = models.TimeField(blank=True, null=True)
+    sunrise = models.TimeField(blank=True, null=True)
+    sunset = models.TimeField(blank=True, null=True)
 
     @property
     def get_location_type_verbose(self):
@@ -249,6 +249,10 @@ class TripLocation(models.Model):
         return return_value
 
     def get_suntimes_in_utc(self):
+        """
+        Get sun times from API. Requires latitude, longitude, and date
+        to be specified. Otherwise returns an empty dict
+        """
         try:
             suntime_response = requests.get(
                 'https://api.sunrise-sunset.org/json',
@@ -276,6 +280,29 @@ class TripLocation(models.Model):
 
         return return_value
 
+    def set_suntimes(self):
+        """
+        Set sun times in local timezone
+        """
+        local_timezone = pytz.timezone(
+            self.get_timezone()['timeZoneId']
+        )
+
+        suntimes = self.get_suntimes_in_utc()
+        self.sunrise = suntimes['sunrise'].astimezone(
+            local_timezone
+        ).strftime('%H:%M:%S %Z%z')
+        self.sunset = suntimes['sunset'].astimezone(
+            local_timezone
+        ).strftime('%H:%M:%S %Z%z')
+
+    def save(self, *args, **kwargs):
+        """
+        Set sun times for a location with specified coordinates and date
+        """
+        if self.latitude and self.longitude and self.date and self.date != 'Unassigned':
+            self.set_suntimes()
+        super(TripLocation, self).save(*args, **kwargs)
 
 class ItemNotification(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
