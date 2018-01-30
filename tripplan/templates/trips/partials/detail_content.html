@@ -24,13 +24,13 @@
       </div>
     {% endif %}
 
-    {% if sunrise_time and sunset_time %}
+    {% if trailhead.sunrise and trailhead.sunset %}
       <div class="row">
         <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ sunrise_time }}</p>
+          <p class="trip-info"><img src="{% static 'images/trips/sunrise.png' %}" alt="" height="32" width="32" /> {{ trailhead.sunrise }}</p>
         </div>
         <div class="col-sm-6">
-          <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ sunset_time }}</p>
+          <p class="trip-info"><img src="{% static 'images/trips/sunset.png' %}" alt="" height="32" width="32" /> {{ trailhead.sunset }}</p>
         </div>
       </div>
     {% endif %}

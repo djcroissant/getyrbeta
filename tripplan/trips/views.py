@@ -193,22 +193,6 @@ class TripDetailView(LoginRequiredMixin, DetailView):
         context['trailhead'] = trailhead
         context['endpoint'] = trip.get_endpoint()
 
-        if trailhead and trailhead.latitude and trailhead.longitude:
-            local_timezone = pytz.timezone(
-                trailhead.get_timezone()['timeZoneId']
-            )
-
-            suntimes = trailhead.get_suntimes_in_utc()
-            sunrise_local = suntimes['sunrise'].astimezone(
-                local_timezone
-            ).strftime('%H:%M:%S %Z%z')
-            sunset_local = suntimes['sunset'].astimezone(
-                local_timezone
-            ).strftime('%H:%M:%S %Z%z')
-
-            context['sunrise_time'] = sunrise_local
-            context['sunset_time'] = sunset_local
-
         context['objective_dict'] = trip.get_location_context(
             TripLocation.OBJECTIVE)
         context['camp_dict'] = trip.get_location_context(TripLocation.CAMP)

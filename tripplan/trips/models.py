@@ -296,12 +296,22 @@ class TripLocation(models.Model):
             local_timezone
         ).strftime('%H:%M:%S %Z%z')
 
+    def clear_suntimes(self):
+        """
+        Clear sun time values. To be used if a location is edited to no
+        longer include lat/long/date
+        """
+        self.sunrise = None
+        self.sunset = None
+
     def save(self, *args, **kwargs):
         """
         Set sun times for a location with specified coordinates and date
         """
         if self.latitude and self.longitude and self.date and self.date != 'Unassigned':
             self.set_suntimes()
+        else:
+            self.clear_suntimes()
         super(TripLocation, self).save(*args, **kwargs)
 
 class ItemNotification(models.Model):
