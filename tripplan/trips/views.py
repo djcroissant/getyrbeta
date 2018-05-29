@@ -28,7 +28,7 @@ from .forms import TripForm, LocationForm, SearchForm, TripMemberForm, \
 
 class LoginRequiredMixin:
     def get(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated():
+        if request.user and request.user.is_authenticated:
             return super(LoginRequiredMixin, self).get(
                 self, request, *args, **kwargs)
         else:
@@ -37,7 +37,7 @@ class LoginRequiredMixin:
             return redirect(redirect_path + redirect_next)
 
     def post(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated():
+        if request.user and request.user.is_authenticated:
             return super(LoginRequiredMixin, self).post(
                 self, request, *args, **kwargs)
         else:

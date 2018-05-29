@@ -9,7 +9,7 @@ class HomeView(TemplateView):
     template_name = 'site_info/home.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated():
+        if request.user and request.user.is_authenticated:
             return redirect(reverse('trips:trip_list'))
         else:
             return super(HomeView, self).dispatch(request, *args, **kwargs)
